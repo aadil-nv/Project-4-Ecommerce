@@ -1,71 +1,76 @@
 <%- include('../partials/mainheader.ejs')%>
 
 
-<div class="col-lg-9 col-md-8" style="justify-content: center; align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; padding-left: 30%;">
-  <div class="tab-content" id="myaccountContent">
-    <!-- Single Tab Content Start -->
-    <p id="msg" class="text-danger" style="justify-content:  center; align-items: center; display: flex;"></p>
-    <% if(typeof message!=='undefined' ){ %>
+  <div class="col-lg-9 col-md-8"
+    style="justify-content: center; align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; padding-left: 30%;">
+    <div class="tab-content" id="myaccountContent">
+      <!-- Single Tab Content Start -->
+      <p id="msg" class="text-danger" style="justify-content:  center; align-items: center; display: flex;"></p>
+      <% if(typeof message!=='undefined' ){ %>
 
-        <h6 id="errorMessage"  style="color: red;" style="justify-content: center; text-align: center;">
-            <%= message %>
+        <h6 id="errorMessage" style="color: red;" style="justify-content: center; text-align: center;">
+          <%= message %>
         </h6>
         <% } %>
 
-    <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
-      <div class="myaccount-content">
-        <h3>Edit Your Details</h3>
-        <div class="account-details-form">
-          <!-- <form action="/edituserdetiles?id=<%= userData._id %>" method="post"> -->
-          <form >
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="single-input-item">
-                  <label for="first-name" class="required">User Name</label>
-                  <input
-                    type="text"
-                    id="user-name"
-                    value="<%=userData.name %>"
-                    name="username"
-                  />
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="single-input-item">
-                  <label for="last-name" class="required">Mobile No</label>
-                  <input
-                    type="text"
-                    id="user-mobile"
-                    value="<%=userData.mobile %>"
-                    name="usermobile"
-                  />
-                </div>
+          <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
+            <div class="myaccount-content">
+              <h3>Edit Your Details</h3>
+              <div class="account-details-form">
+                <!-- <form action="/edituserdetiles?id=<%= userData._id %>" method="post"> -->
+                <form>
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <div class="single-input-item">
+                        <label for="first-name" class="required">User Name</label>
+                        <input type="text" id="user-name" value="<%=userData.name %>" name="username" />
+                        <div id="userNameError" class="error-message"></div>
+                      </div>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="single-input-item">
+                        <label for="last-name" class="required">Mobile No</label>
+                        <input type="text" id="user-mobile" value="<%=userData.mobile %>" name="usermobile" />
+                        <div id="userMobileError" class="error-message"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="single-input-item btn-hover">
+                    <input type="hidden" name="id" value="<%= userData._id %>" />
+
+                    <a href="#" onclick="editcat('<%= userData._id %>')"> <button class="check-bt sqr-btn"
+                        type="submit">Update</button>
+                    </a>
+                    <!-- <button class="check-bt sqr-btn" type="submit"></button> -->
+                  </div>
+                </form>
               </div>
             </div>
-            <div class="single-input-item btn-hover">
-                <input type="hidden" name="id" value="<%= userData._id %>" />
-           
-              <button class="check-bt sqr-btn" type="submit">
-                <a href="#" onclick="editcat('<%= userData._id %>')">Update</a>
-                
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
+          </div>
     </div>
   </div>
-</div>
 
 
-<script>
+  <script>
     function editcat(id) {
       let username = document.getElementById("user-name").value;
       let usermobile = document.getElementById("user-mobile").value;
       let message = document.getElementById("msg");
-    
-  
-  
+      const userName = document.getElementById('user-name').value.trim()
+      const userMobile = document.getElementById('user-mobile').value.trim()
+
+
+      if (!/^[a-zA-Z]+$/.test(userName)) {
+        document.getElementById("userNameError").innerHTML = 'Name must contain only characters.'; 
+        return false; // Prevent form submission
+      }
+
+      if (!/^\d{10}$/.test(userMobile)) {
+        document.getElementById("userMobileError").innerHTML  = 'Mobile No must be 10 digits and contain only numbers.';
+        return false; // Prevent form submission
+      }
+
+
       fetch(`/edituserdetiles/${id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -86,11 +91,11 @@
             message.innerHTML = "Somthing wrong";
           }
         })
-  
+
         .catch((err) => {
           console.log(err);
         });
     }
   </script>
 
-<%- include('../partials/mainfooter.ejs')%>
+  <%- include('../partials/mainfooter.ejs')%>

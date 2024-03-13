@@ -63,6 +63,8 @@ user_route.get('/edituseraddress/:id',userAuth.isLogin,usercontroller.loadEditUs
 user_route.post('/edituseraddress/:id',userAuth.isLogin,usercontroller.updateUserAddress)
 user_route.delete('/deleteaddress/:id',userAuth.isLogin,usercontroller.deleteUseraddress)
 
+user_route.post('/producttab/:id',userAuth.isLogin,usercontroller.addProductInCart)
+
 
 
 

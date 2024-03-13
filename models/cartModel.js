@@ -3,11 +3,11 @@ const mongoose=require('mongoose')
 
 const cartSchema=new mongoose.Schema({
     userId:{
-        type:mongoose.isObjectIdOrHexString,
+        type:mongoose.Schema.Types.ObjectId,
         required:true,
         ref:"User"
     },
-    product :[
+    products :[
         {
             productId:{
                 type:ObjectId,
@@ -33,4 +33,8 @@ const cartSchema=new mongoose.Schema({
 
 })
 
-module.exports=mongoose.Model('Cart',cartSchema)
+module.exports=mongoose.model('Cart',cartSchema)
+
+
+
+

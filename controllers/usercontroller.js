@@ -7,6 +7,7 @@ const path = require("path");
 const { log } = require("console");
 const Products = require("../models/productModel");
 const Address = require("../models/addressModel");
+const Cart = require("../models/cartModel");
 
 // --------------OTP Generating-----------------
 const generateOTP = () => {
@@ -553,6 +554,39 @@ const deleteUseraddress= async (req,res)=>{
 // ---------------------------------------------- End Delte User Address-------------------------------------------
 
 
+// ----------------------------------------------addProductInCart -------------------------------------------
+
+const addProductInCart= async (req,res)=>{
+  try {
+    const productId=req.params.id
+    const puserId=req.session.user
+    console.log(puserId)
+    const productData= await Products.findById({_id:productId})
+    console.log(productData)
+
+    console.log(productId)
+
+    const cartProduct = new Cart({
+      userId:puserId,
+      products: [{
+        productId: productData._id,
+        quantity: 1,
+        price:productData.productprice,
+        totalPrice:productData.productprice,
+      }]
+    })
+    
+    await cartProduct.save()
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+// ---------------------------------------------- End addProductInCart-------------------------------------------
+
+
+
+
 // -------------------Exporting Controllers-----------------------
 
 module.exports = {
@@ -580,7 +614,8 @@ module.exports = {
   addUserAddress,
   loadEditUser,
   updateUserAddress,
-  deleteUseraddress
+  deleteUseraddress,
+  addProductInCart,
 };
 
 // ------------------------------End------------------------------------
