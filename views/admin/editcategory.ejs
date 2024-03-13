@@ -1,0 +1,95 @@
+<%- include('../partials/asidenav.ejs')%>
+
+<section class="content-main mt-80 mb-80">
+  <div
+    class="card mx-auto card-login"
+    style="background-color: rgb(15, 194, 194)"
+  >
+    <div class="card-body">
+      <h4 class="card-title mb-4">Edit Category</h4>
+      <p id="msg" class="text-danger"></p>
+      <p id="show1" class="text-danger" style="text-align: center"></p>
+
+      <% if (typeof message !=='undefined' ){ %>
+      <h6><%=message %></h6>
+      <% } %>
+      <form>
+        <div class="mb-3">
+          <input
+            name="category"
+            value="<%= category.categoryname %>"
+            class="form-control"
+            id="name"
+            placeholder="Category Name"
+            type="text"
+          />
+        </div>
+
+        <div class="mb-3" style="justify-content: center; align-items: center">
+          <input
+            name="descategory"
+            id="descategory"
+            value="<%= category.categorydescription %>"
+            class="form-control"
+            placeholder="Category Description"
+            type="text"
+          />
+        </div>
+
+        <div class="mb-3">
+          <input type="hidden" name="id" value="<%= category._id %>" />
+          <button class="btn btn-danger w-25 h-10" ><a href="#" onclick="editcat('<%= category._id %>')">Update</a></button>
+
+          <!-- <a href="#" onclick="editcat('<%= category._id %>')">Edit</a> -->
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script>
+  function editcat(id) {
+    let name = document.getElementById("name").value;
+    let des = document.getElementById("descategory").value;
+    let message = document.getElementById("msg");
+    let cate = document.getElementById("name").value.trim();
+    let cades = document.getElementById("descategory").value.trim();
+
+    if (cate === "" || /^\s+$/.test(cate)) {
+      document.getElementById("show1").innerHTML =
+        "Invalid Entry: Category Name cannot be empty or contain only spaces";
+      return false;
+    }
+
+    if (cades === "" || /^\s+$/.test(cades)) {
+      document.getElementById("show1").innerHTML =
+        "Invalid Entry: Category Description cannot be empty or contain only spaces";
+      return false;
+    }
+
+    fetch(`/editcategoryfetch/${id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, des }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.already) {
+          message.innerHTML = data.already;
+        } else if (data.success) {
+          window.location.href = "/categorymanagement";
+        } else {
+          message.innerHTML = "Somthing wrong";
+        }
+      })
+
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+</script>

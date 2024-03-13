@@ -1,0 +1,159 @@
+<%- include('../partials/mainheader.ejs')%>
+
+      
+        <div class="login-register-area" style="padding-top: 30px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-12 offset-lg-2">
+                        <div class="login-register-wrapper">
+                            <div class="login-register-tab-list nav">
+                                <a   href="/login/">
+                                    <h4> login </h4>
+                                </a>
+                                <a  class="active"     href="#lg2">
+                                    <h4> register </h4>
+                                </a>
+                            </div>
+                            <div class="tab-content">
+                                <div id="lg1" class="tab-pane active">
+                                    <div class="login-form-container">
+                                        <div class="login-register-form">
+
+                                          <p id="show1" class="text-danger" style="text-align: center;"></p>
+
+                                          <% if(typeof message !=='undefined' ){ %>
+                                            <p style="color: red;">
+                                                <%= message %>
+                                            </p>
+                              
+                                            <% } %>
+                                            <form action=""  onsubmit="return handleSubmit()"  method="post" novalidate>
+                                                <label>Enter your Name :</label>
+                                                <input type="text" id="name"  name="name" placeholder="your name" required>
+                                                <label>Enter your Email :</label>
+                                                <input type="email" id="email"  name="email" placeholder="(e.g., example@example.com)" required>
+                                                <label>Enter your Mobile/phone No :</label>
+                                                <input type="number" id="mno"  name="mno" placeholder="10 Digit mobile no" required>
+                                                <label>Enter your Passsword :</label>
+                                                <input type="password" id="password"  name="password" placeholder="5 Digit Password" required>
+                                                <div class="login-toggle-btn">
+                                                    <input type="checkbox">
+                                                    <label>Remember me</label>
+                                                    <a href="#">Forgot Password?</a>
+                                                </div>
+                                                <div class="button-box btn-hover" style="justify-content: center; align-items: center; display: flex;">
+                                                    <button type="submit">Register</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer-area">
+            <div class="bg-gray-2">
+                <div class="container">
+                    <div class="footer-top pt-80 pb-35">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                                <div class="footer-widget footer-about mb-40">
+                                    <div class="footer-logo">
+                                        <a href="index.html"><img src="/userpublic/indexassets/assets/images/logo/logo.png" alt="logo"></a>
+                                    </div>
+                                    <p>Lorem ipsum dolor sit amet, cons adipi elit, sed do eiusmod tempor incididunt ut aliqua.</p>
+                                    <div class="payment-img">
+                                        <a href="#"><img src="/userpublic/indexassets/assets/images/icon-img/payment.png" alt="logo"></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                                <div class="footer-widget footer-widget-margin-1 footer-list mb-40">
+                                    <h3 class="footer-title">Information</h3>
+                                    <ul>
+                                        <li><a href="about-us.html">About Us</a></li>
+                                        <li><a href="#">Delivery Information</a></li>
+                                        <li><a href="#">Privacy Policy</a></li>
+                                        <li><a href="#">Terms & Conditions</a></li>
+                                        <li><a href="#">Customer Service</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-6 col-sm-6 col-12">
+                                <div class="footer-widget footer-list mb-40">
+                                    <h3 class="footer-title">My Accound</h3>
+                                    <ul>
+                                        <li><a href="my-account.html">My Account</a></li>
+                                        <li><a href="#">Order History</a></li>
+                                        <li><a href="wishlist.html">Wish List</a></li>
+                                        <li><a href="#">Newsletter</a></li>
+                                        <li><a href="#">Order History</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-6 col-12">
+                                <div class="footer-widget footer-widget-margin-2 footer-address mb-40">
+                                    <h3 class="footer-title">Get in touch</h3>
+                                    <ul>
+                                        <li><span>Address: </span>Your address goes here </li>
+                                        <li><span>Telephone Enquiry:</span> (012) 345 6789</li>
+                                        <li><span>Email: </span>demo@example.com</li>
+                                    </ul>
+                                    <div class="open-time">
+                                        <p>Open : <span>8:00 AM</span> - Close : <span>18:00 PM</span></p>
+                                        <p>Saturday - Sunday : Close</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-3">
+                <div class="container">
+                    <div class="footer-bottom copyright text-center bg-gray-3">
+                        <p>Copyright ©2022 All rights reserved | Made with <i class="fa fa-heart"></i> by <a href="https://www.youtube.com/@sayyamCode"> SayyamCode</a>.</p>
+                    </div>
+                </div>
+            </div>
+       
+
+    <script>
+      let show=document.getElementById("show1");
+
+function handleSubmit(){
+   let username=document.getElementById("name").value;
+   let email=document.getElementById("email").value;
+   let mobile=document.getElementById("mno").value;
+   let password=document.getElementById("password").value;
+   if(username.trim()==""){
+       document.getElementById("show1").innerHTML="Username can't be empty";
+     return false;
+   }
+  let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+   if (!email.match(emailRegex)) {
+     document.getElementById("show1").innerHTML = "Please enter a valid email address";
+     return false;
+   }
+   let mobileRegex=/^\d{10}$/
+   if(!mobile.match(mobileRegex)){
+     document.getElementById("show1").innerHTML="mobile can't be empty";
+     return false;
+   }
+   let passwordeRegex=/^\d{5}$/
+   if(!password.match(passwordeRegex)){
+     document.getElementById("show1").innerHTML="Passwords can't be empty";
+     return false;
+   }
+   
+
+return true
+  }
+
+   </script>
+
+<%- include('../partials/mainfooter.ejs')%>

@@ -1,0 +1,205 @@
+<%- include('../partials/asidenav.ejs')%>
+
+
+    <section class="content-main">
+        <div class="row">
+            <div class="col-9">
+                <div class="content-header">
+                    <h2 class="content-title">Add New Product</h2>
+                </div>
+            </div>
+            <form action="/addproduct" method="post" style="border: 1px solid black ; padding: 8px;"
+                onsubmit="return validateForm() " enctype="multipart/form-data">
+                <div class="col-lg-6">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="mb-2">
+                                <label for="product_title" class="form-label">Product Name</label>
+                                <input type="text" placeholder="Type here" class="form-control" name="productName"
+                                    id="productName" style="border: 1px solid black ; padding: 8px;" />
+                                <p id="errorName" style="color: red"></p>
+                            </div>
+                            <div class="row gx-3">
+                                <div class="mb-3">
+                                    <label for="product_sku" class="form-label">Quantity</label>
+                                    <input type="text" placeholder="Type here" class="form-control"
+                                        name="productQuantity" id="productQuantity"
+                                        style="border: 1px solid black ; padding: 8px;" />
+                                    <p id="errorQuantity" style="color: red"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="mb-3">
+                                    <label for="product_sku" class="form-label">Category</label>
+                                    <select type="text" placeholder="Type here" class="form-control"
+                                        name="productCategory" id="productCategory"
+                                        style="border: 1px solid black ; padding: 8px;">
+                                        <p id="errorCategory" style="color: red"></p>
+                                        <%category.forEach(category=>{%>
+
+                                            <option value="<%=category.categoryname%>">
+                                                <%=category.categoryname%>
+                                            </option>
+                                            <% })%>
+
+
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="mb-3">
+                                    <label for="product_sku" class="form-label">Price</label>
+                                    <input placeholder="Type here" type="number" class="form-control"
+                                        name="productPrice" id="productPrice"
+                                        style="border: 1px solid black ; padding: 8px;" />
+                                    <p id="errorPrice" style="color: red"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- card end -->
+                    <div class="card ">
+                        <div class="card-body">
+                            <div>
+                                <label class="form-label">Description</label>
+                                <input placeholder="Type here" class="form-control" rows="4" name="productDescription"
+                                    id="productDescription" style="border: 1px solid black ; padding: 8px;" />
+                                <p id="errorDescription" style="color: red"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- card end// -->
+                    <div class="card ">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Images</label>
+                                <input type="file" id="imageInput" name="images" accept=".png, .jpg, .jpeg" multiple>
+
+                                <!-- <input  name="productImages" class="form-control"    multiple  style="border: 1px solid black ; padding: 8px;"  /> -->
+                                <p id="errorImage" style="color: red"></p>
+                            </div>
+                            <img class="rounded-2 " style="width: 150px;" id="preview-1" alt=""
+                                style="border: 1px solid black ; padding: 8px;">
+                            <img class="rounded-2 " style="width: 150px;" id="preview-2" alt=""
+                                style="border: 1px solid black ; padding: 8px;">
+                            <img class="rounded-2 " style="width: 150px;" id="preview-3" alt=""
+                                style="border: 1px solid black ; padding: 8px;">
+                            <img class="rounded-2 " style="width: 150px;" id="preview-4" alt=""
+                                style="border: 1px solid black ; padding: 8px;">
+                        </div>
+
+                    </div>
+
+                </div>
+                <div>
+                    <!-- <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button> -->
+                    <button type="submit" class="btn btn-md rounded font-sm hover-up">Add Products</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+
+
+    <script src="/adminpublic/adminlogin/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/select2.min.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+
+
+
+
+
+
+
+    <script>
+        function validateForm() {
+            const productName = document.getElementById("productName").value;
+            const productQuantity = document.getElementById("productQuantity").value;
+
+            const productCategory = document.getElementById("productCategory").value;
+            const productPrice = document.getElementById("productPrice").value;
+            const productDescription = document.getElementById("productDescription").value;
+            const imageInput = document.getElementById("imageInput");
+            console.log("price : ", productPrice);
+
+            const errorName = document.getElementById("errorName");
+            if (!productName.trim()) {
+                errorName.innerHTML = "Product name should not be empty";
+                return false;
+            } else {
+                errorName.innerHTML = "";
+            }
+
+            const errorQuantity = document.getElementById("errorQuantity");
+            if (!productQuantity.trim()) {
+                errorQuantity.innerHTML = "Quantity should not be empty";
+                return false;
+            } else if (isNaN(productQuantity) || Number(productQuantity) <= 0) {
+                errorQuantity.innerHTML = "Quantity should be a positive number";
+                return false;
+            } else {
+                errorQuantity.innerHTML = "";
+            }
+            // const errorCategory = document.getElementById("errorCategory");
+
+            // if (!productCategory.trim()) {
+            //     errorCategory.innerHTML = "Please choose a category";
+            // } else {
+            //     errorCategory.innerHTML = "";
+            // }
+
+            const errorPrice = document.getElementById("errorPrice");
+            if (!productPrice.trim()) {
+                errorPrice.innerHTML = "Price should not be empty";
+                return false;
+            } else if (isNaN(productPrice) || Number(productPrice) <= 0) {
+                errorPrice.innerHTML = "Quantity should be a positive number";
+                return false;
+            } else {
+                errorPrice.innerHTML = "";
+            }
+
+
+
+            const errorDescription = document.getElementById("errorDescription");
+            if (!productDescription.trim()) {
+                errorDescription.innerHTML = "Description should not be empty";
+                return false;
+            } else {
+                errorDescription.innerHTML = "";
+            }
+
+            const errorImage = document.getElementById("errorImage");
+            if (imageInput.files.length === 0) {
+                errorImage.innerHTML = "Please select at least one image";
+                return false;
+            } else if (imageInput.files.length > 4) {
+                errorImage.innerHTML = "You can only upload up to 4 images";
+                return false;
+            } else {
+                errorImage.innerHTML = "";
+            }
+            return validateFileType();
+
+            return true;
+        }
+
+        function validateFileType() {
+            var fileName = document.getElementById("imageInput").value;
+            var idxDot = fileName.lastIndexOf(".") + 1;
+            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+            if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+                return true;
+            } else {
+                errorImage.innerHTML ="Only jpg/jpeg and png files are allowed!"
+                return false;
+            }
+        }
+    </script>
+
+    </script>
+    <script src="/adminpublic/adminlogin/js/main.js?v=1.1" type="text/javascript"></script>

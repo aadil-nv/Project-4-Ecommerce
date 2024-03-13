@@ -1,0 +1,87 @@
+<%- include('../partials/mainheader.ejs')%>
+        
+        <div class="login-register-area " style="padding-top: 20px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-12 offset-lg-2">
+                        <div class="login-register-wrapper">
+                            <div class="login-register-tab-list nav">
+                              <a class="active"><h4>Login</h4></a>
+                                <a  href="/registration/">
+                                    <h4>Register</h4> 
+                                </a>
+                            </div>
+                            <div class="tab-content">
+                                <div id="lg1" class="tab-pane active">
+                                    <div class="login-form-container">
+                                        <div class="login-register-form">
+                                            <form action="/userhome" method="post"  onsubmit="return handleSubmit()">
+
+                                              <p id="show1" class="text-danger" ></p>
+                                                <% if(typeof message!=='undefined' ){ %>
+
+                                                    <h6 id="errorMessage"  style="color: red;" style="justify-content: center; text-align: center;">
+                                                        <%= message %>
+                                                    </h6>
+                                                    <% } %>
+
+                                                    <label>Enter Your Email :</label>
+                                                <input type="text" id="email" name="email" placeholder="(e.g., example@example.com)">
+                                                <label>Enter Your Paasword :</label>
+                                                <input type="password" id="password" name="password" placeholder="(e.g.,5 Digit Password)"  >
+                                                
+                                                <div class="button-box btn-hover"  style="justify-content: center; align-items: center; display: flex;">
+                                                    <button type="submit">Login</button>
+                                                </div>
+                                                
+                                                
+                                            </form>
+                                            <div style="justify-content: center; align-items: center; display:  flex; padding-top: 30px;">
+                                                <h6>Or Login with Google  </h6>
+                                                <button style="width: 100px; height: 40px; background-color: rgb(255, 255, 255); border: none;"><a href="/google"><i class="fa-brands fa-square-google-plus fa-2xl"></i></a></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+
+            setTimeout(function() {
+                var errorMessage = document.getElementById('errorMessage');
+                if (errorMessage) {
+                    errorMessage.remove();
+                }
+            }, 3000); 
+        </script>
+       
+
+        <script>
+          let show=document.getElementById("show1")
+          function handleSubmit(){
+              let email=document.getElementById("email").value;
+              let password=document.getElementById("password").value;
+      
+              let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+              if (!email.match(emailRegex)) {
+               document.getElementById("show1").innerHTML = "Enter a valid Email address";
+               return false;
+            }
+            let passwordeRegex=/^\d{5}$/
+              if(!password.match(passwordeRegex)){
+               document.getElementById("show1").innerHTML="Enter Correct Password";
+               return false;
+           }
+           return true
+      
+          }
+      </script>
+
+
+        <%- include('../partials/mainfooter.ejs')%>

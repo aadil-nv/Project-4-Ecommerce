@@ -1,0 +1,149 @@
+<%- include('../partials/asidenav.ejs')%>
+
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Category Lists</h2>
+                <!-- <p>Lorem ipsum dolor sit amet.</p> -->
+            </div>
+            <div>
+
+
+                <a href="/addcategory" class="btn btn-danger btn-sm rounded">Add Category +</a>
+
+            </div>
+        </div>
+        <div class="card mb-4">
+            <header class="card-header">
+                <div class="row gx-3">
+                    <div class="col-lg-4 col-md-6 me-auto">
+                        <input type="text" placeholder="Search..." class="form-control" />
+                    </div>
+                    <div class="col-lg-2 col-6 col-md-3">
+                        <select class="form-select">
+                            <option>Status</option>
+                            <option>Active</option>
+                            <option>Disabled</option>
+                            <option>Show all</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-6 col-md-3">
+                        <select class="form-select">
+                            <option>Show 20</option>
+                            <option>Show 30</option>
+                            <option>Show 40</option>
+                        </select>
+                    </div>
+                </div>
+            </header>
+            <!-- card-header end// -->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" " >
+                    <thead>
+                        <tr>
+                            <th  style="border: 1px solid black ; padding: 8px;">UID</th>
+                            <th  style="border: 1px solid black ; padding: 8px;" scope=" col">category Name</th>
+                        <th style="border: 1px solid black ; padding: 8px; " scope="col">Category Discription</th>
+
+                        <th style="border: 1px solid black ; padding: 8px;"scope="col" class="text-end">Edit</th>
+                        <th style="border: 1px solid black ; padding: 8px;"  scope="col" class="text-end">Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody style="border: 1px solid black ; padding: 8px;" >
+                            <% if(category.length > 0) { %>
+                                <% let UID=1;%>
+                                    <% category.forEach (data=>{ %>
+                                        <tr style="border: 1px solid black ; padding: 8px;">
+                                             <td style="border: 1px solid black ; padding: 8px;">
+                                                <%= UID++ %>
+                                            </td>
+                                            <td style="border: 1px solid black ; padding: 8px;"  ><b>
+                                                    <%= data.categoryname %>
+                                                </b></td>
+                                            <td style="border: 1px solid black ; padding: 8px;" >
+                                                <%= data.categorydescription %>
+                                            </td style="border: 1px solid black ; padding: 8px;" >
+
+
+                                            <td class="text-end"  style="border: 1px solid black ; padding: 8px;">
+
+                                                <button class="btn btn-sm rounded font-sm"   style="background-color: rgb(27, 143, 151); width: 80px; align-items: center; justify-content: center; " >
+                                                    <a href="/editCategory/<%= data._id %>">Edit</a>
+                                                </button>
+                                            </td style="border: 1px solid black ; padding: 8px;" >
+                                            <%if (data.categorystatus===false){ %>
+                                                <td style="padding-left: 40px; justify-content: center; align-items: center ;display: flex;">
+                                                  
+                                                    <button  class="btn btn-sm rounded font-sm "
+                                                        style="background-color: rgb(27, 151, 33); width: 80px; align-items: center; justify-content: center; ">
+                                                        <a href="/adminBlockcategory/<%= data._id %>">Block</a></button
+
+                                                </td>
+                                                <%}else{%>
+                                                    <td style="padding-left: 40px; justify-content: center; align-items: center ;display: flex;">
+                                                    
+                                                        <button class="btn btn-sm rounded font-sm"
+                                                            style="background-color: rgb(202, 59, 40); width: 80px;width: 80px; align-items: center; justify-content: center; "
+                                                           ><a   href="/adminBlockcategory/<%= data._id %>">unBlock</a></button>
+
+                                                    </td>
+                                                    <% } %>
+                                                        <% })%>
+                                                            <% }else{ %>
+                                              <tr>
+                                                 <td colspan="3" class="text-center">
+                                                     <p class="mt-3">No users</p>
+                                                 </td>
+                                               </tr>
+                                        <% } %>
+                                 </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- table-responsive //end -->
+            </div>
+            <!-- card-body end// -->
+        </div>
+        <!-- card end// -->
+        <div class="pagination-area mt-15 mb-50">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-start">
+                    <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                    <li class="page-item"><a class="page-link" href="#">02</a></li>
+                    <li class="page-item"><a class="page-link" href="#">03</a></li>
+                    <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                    <li class="page-item"><a class="page-link" href="#">16</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+    <!-- content-main end// -->
+    <footer class="main-footer font-xs">
+        <div class="row pb-30 pt-15">
+            <div class="col-sm-6">
+                <script>
+                    document.write(new Date().getFullYear());
+                </script>
+                &copy; Nest - HTML Ecommerce Template .
+            </div>
+            <div class="col-sm-6">
+                <div class="text-sm-end">All rights reserved</div>
+            </div>
+        </div>
+    </footer>
+    </main>
+    <script src="/adminpublic/adminlogin/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/select2.min.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="/adminpublic/adminlogin/js/main.js?v=1.1" type="text/javascript"></script>
+    </body>
+
+    </html>

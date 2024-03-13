@@ -1,0 +1,280 @@
+<%- include('../partials/asidenav.ejs')%>
+    <section class="content-main">
+        <div class="row">
+            <div class="col-9">
+                <div class="content-header">
+                    <h2 class="content-title">Upadte Product</h2>
+                    <div>
+
+                    </div>
+                </div>
+            </div>
+            <p id="msg" class="text-danger"></p>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Basic</h4>
+                    </div>
+                    <% if(typeof message!=='undefined' ){ %>
+
+                        <h6 id="errorMessage" style="color: red;" style="justify-content: center; text-align: center;">
+                            <%= message %>
+                        </h6>
+                        <% } %>
+
+
+
+                            <div class="card-body">
+                                <form enctype="multipart/form-data" method="post" onsubmit="return validateForm()"
+                                    action="/editproductdetilesfetch/<%= product._id %> ">
+                                    <div class="mb-4">
+                                        <label for="product_name" class="form-label">Product Name</label>
+                                        <input type="text" placeholder="Type here" id="name" name="name"
+                                            class="form-control" value="<%= product.productname %>" />
+                                        <p id="errorName" style="color: red"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Full description</label>
+                                        <input placeholder="Type here" name="des" class="form-control" id="des" rows="4"
+                                            value="<%= product.productdescription %>"></input>
+                                        <p id="errorDescription" style="color: red"></p>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4">
+                                            <div class="mb-4">
+                                                <label class="form-label">Price</label>
+                                                <div class="row gx-2">
+                                                    <input placeholder="$" type="text" id="price" name="price"
+                                                        class="form-control" value="<%= product.productprice %>" />
+                                                    <p id="errorPrice" style="color: red"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="mb-4">
+                                                <label class="form-label">Quandity</label>
+                                                <input placeholder="$" id="quandity" type="text" name="quandity"
+                                                    class="form-control" value="<%= product. productquadity %>" />
+                                                <p id="errorQuantity" style="color: red"></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <label class="form-label">Category</label>
+                                            <select class="form-select">
+                                                <option>
+                                                    <%=product.categoryId%>
+                                                </option>
+
+                                                <%category.forEach(data=>{%>
+                                                    <option>
+                                                        <%=data.categoryname %>
+                                                    </option>
+                                                    <%})%>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <% if(product.productimage.length <4){%>
+                                        <div class="col-lg-6">
+                                            <div class="card mb-4">
+                                                <div class="card-header">
+                                                    <h4>Ad Image</h4>
+                                                    <p id="errorImage" style="color: red"></p>
+
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="input-upload">
+                                                        <img src="/adminpublic/adminlogin/imgs/theme/upload.svg"
+                                                            alt="" />
+                                                        <input class="form-control" type="file" name="photos"
+                                                            id="photos" accept=".png, .jpg, .jpeg" multiple />
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <%}else{%>
+                                            <div class="col-lg-6">
+                                                <div class="card mb-4">
+                                                    <div class="card-header">
+                                                        <h4>Ad Image</h4>
+                                                        <p id="errorImage" style="color: red"></p>
+
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="input-upload">
+                                                            <img src="/adminpublic/adminlogin/imgs/theme/upload.svg"
+                                                                alt="" />
+                                                            <input class="form-control" type="file" name="photos"
+                                                                id="photos" accept=".png, .jpg, .jpeg" multiple
+                                                                disabled />
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                            <%}%>
+
+                                                <!-- <button type="submit">Upadte</button> -->
+                                                <button class="btn btn-light rounded font-sm mr-5 text-body hover-up" type="submit">Update</button>
+
+                                </form>
+                            </div>
+                </div>
+                <!-- card end// -->
+
+                <div class="d-flex gap-4">
+
+                    <% if(product.productimage.length> 0){%>
+                        <% product.productimage.forEach (data=>{ %>
+                            <div class="col-lg-5">
+                                <div class="card ">
+                                    <div class="card-header">
+                                        <h4>Image</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="input-upload">
+                                            <img src="/uploads/<%= data %>" width="90px" class="rounded-3 " />
+
+                                        </div>
+                                    </div>
+                                    <a href="/editproductdetilesfetch/<%= product._id %>?name=<%= data %>">
+
+                                        <button class="btn btn-md rounded font-sm hover-up">Remove Image</button>
+
+                                    </a>
+
+                                </div>
+
+                            </div>
+                            <%})%>
+                                <%}%>
+                                    <!-- card end// -->
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+    <!-- content-main end// -->
+    <footer class="main-footer font-xs">
+        <div class="row pb-30 pt-15">
+            <div class="col-sm-6">
+                <script>
+                    document.write(new Date().getFullYear());
+                </script>
+                &copy; Nest - HTML Ecommerce Template .
+            </div>
+            <div class="col-sm-6">
+                <div class="text-sm-end">All rights reserved</div>
+            </div>
+        </div>
+    </footer>
+    </main>
+    <script src="/adminpublic/adminlogin/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/select2.min.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="/adminpublic/adminlogin/js/main.js?v=1.1" type="text/javascript"></script>
+
+
+    <script>
+        function validateForm() {
+          
+            const name = document.getElementById("name").value;
+        
+            const quantity = document.getElementsByName("quandity")[0].value;
+          
+
+            // const category = document.getElementById("category").value;
+            // console.log("validateForm : 4");
+            const price = document.getElementById("price").value;
+      
+            const description = document.getElementById("des").value;
+          
+            const imageInput = document.getElementById("photos");
+          
+
+
+            const errorName = document.getElementById("errorName");
+            if (!name.trim()) {
+                errorName.innerHTML = "Product name should not be empty";
+                return false;
+            } else {
+                errorName.innerHTML = "";
+            }
+
+            const errorQuantity = document.getElementById("errorQuantity");
+
+            if (!quantity.trim()) {
+                errorQuantity.innerHTML = "Quantity should not be empty";
+                return false;
+            } else if (isNaN(quantity) || Number(quantity) <= 0) {
+                errorQuantity.innerHTML = "Quantity should be a positive number";
+                return false;
+            } else {
+                errorQuantity.innerHTML = "";
+            }
+
+
+            const errorPrice = document.getElementById("errorPrice");
+           
+
+            if (!price.trim()) {
+                errorPrice.innerHTML = "Price should not be empty";
+                return false;
+            } else if (isNaN(price) || Number(price) <= 0) {
+                errorPrice.innerHTML = "Quantity should be a positive number";
+                return false;
+            } else {
+                errorPrice.innerHTML = "";
+            }
+
+
+
+            const errorDescription = document.getElementById("errorDescription");
+            if (!description.trim()) {
+                errorDescription.innerHTML = "Description should not be empty";
+                return false;
+            } else {
+                errorDescription.innerHTML = "";
+            }
+
+            const errorImage = document.getElementById("errorImage");
+            if (imageInput.files.length > 4) {
+                errorImage.innerHTML = "You can only upload up to 4 images";
+                return false;
+            } else {
+                errorImage.innerHTML = "";
+            }
+
+            return validateFileType();
+            return true;
+        }
+        
+        function validateFileType() {
+            var length= local.product
+            console.log(length)
+            var fileName = document.getElementById("photos").value;
+            var idxDot = fileName.lastIndexOf(".") + 1;
+            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+            if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
+                return true;
+            }
+             else {
+                errorImage.innerHTML = "Only jpg/jpeg and png files are allowed!"
+                return false;
+            }
+        }
+
+    </script>
+
+
+
+    </body>
+
+    </html>

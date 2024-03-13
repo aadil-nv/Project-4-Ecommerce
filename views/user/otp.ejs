@@ -1,0 +1,165 @@
+<%- include('../partials/mainheader.ejs')%>
+   
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+       integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+       crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            background-color: #ebecf0;
+        }
+
+        .otp-letter-input {
+            max-width: 100%;
+            height: 90px;
+            border: 1px solid #e95921;
+            border-radius: 10px;
+            color: #e95921;
+            font-size: 60px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .btn {
+            height: 50px;
+        }
+        button:focus,
+        input:focus{
+          outline: none;
+          box-shadow: none;
+          
+        }
+        a,
+        a:hover{
+          text-decoration: none;
+          
+        }
+
+        body{
+          font-family: 'Roboto', sans-serif;
+        }
+
+        /*------------------  */
+        .otp-form-group{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .otp-inputbar{
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            text-align: center;
+            margin-right: 10px;
+            font-size: 16px;
+            color: #e95921;
+        }
+       
+        
+    </style>
+
+
+        <div class="container p-5">
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-5 mt-5">
+                <div class="bg-white p-5 rounded-3 shadow-sm border">
+                    <div>
+                        <form action="/otp" method="post" >
+                            
+                            <p class="text-center text-success" style="font-size: 5.5rem;"><i
+                                    class="fa-solid fa-envelope-circle-check" style="color: #e95921;"></i></p>
+                            <p class="text-center text-center h5 ">Please check your email</p>
+                            <p class="text-muted text-center">We've sent a code to contact@curfcode.com</p>
+                            <div class="msg" style="color: red; justify-content: center; align-items: center; display: flex;" >
+                                <p id="errmsg" style="color: red;" ></p>
+                                <% if(typeof message!=='undefined' ){ %>
+
+                                    <h6 style="color: red;">
+                                        <%= message %>
+                                    </h6>
+                                    <% } %>
+
+                            </div>
+
+                            <div class="otp-form-group">
+                                <input class="otp-inputbar"   name="n1"  type="text" maxlength="1" oninput="validateInput(this)" onkeydown="handleBackspace(event, this)" autofocus>
+                                <input class="otp-inputbar"  name="n2"  type="text" maxlength="1" oninput="validateInput(this)" onkeydown="handleBackspace(event, this)">
+                                <input class="otp-inputbar"  name="n3"  type="text" maxlength="1" oninput="validateInput(this)" onkeydown="handleBackspace(event, this)">
+                                <input class="otp-inputbar"  name="n4"  type="text" maxlength="1" oninput="validateInput(this)" onkeydown="handleBackspace(event, this)">
+                            </div>
+                            <p id="errmsg" class="text-muted text-center"></p>
+
+                            
+                            <div class="row pt-5">
+                                <div class="col-6">
+                                    <button type="button" class="btn btn-outline-secondary w-100" >Cancel</button>
+                                </div>
+                                <div class="col-6"  >
+                                    <button type="submit" class="btn btn-success w-100" >Verify</button>
+                                </div>
+                            </form>
+                            <form action="/resendotp" method="post">
+                                <div class="fw-normal text-muted mb-2" style="padding-top: 25px; justify-content: center; align-items: center;">
+                                    Didn’t get the code ?<button class=" btn " type="submit"  id="resend">Resend OTP</button >
+                                        <span class="time"></span>
+                                </div>
+                            </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        function timer(n){
+            document.getElementById('resend').disabled= true
+            const interval = setInterval(()=>{
+                if(n==0){
+                    clearInterval(interval)
+                    document.getElementById("resend").disabled=false
+                }
+                document.querySelector(".time").innerHTML=n
+                n=n-1
+            },1000)
+        }
+        timer(60)
+    </script>
+        
+        
+    <script>
+       
+
+        function validateInput(input) {
+            const value = input.value;
+            if (!/^\d*$/.test(value)) {
+                input.value = '';
+                document.getElementById('errmsg').innerText = "Only numbers are allowed";
+                setTimeout(() => {
+                    document.getElementById('errmsg').innerText = '';
+                }, 2000);
+            } else {
+                document.getElementById('errmsg').innerText = '';
+            }
+        }
+
+        function handleBackspace(event, input) {
+            if (event.key === 'Backspace' && input.value === '') {
+                const previousInput = input.previousElementSibling;
+                if (previousInput) {
+                    previousInput.focus();
+                }
+            } else if (/^\d*$/.test(event.key) && input.value.length === 1) {
+                const nextInput = input.nextElementSibling;
+                if (nextInput) {
+                    nextInput.focus();
+                }
+            }
+        }
+
+        
+
+        
+    </script>
+
+<%- include('../partials/mainfooter.ejs')%>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Nest Dashboard</title>
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content="" />
+        <meta property="og:type" content="" />
+        <meta property="og:url" content="" />
+        <meta property="og:image" content="" />
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="/adminpublic/adminlogin/imgs/theme/favicon.svg" />
+        <!-- Template CSS -->
+        <link href="/adminpublic/adminlogin/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body >
+        <main >
+           
+            <section class="content-main mt-80 mb-80" >
+                <div class="card mx-auto card-login" style="background-color: rgb(58, 211, 122); ;">
+                    <div class="card-body" >
+                        <h2 class="card-title mb-4"  >Admin Sign In</h2>
+                        <div style="justify-content: center; align-items: center;"><p id="show1" style="color: crimson;"></p></div>
+                        <form action="" method="post" onsubmit="return handleSubmit()">
+                            <div class="mb-3">
+                                <input class="form-control"  id="email" name="email" placeholder="Username or email" type="text" />
+                            </div>
+                            <!-- form-group// -->
+                            <div class="mb-3">
+                                <input class="form-control" id="password"  name="password" placeholder="Password contain 5 digits" type="password" />
+                            </div>
+                            
+                            
+                            <!-- form-group form-check .// -->
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary w-50 "  style="padding-left: 50px; margin-left: 70px;">Login</button>
+                            </div>
+                            <!-- form-group// -->
+                        </form>
+                        
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+        <script src="/admin/public/adminlogin/js/vendors/jquery-3.6.0.min.js"></script>
+        <script src="/admin/public/adminlogin/js/vendors/bootstrap.bundle.min.js"></script>
+        <script src="/admin/public/adminlogin/js/vendors/jquery.fullscreen.min.js"></script>
+        <!-- Main Script -->
+        <script src="/admin/public/adminlogin/js/main.js?v=1.1" type="text/javascript"></script>
+
+        <script>
+            let show=document.getElementById("show1")
+            function handleSubmit(){
+                let email=document.getElementById("email").value;
+                let password=document.getElementById("password").value;
+
+                let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!email.match(emailRegex)) {
+                 document.getElementById("show1").innerHTML = "Please enter a valid email address";
+                 return false;
+              }
+              let passwordeRegex=/^\d{5}$/
+                if(!password.match(passwordeRegex)){
+                 document.getElementById("show1").innerHTML="Something wrong in password ";
+                 return false;
+             }
+             return true
+
+            }
+        </script>
+
+    </body>
+</html>
