@@ -233,19 +233,26 @@ const loadUserProfile = async (req, res) => {
   try {
     const userData = await User.findOne({ _id: req.session.user });
     const addressData = await Address.find({ userId: req.session.user });
-   
-    let added=req.query.msg
+
+    let added = req.query.msg;
 
     if (User) {
-      const message=req.flash('succ')
-      if(added){
-      return  res.render("user/userprofile", { userData,addressData,message,added });
-      }else{
-        return  res.render("user/userprofile", { userData,addressData,message });
+      const message = req.flash("succ");
+      if (added) {
+        return res.render("user/userprofile", {
+          userData,
+          addressData,
+          message,
+          added,
+        });
+      } else {
+        return res.render("user/userprofile", {
+          userData,
+          addressData,
+          message,
+        });
       }
-     
     }
-   
   } catch (error) {
     console.log(error.message);
   }
@@ -365,8 +372,20 @@ const loadGoogleAuth = async (req, res) => {
 
 const loadViewCart = async (req, res) => {
   try {
-    const productData = await Products.find();
-    res.render("user/cart", { productData });
+    const user = req.session.user;
+
+    const cartDetiles = await Cart.find({ userId: user }).populate("products.productId");
+
+    let total = 0
+    cartDetiles.forEach(item => {
+      item.products.forEach(product => {
+        total += product.totalPrice; // Accumulate the total price for each product
+      });
+    });
+
+    console.log(total)
+
+    res.render("user/cart", { cartDetiles, total });
   } catch (error) {
     console.log(error.message);
   }
@@ -416,8 +435,6 @@ const updateUserPassword = async (req, res) => {
     const oldPass = req.body.oldpassword;
     const newPass = req.body.newpassword;
 
-   
-
     const newPassData = await User.findOne({ _id: passId });
     if (newPassData) {
       const passwordMatch = await bcrypt.compare(
@@ -458,133 +475,158 @@ const loadAddressPage = async (req, res) => {
 const addUserAddress = async (req, res) => {
   try {
     const userData = await User.findOne({ _id: req.session.user });
-   
-   if(userData){
-    const newAddress = new Address({
-      name: req.body.username,
-      mobile: req.body.usermobile,
-      pincode: req.body.pincode,
-      address: req.body.address,
-      streetaddress: req.body.streetaddress,
-      city: req.body.city,
-      state: req.body.state,
-      landmark: req.body.landmark,
-      userId: req.session.user,
-    });
-    await newAddress.save();
-    const message="New address addedd Succesfully"
-    req.flash('succ',message)
-    return res.redirect("/userprofile");
-   }
+
+    if (userData) {
+      const newAddress = new Address({
+        name: req.body.username,
+        mobile: req.body.usermobile,
+        pincode: req.body.pincode,
+        address: req.body.address,
+        streetaddress: req.body.streetaddress,
+        city: req.body.city,
+        state: req.body.state,
+        landmark: req.body.landmark,
+        userId: req.session.user,
+      });
+      await newAddress.save();
+      const message = "New address addedd Succesfully";
+      req.flash("succ", message);
+      return res.redirect("/userprofile");
+    }
   } catch (error) {
     console.log(error.message);
   }
 };
 // ---------------------------------------------- Endingadd User Address-------------------------------------------
 
-
 // ---------------------------------------------- Load edit Address-------------------------------------------
 
-const loadEditUser=async (req,res)=>{
+const loadEditUser = async (req, res) => {
   try {
-    const addressId=req.params.id
-    
-    const addressData= await Address.findOne({_id:addressId})
-  
+    const addressId = req.params.id;
 
-    res.render('user/editaddress',{addressData})
-    
+    const addressData = await Address.findOne({ _id: addressId });
+
+    res.render("user/editaddress", { addressData });
   } catch (error) {
     console.log(error.message);
   }
-}
-
+};
 
 // ---------------------------------------------- End edit Address-------------------------------------------
 
 // ----------------------------------------------  Upate user Address-------------------------------------------
 
-const updateUserAddress=async (req,res)=>{
+const updateUserAddress = async (req, res) => {
   try {
-    const updateId= req.params.id
-    
-  
-    
-    const aData= await Address.findByIdAndUpdate({_id:updateId},{ name: req.body.username,
-      mobile: req.body.usermobile,
-      pincode: req.body.pincode,
-      address: req.body.address,
-      streetaddress: req.body.streetaddress,
-      city: req.body.city,
-      state: req.body.state,
-      landmark: req.body.landmark
-     })
+    const updateId = req.params.id;
+
+    const aData = await Address.findByIdAndUpdate(
+      { _id: updateId },
+      {
+        name: req.body.username,
+        mobile: req.body.usermobile,
+        pincode: req.body.pincode,
+        address: req.body.address,
+        streetaddress: req.body.streetaddress,
+        city: req.body.city,
+        state: req.body.state,
+        landmark: req.body.landmark,
+      }
+    );
 
     //  const message="New address addedd Succesfully"
     //  req.flash('flash2',message)
-     res.json({ already: "Address changed SuccesFully" });
-    
-
-    
+    res.json({ already: "Address changed SuccesFully" });
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
   }
-}
+};
 // ---------------------------------------------- End Updtae User Address-------------------------------------------
-
 
 // ---------------------------------------------- Delte User Address-------------------------------------------
 
-const deleteUseraddress= async (req,res)=>{
+const deleteUseraddress = async (req, res) => {
   try {
-   
-    const dltId=req.params.id;
-    console.log("Id : ",dltId);
-    const deleteData= await Address.findByIdAndDelete({_id:dltId})
-    console.log(deleteData)
+    const dltId = req.params.id;
+    console.log("Id : ", dltId);
+    const deleteData = await Address.findByIdAndDelete({ _id: dltId });
+    console.log(deleteData);
     // res.redirect('userprofile')
-    res.status(200).json({message:"deletion successfull"});
-
-    
+    res.status(200).json({ message: "deletion successfull" });
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
   }
-}
+};
 
 // ---------------------------------------------- End Delte User Address-------------------------------------------
 
 
+
 // ----------------------------------------------addProductInCart -------------------------------------------
 
-const addProductInCart= async (req,res)=>{
-  try {
-    const productId=req.params.id
-    const puserId=req.session.user
-    console.log(puserId)
-    const productData= await Products.findById({_id:productId})
-    console.log(productData)
 
-    console.log(productId)
+
+const addProductInCart = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const userId = req.session.user;
+    const qt=req.body.qtybutton
+
+    console.log("================================",qt)
+
+
+    const existingProduct = await Cart.findOne({
+      userId: userId,
+      "products.productId": productId,
+    });
+
+    if (existingProduct) {
+
+      return res.status(400).json({ message: "Product already in cart" });
+    }
+
+
+    const productData = await Products.findById(productId);
 
     const cartProduct = new Cart({
-      userId:puserId,
-      products: [{
-        productId: productData._id,
-        quantity: 1,
-        price:productData.productprice,
-        totalPrice:productData.productprice,
-      }]
-    })
-    
-    await cartProduct.save()
+      userId: userId,
+      products: [
+        {
+          productId: productData._id,
+          quantity: 1,
+          price: productData.productprice,
+          totalPrice: productData.productprice,
+        },
+      ],
+    });
+
+    await cartProduct.save();
+
+    res.status(200).json({ message: "Product added to cart successfully" });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// ---------------------------------------------- End addProductInCart-------------------------------------------
+
+
+// ---------------------------------------------- Increasing decresing quantity -------------------------------------------
+
+const quantityControll=async (req,res)=>{
+  try {
+    const {change,qty}=req.body
+    console.log(qty)
   } catch (error) {
     console.log(error.message)
   }
 }
 
-// ---------------------------------------------- End addProductInCart-------------------------------------------
 
 
+// ---------------------------------------------- End Increasing decresing quantity -------------------------------------------
 
 
 // -------------------Exporting Controllers-----------------------
@@ -616,6 +658,7 @@ module.exports = {
   updateUserAddress,
   deleteUseraddress,
   addProductInCart,
+  quantityControll
 };
 
 // ------------------------------End------------------------------------

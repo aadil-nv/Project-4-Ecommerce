@@ -65,6 +65,8 @@ user_route.delete('/deleteaddress/:id',userAuth.isLogin,usercontroller.deleteUse
 
 user_route.post('/producttab/:id',userAuth.isLogin,usercontroller.addProductInCart)
 
+user_route.post('/viewcart',userAuth.isLogin,usercontroller.quantityControll)
+
 
 
 

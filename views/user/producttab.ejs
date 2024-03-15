@@ -132,8 +132,8 @@
                             </div>
                             <span>(10 Customer Review)</span>
                         </div>
-                       
-                      
+
+
                         <div class="product-details-meta">
                             <ul>
                                 <li><span class="title">Stock:</span> Available</li>
@@ -154,18 +154,22 @@
                                 </li>
                             </ul>
                         </div>
- <!-------------------------------------- ad-------------------------------------------------------------- -->
+                        <!-------------------------------------- ad-------------------------------------------------------------- -->
 
- <!-- <div class="product-quality">
-     <input class="cart-plus-minus-box input-text qty text" name="qtybutton" value="1">
- </div> -->
+                        <!-- <div class="product-quality">
+                          <input class="cart-plus-minus-box input-text qty text" name="qtybutton" value="1">
+                            </div> -->
                         <div class="product-details-action-wrap">
                             <div class="single-product-cart btn-hover" style="color: rgb(231, 162, 94);">
-                               <button style="background-color: rgb(206, 178, 53); width: 150px; height: 70px ; color: rgb(184, 26, 26); border: none;"><a href="">Buy Now</a></button>
+                                <button
+                                    style="background-color: rgb(206, 178, 53); width: 150px; height: 70px ; color: rgb(184, 26, 26); border: none;"><a
+                                        href="">Buy Now</a></button>
                             </div>
-                            <div  class=" btn-hover" >
-                               
-                                <button style="background-color: rgb(206, 76, 53); width: 150px; height: 70px ; color: rgb(255, 254, 254); border: none;"  onclick="addItemInCart('<%= savedData._id %>')">Add to Cart</button>
+                            <div class=" btn-hover">
+
+                                <button
+                                    style="background-color: rgb(206, 76, 53); width: 150px; height: 70px ; color: rgb(255, 254, 254); border: none;"
+                                    onclick="addItemInCart('<%= savedData._id %>')">Add to Cart</button>
 
                             </div>
                             <div class="single-product-wishlist">
@@ -175,9 +179,9 @@
                                 <a title="Compare" href="#"><i class="pe-7s-shuffle"></i></a>
                             </div>
                         </div>
-<!-------------------------------------- ad-------------------------------------------------------------- -->
+                        <!-------------------------------------- ad-------------------------------------------------------------- -->
 
-                        
+
                     </div>
                 </div>
             </div>
@@ -412,8 +416,7 @@
                                 <div class="product-action-2-wrap">
 
 
-                                    <button class="product-action-btn-2" title="Add To Cart"><a href="#"
-                                            onclick=""><i
+                                    <button class="product-action-btn-2" title="Add To Cart"><a href="#" onclick=""><i
                                                 class="pe-7s-cart"></i>Add To Cart</a></button>
 
                                 </div>
@@ -520,38 +523,61 @@
     </script>
 
 
-<script>
-    function addItemInCart(id) {
-        console.log(id)
-        fetch(`/producttab/${id}`, {
-            method: "post",
-            headers: { "Content-Type": "application/json" },
-        })
+    <!-- <script>
+        function addItemInCart(id) {
+            console.log(id)
+            fetch(`/producttab/${id}`, {
+                method: "post",
+                headers: { "Content-Type": "application/json" },
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "success",
+                            title: "Product added Successfully",
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    } else {
+                        Swal.fire({
+                            position: "top-end",
+                            icon: "error",
+                            title: "Product already in cart",
+                            showConfirmButton: false,
+                        });
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+    </script> -->
+
+    <script>
+        function addItemInCart(id) {
+            console.log(id);
+            fetch(`/producttab/${id}`, {
+                method: "post",
+                headers: { "Content-Type": "application/json" },
+            })
             .then((response) => {
                 if (response.ok) {
-                    Swal.fire({
-                        position: "top-end",
-                        icon: "success",
-                        title: "Product added Successfully",
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        window.location.reload();
-                    });
+                    // If response is okay, redirect to the cart page
+                    window.location.href = '/viewcart';
                 } else {
-                    Swal.fire({
-                        position: "top-end",
-                        icon: "error",
-                        title: "Product already in cart",
-                        showConfirmButton: false,
-                    });
+                    window.location.href = '/viewcart';
                 }
             })
             .catch((err) => {
                 console.log(err);
+                // If an error occurs, handle it accordingly (e.g., show an error message)
             });
-    }
-</script>
+        }
+    </script>
+    
 
 
     <%- include('../partials/mainfooter.ejs')%>

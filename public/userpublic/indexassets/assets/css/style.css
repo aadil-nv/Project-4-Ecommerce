@@ -10062,7 +10062,7 @@ textarea {
 }
 
 .cart-table-content .table-content table thead > tr th.width-thumbnail {
-  min-width: 130px;
+  min-width: 70px;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -10078,12 +10078,12 @@ textarea {
 }
 
 .cart-table-content .table-content table thead > tr th.width-name {
-  min-width: 400px;
+  min-width: 200px;
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .cart-table-content .table-content table thead > tr th.width-name {
-    min-width: 200px;
+    min-width: 100px;
   }
 }
 
@@ -10116,7 +10116,7 @@ textarea {
 }
 
 .cart-table-content .table-content table thead > tr th.width-quantity {
-  min-width: 170px;
+  min-width: 180px;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -10148,7 +10148,7 @@ textarea {
 }
 
 .cart-table-content .table-content table thead > tr th.width-remove {
-  min-width: 101px;
+  min-width: 50px;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -10464,6 +10464,23 @@ textarea {
   font-weight: 500;
   margin: 0;
   border-bottom: 1px solid #ccc;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 0 0 18px;
+}
+
+
+.grand-total-wrap .grand-total-content h6 {
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+ 
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
