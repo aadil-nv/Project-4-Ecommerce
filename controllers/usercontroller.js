@@ -374,16 +374,24 @@ const loadViewCart = async (req, res) => {
   try {
     const user = req.session.user;
 
-    const cartDetiles = await Cart.find({ userId: user }).populate("products.productId");
+    const cartDetiles = await Cart.find({ userId: user }).populate(
+      "products.productId"
+    );
+    let total = 0;
 
-    let total = 0
-    cartDetiles.forEach(item => {
-      item.products.forEach(product => {
-        total += product.totalPrice; // Accumulate the total price for each product
+    cartDetiles.forEach((item) => {
+      item.products.forEach((product) => {
+        total += product.quantity * product.productId.productprice;
+       
+      });
+    });
+    cartDetiles.forEach((item) => {
+      item.products.forEach((product) => {
+        total += product.quantity * product.productId.productprice;
+       
       });
     });
 
-    console.log(total)
 
     res.render("user/cart", { cartDetiles, total });
   } catch (error) {
@@ -535,8 +543,6 @@ const updateUserAddress = async (req, res) => {
       }
     );
 
-    //  const message="New address addedd Succesfully"
-    //  req.flash('flash2',message)
     res.json({ already: "Address changed SuccesFully" });
   } catch (error) {
     console.log(error.message);
@@ -552,7 +558,7 @@ const deleteUseraddress = async (req, res) => {
     console.log("Id : ", dltId);
     const deleteData = await Address.findByIdAndDelete({ _id: dltId });
     console.log(deleteData);
-    // res.redirect('userprofile')
+
     res.status(200).json({ message: "deletion successfull" });
   } catch (error) {
     console.log(error.message);
@@ -561,20 +567,12 @@ const deleteUseraddress = async (req, res) => {
 
 // ---------------------------------------------- End Delte User Address-------------------------------------------
 
-
-
 // ----------------------------------------------addProductInCart -------------------------------------------
-
-
 
 const addProductInCart = async (req, res) => {
   try {
     const productId = req.params.id;
     const userId = req.session.user;
-    const qt=req.body.qtybutton
-
-    console.log("================================",qt)
-
 
     const existingProduct = await Cart.findOne({
       userId: userId,
@@ -582,27 +580,29 @@ const addProductInCart = async (req, res) => {
     });
 
     if (existingProduct) {
-
       return res.status(400).json({ message: "Product already in cart" });
     }
 
-
     const productData = await Products.findById(productId);
 
-    const cartProduct = new Cart({
-      userId: userId,
-      products: [
-        {
-          productId: productData._id,
-          quantity: 1,
-          price: productData.productprice,
-          totalPrice: productData.productprice,
+    const add = await Cart.findOneAndUpdate(
+      { userId: req.session.user },
+      {
+        $addToSet: {
+          products: {
+            productId: productId,
+            quantity: 1,
+            totalPrice: productData.productprice,
+          },
         },
-      ],
-    });
-
-    await cartProduct.save();
-
+      },
+      { new: true, upsert: true }
+    );
+    await Cart.findOneAndUpdate(
+      { userId: userId },
+      { $set: { total: productData.productprice } },
+      { new: true }
+    );
     res.status(200).json({ message: "Product added to cart successfully" });
   } catch (error) {
     console.error(error.message);
@@ -612,21 +612,64 @@ const addProductInCart = async (req, res) => {
 
 // ---------------------------------------------- End addProductInCart-------------------------------------------
 
-
 // ---------------------------------------------- Increasing decresing quantity -------------------------------------------
 
-const quantityControll=async (req,res)=>{
+const quantityControll = async (req, res) => {
   try {
-    const {change,qty}=req.body
-    console.log(qty)
+    const { change, qty } = req.body;
+    const user = req.session.user;
+    const product = await Products.findOne({ _id: change });
+    const productQuantity=product.productquadity
+    const total = qty * product.productprice;
+
+    if (qty > productQuantity) {
+      return res.json({ messages: "Out of Stock" });
+    }
+
+
+    const update = await Cart.findOneAndUpdate(
+      { userId: req.session.user, "products.productId": change },
+      { $set: { "products.$.quantity": qty, "products.$.totalPrice": total } },
+      { new: true }
+    );
+
+
+    const cartDetiles = await Cart.find({ userId: user }).populate(
+      "products.productId"
+    );
+    let totalAmount = 0;
+
+    cartDetiles.forEach((item) => {
+      item.products.forEach((product) => {
+        totalAmount += product.totalPrice;
+      });
+    });
+    await Cart.findOneAndUpdate(
+      { userId: user },
+      { $set: { total: totalAmount } },
+      { new: true }
+    );
+
+    res.json({ totalAmount,productQuantity });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+// ---------------------------------------------- End Increasing decresing quantity -------------------------------------------
+// ---------------------------------------------- Load Checkout Page -------------------------------------------
+
+const loadtCheckoutPage= async(req,res)=>{
+  try {
+    res.render('user/checkout')
   } catch (error) {
     console.log(error.message)
   }
 }
 
 
+// ---------------------------------------------- End Load checkoot Page -------------------------------------------
 
-// ---------------------------------------------- End Increasing decresing quantity -------------------------------------------
 
 
 // -------------------Exporting Controllers-----------------------
@@ -658,7 +701,8 @@ module.exports = {
   updateUserAddress,
   deleteUseraddress,
   addProductInCart,
-  quantityControll
+  quantityControll,
+  loadtCheckoutPage
 };
 
 // ------------------------------End------------------------------------

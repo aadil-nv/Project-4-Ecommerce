@@ -67,6 +67,8 @@ user_route.post('/producttab/:id',userAuth.isLogin,usercontroller.addProductInCa
 
 user_route.post('/viewcart',userAuth.isLogin,usercontroller.quantityControll)
 
+user_route.get('/checkoutpage',userAuth.isLogin,usercontroller.loadtCheckoutPage)
+
 
 
 

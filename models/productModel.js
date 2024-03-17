@@ -4,10 +4,10 @@ const productSchema = new mongoose.Schema({
         type:String
     },
     productprice: {
-        type:String
+        type:Number
     },
     productquadity: {
-        type:String
+        type:Number
     },
     productimage: {
         type:Array
