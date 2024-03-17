@@ -5,10 +5,10 @@
         <div class="content-header">
             <div>
                 <h2 class="content-title card-title">Customers List</h2>
-                <p>Lorem ipsum dolor sit amet.</p>
+                
             </div>
             <div>
-                <input type="text" placeholder="Search order ID" class="form-control bg-white" />
+                <input type="text" placeholder="Search users" class="form-control bg-white" />
             </div>
         </div>
         <div class="card mb-4">
@@ -40,40 +40,40 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th  style="border: 1px solid black ; padding: 8px;"  >#ID</th>
-                                <th  style="border: 1px solid black ; padding: 8px;" scope="col">Name</th>
-                                <th style="border: 1px solid black ; padding: 8px;"  scope="col">Email</th>
-                                <th  style="border: 1px solid black ; padding: 8px;" scope="col">Mobile No</th>
+                                <th    >#ID</th>
+                                <th   scope="col">Name</th>
+                                <th   scope="col">Email</th>
+                                <th   scope="col">Mobile No</th>
 
-                                <th style="border: 1px solid black ; padding: 8px;" scope="col" class="text-end">Action</th>
+                                <th  scope="col" >Action</th>
                             </tr>
                         </thead>
-                        <tbody style="border: 1px solid black ; padding: 8px;"  >
+                        <tbody   >
                             <% if(user.length> 0) { %>
                                 <% let UID=1;%>
                                     <% user.forEach (data=>{%>
 
-                                        <tr style="border: 1px solid black ; padding: 8px;"  >
-                                            <td style="border: 1px solid black ; padding: 8px;"   >
+                                        <tr   >
+                                            <td    >
                                                 <%= UID++ ;%>
                                             </td>
-                                            <td style="border: 1px solid black ; padding: 8px;"  ><b>
+                                            <td   ><b>
                                                     <%= data.name %>
                                                 </b></td>
-                                            <td style="border: 1px solid black ; padding: 8px;"  >
+                                            <td   >
                                                 <%= data.email %>
                                             </td>
-                                            <td style="border: 1px solid black ; padding: 8px;"  >
+                                            <td   >
                                                 <%= data.mobile %>
                                             </td>
                                             <%if (data.is_blocked===false){ %>
-                                                <td class="text-end" style="border: 1px solid black ; padding: 8px;"  ><button  class="btn btn-md rounded font-sm"
-                                                        style="background-color: rgb(27, 151, 33); width: 80px; align-items: center; justify-content: center;"
-                                                         ><a href="/blockuser?id=<%= data._id %>">Block</a></button></td>
+                                                <td class="text-end" style=" align-items: center; justify-content: center; display: flex;"  >
+                                                        
+                                                         <a href="/blockuser?id=<%= data._id %>" style="color: white; "><button  class="btn btn-md rounded font-sm" style="background-color: #3BB77E;  width: 80px;  ; ">Block</button></a></td>
                                                 <%}else{%>
-                                                    <td class="text-end"><button class="btn btn-md rounded font-sm"
-                                                            style="background-color: rgb(202, 59, 40); width: 80px; "
-                                                            id="block <%=data._id %>"><a href="/blockuser?id=<%= data._id %>">unBlock</a></button></td>
+                                                    <td class="text-end"   style=" align-items: center; justify-content: center; display: flex;" >
+                                                            
+                                                           <a href="/blockuser?id=<%= data._id %>"  style="color: white;"><button class="btn btn-md rounded font-sm" style="background-color: rgb(202, 59, 40); width: 80px; ">unBlock</button></a></td>
                                                     <% } %>
                                                         <% })%>
                                                             <% }else{ %>

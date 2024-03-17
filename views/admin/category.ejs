@@ -39,53 +39,53 @@
             <!-- card-header end// -->
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover" " >
+                    <table class="table table-hover" >
                     <thead>
                         <tr>
-                            <th  style="border: 1px solid black ; padding: 8px;">UID</th>
-                            <th  style="border: 1px solid black ; padding: 8px;" scope=" col">category Name</th>
-                        <th style="border: 1px solid black ; padding: 8px; " scope="col">Category Discription</th>
+                            <th  >UID</th>
+                            <th   scope=" col">category Name</th>
+                        <th scope="col">Category Discription</th>
 
-                        <th style="border: 1px solid black ; padding: 8px;"scope="col" class="text-end">Edit</th>
-                        <th style="border: 1px solid black ; padding: 8px;"  scope="col" class="text-end">Delete</th>
+                        <th scope="col" >Edit</th>
+                        <th   scope="col" >Delete</th>
                         </tr>
                         </thead>
-                        <tbody style="border: 1px solid black ; padding: 8px;" >
+                        <tbody  >
                             <% if(category.length > 0) { %>
                                 <% let UID=1;%>
                                     <% category.forEach (data=>{ %>
-                                        <tr style="border: 1px solid black ; padding: 8px;">
-                                             <td style="border: 1px solid black ; padding: 8px;">
+                                        <tr >
+                                             <td >
                                                 <%= UID++ %>
                                             </td>
-                                            <td style="border: 1px solid black ; padding: 8px;"  ><b>
+                                            <td   ><b>
                                                     <%= data.categoryname %>
                                                 </b></td>
-                                            <td style="border: 1px solid black ; padding: 8px;" >
+                                            <td  >
                                                 <%= data.categorydescription %>
-                                            </td style="border: 1px solid black ; padding: 8px;" >
+                                            </td  >
 
 
-                                            <td class="text-end"  style="border: 1px solid black ; padding: 8px;">
+                                            <td >
 
-                                                <button class="btn btn-sm rounded font-sm"   style="background-color: rgb(27, 143, 151); width: 80px; align-items: center; justify-content: center; " >
-                                                    <a href="/editCategory/<%= data._id %>">Edit</a>
+                                                
+                                                    <a href="/editCategory/<%= data._id %>" class="btn btn-sm font-sm rounded btn-brand"> <i class="material-icons md-edit"></i><button class="btn btn-sm rounded font-sm"   style=" align-items: center; justify-content: center; width: 15px; height: 22px; color: white;" >Edit</button> </a>
+
                                                 </button>
-                                            </td style="border: 1px solid black ; padding: 8px;" >
+                                            </td  >
                                             <%if (data.categorystatus===false){ %>
-                                                <td style="padding-left: 40px; justify-content: center; align-items: center ;display: flex;">
+                                                <td >
                                                   
-                                                    <button  class="btn btn-sm rounded font-sm "
-                                                        style="background-color: rgb(27, 151, 33); width: 80px; align-items: center; justify-content: center; ">
-                                                        <a href="/adminBlockcategory/<%= data._id %>">Block</a></button
+                                                    
+                                                        
+                                                        <a href="/adminBlockcategory/<%= data._id %>" ><button  class="btn btn-sm rounded font-sm "  style="background-color: #3BB77E;  align-items: center; justify-content: center;  color: white; width: 68px ;">Block</button></a>
 
                                                 </td>
                                                 <%}else{%>
-                                                    <td style="padding-left: 40px; justify-content: center; align-items: center ;display: flex;">
+                                                    <td >
                                                     
-                                                        <button class="btn btn-sm rounded font-sm"
-                                                            style="background-color: rgb(202, 59, 40); width: 80px;width: 80px; align-items: center; justify-content: center; "
-                                                           ><a   href="/adminBlockcategory/<%= data._id %>">unBlock</a></button>
+                                                        <a href="/adminBlockcategory/<%= data._id %>"><button  class="btn btn-sm rounded font-sm "  style="background-color: #be2222;  align-items: center; justify-content: center; color: white; ">unBlock</button></a>
+
 
                                                     </td>
                                                     <% } %>
@@ -94,7 +94,7 @@
                                               <tr>
                                                  <td colspan="3" class="text-center">
                                                      <p class="mt-3">No users</p>
-                                                 </td>
+                                                 </td>px
                                                </tr>
                                         <% } %>
                                  </tr>

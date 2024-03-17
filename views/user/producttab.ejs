@@ -521,41 +521,6 @@
 
 
     </script>
-
-
-    <!-- <script>
-        function addItemInCart(id) {
-            console.log(id)
-            fetch(`/producttab/${id}`, {
-                method: "post",
-                headers: { "Content-Type": "application/json" },
-            })
-                .then((response) => {
-                    if (response.ok) {
-                        Swal.fire({
-                            position: "top-end",
-                            icon: "success",
-                            title: "Product added Successfully",
-                            showConfirmButton: false,
-                            timer: 1500
-                        }).then(() => {
-                            window.location.reload();
-                        });
-                    } else {
-                        Swal.fire({
-                            position: "top-end",
-                            icon: "error",
-                            title: "Product already in cart",
-                            showConfirmButton: false,
-                        });
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
-    </script> -->
-
     <script>
         function addItemInCart(id) {
             console.log(id);

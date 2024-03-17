@@ -19,19 +19,19 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table id="reloadPart" class="table table-hover" style="border: 1px solid black ; padding: 8px;">
+                        <table id="reloadPart" class="table table-hover" >
                            
-                                <thead style="border: 1px solid black ; padding: 8px;">
+                                <thead >
                                     <tr >
-                                        <th  style="border: 1px solid black ; padding: 8px;">No.</th>
-                                        <th  style="border: 1px solid black ; padding: 8px;">Image</th>
-                                        <th  style="border: 1px solid black ; padding: 8px;">Product Name</th>
-                                        <th  style="border: 1px solid black ; padding: 8px;">Quantity</th>
-                                        <th  style="border: 1px solid black ; padding: 8px;">Category</th>
-                                        <th  style="border: 1px solid black ; padding: 8px;">Price</th>
+                                        <th  >No.</th>
+                                        <th  >Image</th>
+                                        <th  >Product Name</th>
+                                        <th  >Quantity</th>
+                                        <th  >Category</th>
+                                        <th  >Price</th>
                                         <!-- offer in future -->
-                                        <th  style="border: 1px solid black ; padding: 8px;">Edit</th>
-                                        <th  style="border: 1px solid black ; padding: 8px;">List/unList</th>
+                                        <th  >Edit</th>
+                                        <th  >List/unList</th>
                                     </tr>
                                 </thead>
                                 <tbody >
@@ -40,21 +40,24 @@
                                         <% product.forEach (data=>{ %>
                               
                                         <tr>
-                                            <td style="border: 1px solid black ; padding: 8px;"><%= UID++ %></td>
-                                            <td style="border: 1px solid black ; padding: 8px;">  <img src="/uploads/<%= data.productimage[0] %>" width="90px" class="rounded-3 "/></td>
-                                            <td  style="border: 1px solid black ; padding: 8px;"><%= data.productname %></td>
-                                            <td style="border: 1px solid black ; padding: 8px;" ><%= data.productquadity %></ >
-                                         <td style="border: 1px solid black ; padding: 8px;" ><%= data.categoryId %></ >
-                                         <td style="border: 1px solid black ; padding: 8px;" ><%= data.productprice %></ >
-                                            <td style="border: 1px solid black ; padding: 8px;" >
-                                                <button class="btn btn-info"><a href="/editproductdetiles/<%= data._id %>" >Edit</a></button></td>
+                                            <td ><%= UID++ %></td>
+                                            <td >  <img src="/uploads/<%= data.productimage[0] %>" width="50px" class="rounded-3 "/></td>
+                                            <td  ><%= data.productname %></td>
+                                            <td  ><%= data.productquadity %></ >
+                                         <td  ><%= data.categoryId %></ >
+                                         <td  ><%= data.productprice %></ >
+                                            <td  >
+                                           
+                                                <a href="/editproductdetiles/<%= data._id %>" style="background-color: #3BB77E;">  <button   class="btn btn-md rounded font-sm" style=" background-color: #3BB77E;"> Edit </button> </a></td>
+
                                                 <%if (data.isListed===true){ %>
-                                            <td style="border: 1px solid black ; padding: 8px;" >
-                                                <button class="btn btn-success"><a  href="/listProduct?id=<%= data._id %>"  >List</a></button>
+                                            <td >
+                                                <a  href="/listProduct?id=<%= data._id %>"  ><button  class="btn btn-md rounded font-sm" style="width:68px; background-color: #9cb73b;"> List</button></a>
                                             </td>
                                             <%}else{%>
-                                                <td style="border: 1px solid black ; padding: 8px;" >
-                                                    <button class="btn btn-danger"><a href="/listProduct?id=<%= data._id %>">UnList</a></button>
+                                                <td  >
+                                                    <a  href="/listProduct?id=<%= data._id %>"  ><button  class="btn btn-md rounded font-sm" style="background-color: rgb(218, 79, 79);"> unList</button></a>
+                                                   
                                                 </td>
                                                 <% } %>
                                                 <% })%>

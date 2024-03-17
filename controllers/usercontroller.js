@@ -385,12 +385,12 @@ const loadViewCart = async (req, res) => {
        
       });
     });
-    cartDetiles.forEach((item) => {
-      item.products.forEach((product) => {
-        total += product.quantity * product.productId.productprice;
+    // cartDetiles.forEach((item) => {
+    //   item.products.forEach((product) => {
+    //     total += product.quantity * product.productId.productprice;
        
-      });
-    });
+    //   });
+    // });
 
 
     res.render("user/cart", { cartDetiles, total });
@@ -657,11 +657,51 @@ const quantityControll = async (req, res) => {
 };
 
 // ---------------------------------------------- End Increasing decresing quantity -------------------------------------------
+
+// ---------------------------------------------- Delte cartProduct -------------------------------------------
+
+const deleteCartProduct= async (req,res)=>{
+  try {
+    const deleteId= req.params.id
+    const userId=req.session.user
+    
+    const updatedCart = await Cart.findOneAndUpdate(
+      { userId: userId },
+      { $pull: { products: { productId: deleteId } } },
+      { new: true }
+    );
+    console.log(updatedCart)
+    if (!updatedCart) {
+      return res.status(404).json({ error: "Cart not found" });
+    }
+    res.status(200).json({ message: "deletion successfull" });
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+// ---------------------------------------------- End Delete CartProduct -------------------------------------------
+
+
 // ---------------------------------------------- Load Checkout Page -------------------------------------------
 
 const loadtCheckoutPage= async(req,res)=>{
   try {
-    res.render('user/checkout')
+    const userId=req.session.user
+    const addressData= await Address.find({userId:userId})
+    const cartDetiles= await Cart.find({userId:userId}).populate("products.productId");
+    let total = 0;
+
+    cartDetiles.forEach((item) => {
+      item.products.forEach((product) => {
+        total += product.quantity * product.productId.productprice;
+       
+      });
+    });
+
+    console.log("--------------------------",total)
+
+
+    res.render('user/checkout',{addressData,cartDetiles,total})
   } catch (error) {
     console.log(error.message)
   }
@@ -702,6 +742,7 @@ module.exports = {
   deleteUseraddress,
   addProductInCart,
   quantityControll,
+  deleteCartProduct,
   loadtCheckoutPage
 };
 

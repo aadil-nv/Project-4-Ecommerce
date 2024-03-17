@@ -11736,10 +11736,10 @@ textarea {
   font-size: 16px;
 }
 
-.your-order-area .your-order-wrap .your-order-middle {
-  border-bottom: 1px solid #e8e8e8;
-  padding: 24px 0 23px;
-}
+  .your-order-area .your-order-wrap .your-order-middle {
+    /* border-bottom: 1px solid #e8e8e8; */
+    padding: 4px 0 3px;
+  }
 
 .your-order-area .your-order-wrap .your-order-middle ul li {
   font-size: 14px;

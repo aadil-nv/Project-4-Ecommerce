@@ -72,7 +72,8 @@
                                             <th class="width-remove"></th>
                                         </tr>
                                     </thead>
-                                    <% if(cartDetiles.length> 0){ %> <% cartDetiles[0].products.forEach((data,index)=>{
+                                    <% if(cartDetiles.length> 0){ %> 
+                                    <% cartDetiles[0].products.forEach((data,index)=>{
                                             %>
 
                                             <tbody>
@@ -126,11 +127,12 @@
                                                             <%}%>
 
                                                                 <td class="product-remove">
-                                                                    <a href="#"><i class="ti-trash"></i></a>
+                                                                    <a onclick="removeProduct('<%= data.productId._id %>')"><i class="ti-trash"></i></a>
+                                                                 
                                                                 </td>
                                                 </tr>
                                                 <% })%>
-                                                    <%}%>
+                                             <%}%>
                                             </tbody>
                                 </table>
 
@@ -311,23 +313,27 @@
            
         }
     </script>
-  <script>
- 
-    function handleQuantityChange(index) {
-        console.log("index==========================================",index)
-    var input = document.getElementById("input" + index);
-    var value = parseInt(input.value);
-    var plusButton = document.querySelector("input" + index + " + .plus");
-        console.log("++++++++++++++++++++++++++++++++++",plusButton)
-    // Disable the plus button if value is greater than or equal to 6
-    if (value >= 6) {
-        plusButton.disabled = true;
-    } else {
-        plusButton.disabled = false;
-    }
-}
-
-    </script>
+    <script>
+        function removeProduct(id){
+            fetch(`/viewcart/${id}`, {
+                        method: "DELETE",
+                        headers: { "Content-Type": "application/json" },
+                    })
+                        .then((response) => {
+                           
+                            return response.json();
+                        })
+                        .then((data) => {
+                            window.location.reload();
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+                
+        
+                    
+        }
+        </script>
 
 
     <%- include('../partials/mainfooter.ejs')%>

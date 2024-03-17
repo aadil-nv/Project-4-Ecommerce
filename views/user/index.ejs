@@ -185,7 +185,7 @@
                                             </button>
                                         </div>
                                         <div class="product-action-2-wrap">
-                                            <button class="product-action-btn-2" title="Add To Cart"><i class="pe-7s-cart"></i> Add to cart</button>
+                                            <button class="product-action-btn-2" title="Add To Cart"   onclick="addItemInCart('<%= data._id %>')"><i class="pe-7s-cart"></i> Add to cart</button>
                                         </div>
                                     </div>
                                     <div class="product-content">
@@ -525,6 +525,29 @@
                 </div>
             </div>
         </div>
+
+
+        <script>
+            function addItemInCart(id) {
+                console.log(id);
+                fetch(`/producttab/${id}`, {
+                    method: "post",
+                    headers: { "Content-Type": "application/json" },
+                })
+                .then((response) => {
+                    if (response.ok) {
+                        // If response is okay, redirect to the cart page
+                        window.location.href = '/viewcart';
+                    } else {
+                        window.location.href = '/viewcart';
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    // If an error occurs, handle it accordingly (e.g., show an error message)
+                });
+            }
+        </script>
         
       
         <%- include('../partials/mainfooter.ejs')%>
