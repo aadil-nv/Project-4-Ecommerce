@@ -382,16 +382,14 @@ const loadViewCart = async (req, res) => {
     cartDetiles.forEach((item) => {
       item.products.forEach((product) => {
         total += product.quantity * product.productId.productprice;
-       
       });
     });
     // cartDetiles.forEach((item) => {
     //   item.products.forEach((product) => {
     //     total += product.quantity * product.productId.productprice;
-       
+
     //   });
     // });
-
 
     res.render("user/cart", { cartDetiles, total });
   } catch (error) {
@@ -528,7 +526,7 @@ const loadEditUser = async (req, res) => {
 const updateUserAddress = async (req, res) => {
   try {
     const updateId = req.params.id;
-
+      
     const aData = await Address.findByIdAndUpdate(
       { _id: updateId },
       {
@@ -619,20 +617,18 @@ const quantityControll = async (req, res) => {
     const { change, qty } = req.body;
     const user = req.session.user;
     const product = await Products.findOne({ _id: change });
-    const productQuantity=product.productquadity
+    const productQuantity = product.productquadity;
     const total = qty * product.productprice;
 
     if (qty > productQuantity) {
       return res.json({ messages: "Out of Stock" });
     }
 
-
     const update = await Cart.findOneAndUpdate(
       { userId: req.session.user, "products.productId": change },
       { $set: { "products.$.quantity": qty, "products.$.totalPrice": total } },
       { new: true }
     );
-
 
     const cartDetiles = await Cart.find({ userId: user }).populate(
       "products.productId"
@@ -650,7 +646,7 @@ const quantityControll = async (req, res) => {
       { new: true }
     );
 
-    res.json({ totalAmount,productQuantity });
+    res.json({ totalAmount, productQuantity });
   } catch (error) {
     console.log(error.message);
   }
@@ -660,57 +656,90 @@ const quantityControll = async (req, res) => {
 
 // ---------------------------------------------- Delte cartProduct -------------------------------------------
 
-const deleteCartProduct= async (req,res)=>{
+const deleteCartProduct = async (req, res) => {
   try {
-    const deleteId= req.params.id
-    const userId=req.session.user
-    
+    const deleteId = req.params.id;
+    const userId = req.session.user;
+
     const updatedCart = await Cart.findOneAndUpdate(
       { userId: userId },
       { $pull: { products: { productId: deleteId } } },
       { new: true }
     );
-    console.log(updatedCart)
+    console.log(updatedCart);
     if (!updatedCart) {
       return res.status(404).json({ error: "Cart not found" });
     }
     res.status(200).json({ message: "deletion successfull" });
   } catch (error) {
-    console.log(error.message)
+    console.log(error.message);
   }
-}
+};
 // ---------------------------------------------- End Delete CartProduct -------------------------------------------
-
 
 // ---------------------------------------------- Load Checkout Page -------------------------------------------
 
-const loadtCheckoutPage= async(req,res)=>{
+const loadtCheckoutPage = async (req, res) => {
   try {
-    const userId=req.session.user
-    const addressData= await Address.find({userId:userId})
-    const cartDetiles= await Cart.find({userId:userId}).populate("products.productId");
+    const userId = req.session.user;
+   
+    const addressData = await Address.find({ userId: userId });
+    const cartDetiles = await Cart.find({ userId: userId }).populate(
+      "products.productId"
+    );
     let total = 0;
 
     cartDetiles.forEach((item) => {
       item.products.forEach((product) => {
         total += product.quantity * product.productId.productprice;
-       
       });
     });
 
-    console.log("--------------------------",total)
+    res.render("user/checkout", { addressData, cartDetiles, total });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+// ---------------------------------------------- End Load checkoot Page -------------------------------------------
 
 
-    res.render('user/checkout',{addressData,cartDetiles,total})
+const editUseraddressInCheckout= async  (req,res)=>{
+  try {
+    const editCheckId= req.params.id
+    const userId = req.session.user;
+    const addressDataSecond = await Address.findOne({_id:editCheckId});
+      
+    res.json({addressDataSecond})
+    
   } catch (error) {
     console.log(error.message)
   }
 }
 
+const updatecartAddress= async (req,res)=>{
+  try {
+    const {addressId,username,usermobile,address,streetaddress,pincode,state,landmark,city}=req.body
+    
 
-// ---------------------------------------------- End Load checkoot Page -------------------------------------------
-
-
+    const aData = await Address.findByIdAndUpdate(
+      { _id:addressId },
+      {
+        name:username,
+        mobile:usermobile,
+        pincode:pincode,
+        address:address,
+        streetaddress:streetaddress,
+        city:city,
+        state:state,
+        landmark:landmark,
+      }
+    );
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 
 // -------------------Exporting Controllers-----------------------
 
@@ -743,7 +772,10 @@ module.exports = {
   addProductInCart,
   quantityControll,
   deleteCartProduct,
-  loadtCheckoutPage
+  loadtCheckoutPage,
+  editUseraddressInCheckout,
+  updatecartAddress
+  
 };
 
 // ------------------------------End------------------------------------

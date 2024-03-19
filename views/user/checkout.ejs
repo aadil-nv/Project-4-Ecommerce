@@ -88,61 +88,60 @@
                                 <input class="checkout-toggle" type="checkbox" />
                                 <span>Ship to a different address?</span>
                             </div>
-                            <form>
+                            <form  action="/adduseraddress" method="post">
                                 <div class="different-address open-toggle mt-30">
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6">
                                             <div class="billing-info mb-20">
                                                 <label>User Name</label>
-                                                <input type="text" placeholder="(Name)*"/>
+                                                <input type="text" placeholder="(Name)*" name="username"/>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6">
                                             <div class="billing-info mb-20">
                                                 <label>Mobile Number</label>
-                                                <input type="text"  placeholder="(10 Digits )*"/>
+                                                <input type="text" placeholder="(10 Digits )*"  name="usermobile"/>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="billing-info mb-20">
                                                 <label>Address</label>
-                                                <input type="text" placeholder="(House No. Building Name)*"/>
+                                                <input type="text" placeholder="(House No. Building Name)*" name="address"/>
                                             </div>
                                         </div>
 
                                         <div class="col-lg-12">
                                             <div class="billing-info mb-20">
                                                 <label>Street Address</label>
-                                                <input class="billing-address"
-                                                    placeholder="House number and street name" type="text" />
-                                                <input placeholder="(Road name,Area, colony)*" type="text" />
+                                               
+                                                <input placeholder="(Road name,Area, colony)*" type="text"  name="streetaddress" />
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="billing-info mb-20">
                                                 <label>Pincode</label>
-                                                <input type="text" placeholder="(Required)*"/>
+                                                <input type="text" placeholder="(Required)*" name="pincode"/>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6">
                                             <div class="billing-info mb-20">
                                                 <label>City</label>
-                                                <input type="text" placeholder="(your city)*"/>
+                                                <input type="text" placeholder="(your city)*" name="city"/>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6">
                                             <div class="billing-info mb-20">
                                                 <label>State</label>
-                                                <input type="text"  placeholder="(State)*"  />
+                                                <input type="text" placeholder="(State)*" name="state"/>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6">
                                             <div class="billing-info mb-20">
                                                 <label>Landmark</label>
-                                                <input type="text" placeholder="(Famous place your Area)*" />
+                                                <input type="text" placeholder="(Famous place your Area)*"  name="landmark" />
                                             </div>
                                         </div>
-                                       
+
                                         <div class="single-input-item btn-hover">
                                             <button type="submit" class="save-btn sqr-btn">
                                                 Add New Address
@@ -154,55 +153,75 @@
                             <% if(addressData.length> 0){ %>
                                 <% addressData.forEach(data=>{%>
 
-                            <table style="
+                                    <table style="
                 width: 90%;
                 height: 300px;
                 background-color: rgb(255, 255, 255);
                 box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1),
                   0px 6px 6px rgba(0, 0, 0, 0.1);
               ">
-                                <tr>
-                                    <th class="data-cell">Name :</th>
-                                    <td class="table-data"><%= data.name %></td>
-                                </tr>
+                                        <tr>
+                                            <th class="data-cell">Name :</th>
+                                            <td class="table-data">
+                                                <%= data.name %>
+                                            </td>
+                                        </tr>
 
-                                <tr>
-                                    <th class="data-cell">Mobile No:</th>
-                                    <td class="table-data"> <%= data.mobile %></td>
-                                </tr>
-                                <tr>
-                                    <th class="data-cell">Address:</th>
-                                    <td class="table-data"><%= data.address %></td>
-                                </tr>
-                                <tr>
-                                    <th class="data-cell">StreetAddress:</th>
-                                    <td class="table-data"><%= data.streetaddress %></td>
-                                </tr>
-                                <tr>
-                                    <th class="data-cell">City:</th>
-                                    <td class="table-data"><%= data.city %></td>
-                                </tr>
-                                <tr>
-                                    <th class="data-cell">State:</th>
-                                    <td class="table-data"><%= data.state %></td>
-                                </tr>
+                                        <tr>
+                                            <th class="data-cell">Mobile No:</th>
+                                            <td class="table-data">
+                                                <%= data.mobile %>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="data-cell">Address:</th>
+                                            <td class="table-data">
+                                                <%= data.address %>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="data-cell">StreetAddress:</th>
+                                            <td class="table-data">
+                                                <%= data.streetaddress %>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="data-cell">City:</th>
+                                            <td class="table-data">
+                                                <%= data.city %>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="data-cell">State:</th>
+                                            <td class="table-data">
+                                                <%= data.state %>
+                                            </td>
+                                        </tr>
 
-                                <tr>
-                                    <th class="data-cell">Pincode:</th>
-                                    <td class="table-data"> <%= data.pincode %></td>
-                                </tr>
-                                <br />
-                                <tr>
-                                    <th class="data-cell">Landmark:</th>
-                                    <td class="table-data"><%= data.landmark %></td>
-                                </tr>
+                                        <tr>
+                                            <th class="data-cell">Pincode:</th>
+                                            <td class="table-data">
+                                                <%= data.pincode %>
+                                            </td>
+                                        </tr>
+                                        <br />
+                                        <tr>
+                                            <th class="data-cell">Landmark:</th>
+                                            <td class="table-data">
+                                                <%= data.landmark %>
+                                            </td>
+                                        </tr>
 
-                                <td class="data-cell" style="padding-top: 25px">
-                                    <a class="check-btn sqr-btn"><i class="fa fa-edit"></i>Edit Address</a>
-                                </td>
-                            </table>
-                            <%})%>
-                            <%}%>
+                                        <td class="data-cell" style="padding-top: 25px">  
+                                            
+                                            <a class="check-btn sqr-btn" data-bs-toggle="modal" id="sendId" onclick="sendAddressId('<%= data._id %>')"
+                                                data-bs-target="#exampleModal"><i class="fa fa-edit"></i>Edit
+                                                Address</a>
+
+                                        </td>
+                                    </table>
+                                    <%})%>
+                                        <%}%>
                         </div>
                     </div>
                     <div class="col-lg-5" style="padding-top: 150px">
@@ -215,34 +234,42 @@
                                             <li>Product <span>Total</span></li>
                                         </ul>
                                     </div>
-                                    <% if(cartDetiles.length> 0){ %> 
+                                    <% if(cartDetiles.length> 0){ %>
                                         <% cartDetiles[0].products.forEach((data)=>{ %>
-                                    <div class="your-order-middle">
-                                        <ul>
-                                            <li><%= data.productId.productname %> <span> <%= data.productId.productprice %></span></li>
-                                            
-                                        </ul>
-                                    </div>
-                                    <% })%>
-                                    <%}%>
-                                    <div class="your-order-info order-subtotal">
-                                        <ul>
-                                            <li>Subtotal <span><%= total%> </span></li>
-                                        </ul>
-                                    </div>
-                                    <div class="your-order-info order-shipping">
-                                        <ul>
-                                            <li>
-                                                Shipping
-                                                <p>Enter your full address</p>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="your-order-info order-total">
-                                        <ul>
-                                            <li>Total <span><%= total%> </span></li>
-                                        </ul>
-                                    </div>
+                                            <div class="your-order-middle">
+                                                <ul>
+                                                    <li>
+                                                        <%= data.productId.productname %> <span>
+                                                                <%= data.productId.productprice %>
+                                                            </span>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                            <% })%>
+                                                <%}%>
+                                                    <div class="your-order-info order-subtotal">
+                                                        <ul>
+                                                            <li>Subtotal <span>
+                                                                    <%= total%>
+                                                                </span></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="your-order-info order-shipping">
+                                                        <ul>
+                                                            <li>
+                                                                Shipping
+                                                                <p>Enter your full address</p>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="your-order-info order-total">
+                                                        <ul>
+                                                            <li>Total <span>
+                                                                    <%= total%>
+                                                                </span></li>
+                                                        </ul>
+                                                    </div>
                                 </div>
                                 <div class="payment-method">
                                     <div class="pay-top sin-payment">
@@ -303,33 +330,183 @@
             </div>
         </div>
 
-        <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-    Launch demo modal
-  </button>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+
+        <!----------------------------------------------------------------- Moda --------------------------------------------------------------->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Your Address</h5>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"
+                            style="border: none;">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                   
+                    
+                       
+                    <form  > 
+                        <div class="modal-body">
+                            <div class="different-address open-toggle mt-30">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="billing-info mb-20">
+                                            <label>User Name</label>
+                                            <input type="text" placeholder="(Name)*" id="username1"  name="username"  />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="billing-info mb-20">
+                                            <label>Mobile Number</label>
+                                            <input type="text" placeholder="(10 Digits )*"  id="usermobile1" name="usermobile" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
+                                            <label>Address</label>
+                                            <input type="text" placeholder="(House No. Building Name)*"  id="address1" name="address" />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
+                                            <label>Street Address</label>
+
+                                            <input placeholder="(Road name,Area, colony)*" type="text"id="streetaddress1" name="streetaddress" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
+                                            <label>City</label>
+                                            <input type="text"   placeholder="(your city)*"  id="city1"  name="city"  />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="billing-info mb-20">
+                                            <label>Pincode</label>
+                                            <input type="text"   placeholder="(Required)*"  id="pincode1" name="pincode" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="billing-info mb-20">
+                                            <label>State</label>
+                                            <input type="text" placeholder="(State)*"   id="state1" name="state" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="billing-info mb-20">
+                                            <label>Landmark</label>
+                                            <input type="text" placeholder="(Famous place your Area)*" id="landmark1"  name="landmark" />
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                            
+                            <div class="modal-footer">
+                               
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button  class="green"  onclick="updateAddress()" >Save changes</button>
+                                
+                            </div>
+                        </div>
+                        
+                </div>
+            </div>
+            </form>
+            
+           
         </div>
-        <div class="modal-body">
-          
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>
-  </div>
-    </div>
+        <!-----------------------------------------------------------------End  Moda --------------------------------------------------------------->
+
+
+    <script>
+       
+    let addressId;
+             function sendAddressId(id) {
+            
+
+            fetch(`/checkoutpage/${id}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id }),
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    console.log(data)
+                    document.getElementById("username1").value = data.addressDataSecond.name
+                    document.getElementById("usermobile1").value = data.addressDataSecond.mobile
+                    document.getElementById("pincode1").value = data.addressDataSecond.pincode
+                    document.getElementById("address1").value = data.addressDataSecond.address
+                    document.getElementById("streetaddress1").value = data.addressDataSecond.streetaddress
+                    document.getElementById("city1").value = data.addressDataSecond.city
+                    document.getElementById("state1").value = data.addressDataSecond.state
+                    document.getElementById("landmark1").value = data.addressDataSecond.landmark
+                    addressId = data.addressDataSecond._id
+                  
+                    
+                })
+
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
 
 
 
-    <%- include('../partials/mainfooter.ejs')%>
+        function updateAddress() {
+            console.log("uuuu");
+           
+
+          let username = document.getElementById("username1").value;
+          let usermobile = document.getElementById("usermobile1").value
+          let address = document.getElementById("address1").value;
+          let streetaddress = document.getElementById("streetaddress1").value;
+          let pincode = document.getElementById("pincode1").value;
+          let state = document.getElementById("state1").value;
+          let landmark = document.getElementById("landmark1").value;
+          let city = document.getElementById("city1").value;
+         // let addressId = document.getElementById("addressId1").value
+                
+           
+      
+          fetch('/checkoutpage', {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({addressId,username,usermobile,address,streetaddress,pincode,state,landmark,city}),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+                
+              if  (data.success) {
+                
+                window.location.reload()
+               
+                
+              } else {
+                message.innerHTML = "Somthing wrong";
+              }
+            })
+      
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+        </script>
+
+
+
+        <%- include('../partials/mainfooter.ejs')%>

@@ -71,6 +71,11 @@ user_route.delete('/viewcart/:id',userAuth.isLogin,usercontroller.deleteCartProd
 
 user_route.get('/checkoutpage',userAuth.isLogin,usercontroller.loadtCheckoutPage)
 
+user_route.post('/checkoutpage/:id',userAuth.isLogin,usercontroller.editUseraddressInCheckout)
+
+user_route.post('/checkoutpage',userAuth.isLogin,usercontroller.updatecartAddress)
+
+
 
 
 

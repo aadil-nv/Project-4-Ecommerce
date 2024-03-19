@@ -282,6 +282,8 @@ const updateProductsFetch = async (req, res) => {
     const product = await Products.findById(productId);
     const imageCount = product.productimage.length;
 
+   
+
     const productData = {};
 
     if (req.body.name) {
@@ -308,10 +310,10 @@ const updateProductsFetch = async (req, res) => {
         { productquadity: req.body.quandity }
       );
     }
-    if (req.body.catagory) {
+    if (req.body.category) {
       await Products.findByIdAndUpdate(
         { _id: productId },
-        { productcategory: req.body.category }
+        { categoryId: req.body.category }
       );
     }
 

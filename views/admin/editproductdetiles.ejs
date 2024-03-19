@@ -60,13 +60,13 @@
                                         </div>
                                         <div class="col-lg-4">
                                             <label class="form-label">Category</label>
-                                            <select class="form-select">
-                                                <option>
+                                            <select class="form-select" name="category">
+                                                <option >
                                                     <%=product.categoryId%>
                                                 </option>
 
                                                 <%category.forEach(data=>{%>
-                                                    <option>
+                                                    <option >
                                                         <%=data.categoryname %>
                                                     </option>
                                                     <%})%>
