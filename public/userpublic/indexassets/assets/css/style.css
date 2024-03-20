@@ -8598,18 +8598,7 @@ textarea {
   }
 }
 
-.breadcrumb-area:before {
-  position: absolute;
-  content: "";
-  left: 0;
-  right: 0;
-  bottom: -25px;
-  margin: 0 auto;
-  width: 342px;
-  height: 342px;
-  border-radius: 100%;
-  background-color: #ffffff;
-}
+
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .breadcrumb-area:before {
@@ -11773,7 +11762,7 @@ textarea {
 
 .your-order-area .your-order-wrap .payment-method .sin-payment label {
   font-size: 15px;
-  text-transform: uppercase;
+  
   margin: 0px 0 0 21px;
   display: -webkit-box;
   display: -webkit-flex;

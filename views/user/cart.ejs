@@ -104,7 +104,7 @@
                                                             <div class="product-quality"
                                                                 onclick="qtyControl(this,'<%=data.productId._id %>','<%= index %>')">
                                                                 <input class="cart-plus-minus input-text qty text"
-                                                                    name="quantity" value="<%=data.quantity %>" onchange="handleQuantityChange('<%= index %>')" 
+                                                                    name="quantity" min="1" value="<%=data.quantity %>" onchange="handleQuantityChange('<%= index %>')" 
                                                                     readonly />
                                                             </div>
                                                             <p id="stock<%= index %>" style="color: red"></p>

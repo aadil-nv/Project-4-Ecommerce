@@ -4,10 +4,19 @@
         .data-cell {
             padding-left: 50px;
             padding-top: 20;
+
+        }
+
+        .data-radio {
+            padding-top: 10px;
+            padding-right: 80px;
+
         }
 
         .table-data {
             padding-right: 200px;
+            overflow: hidden;
+            font-size: 11px;
         }
 
         .save-btn {
@@ -15,6 +24,10 @@
             border: none;
             width: 150px;
             height: 40px;
+        }
+
+        .error-message {
+            color: red;
         }
     </style>
 
@@ -88,85 +101,103 @@
                                 <input class="checkout-toggle" type="checkbox" />
                                 <span>Ship to a different address?</span>
                             </div>
-                            <form  action="/adduseraddress" method="post">
+                            <form action="/checkoutpageone" method="post" onsubmit="return validateForm()">
                                 <div class="different-address open-toggle mt-30">
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6">
                                             <div class="billing-info mb-20">
                                                 <label>User Name</label>
-                                                <input type="text" placeholder="(Name)*" name="username"/>
+                                                <input type="text" placeholder="(Name)*" name="username"
+                                                    id="username2" />
+                                                <div class="error-message" id="usernameError"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6">
                                             <div class="billing-info mb-20">
                                                 <label>Mobile Number</label>
-                                                <input type="text" placeholder="(10 Digits )*"  name="usermobile"/>
+                                                <input type="number" placeholder="(10 Digits )*" name="usermobile"
+                                                    id="usermobile2" />
+                                                <div class="error-message" id="usermobileError"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="billing-info mb-20">
                                                 <label>Address</label>
-                                                <input type="text" placeholder="(House No. Building Name)*" name="address"/>
+                                                <input type="text" placeholder="(House No. Building Name)*"
+                                                    name="address" id="address2" />
+                                                <div class="error-message" id="addressError"></div>
                                             </div>
                                         </div>
 
                                         <div class="col-lg-12">
                                             <div class="billing-info mb-20">
                                                 <label>Street Address</label>
-                                               
-                                                <input placeholder="(Road name,Area, colony)*" type="text"  name="streetaddress" />
+
+                                                <input placeholder="(Road name,Area, colony)*" type="text"
+                                                    name="streetaddress" id="streetaddress2" />
+                                                <div class="error-message" id="streetaddressError"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="billing-info mb-20">
                                                 <label>Pincode</label>
-                                                <input type="text" placeholder="(Required)*" name="pincode"/>
+                                                <input type="number" placeholder="(Required)*" name="pincode"
+                                                    id="pincode2" />
+                                                <div class="error-message" id="pincodeError"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6">
                                             <div class="billing-info mb-20">
                                                 <label>City</label>
-                                                <input type="text" placeholder="(your city)*" name="city"/>
+                                                <input type="text" placeholder="(your city)*" name="city" id="city2" />
+                                                <div class="error-message" id="cityError"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6">
                                             <div class="billing-info mb-20">
                                                 <label>State</label>
-                                                <input type="text" placeholder="(State)*" name="state"/>
+                                                <input type="text" placeholder="(State)*" name="state" id="state2" />
+                                                <div class="error-message" id="stateError"></div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-md-6">
                                             <div class="billing-info mb-20">
                                                 <label>Landmark</label>
-                                                <input type="text" placeholder="(Famous place your Area)*"  name="landmark" />
+                                                <input type="text" placeholder="(Famous place your Area)*"
+                                                    name="landmark" id="landmark2" />
+                                                <div class="error-message" id="landmarkError"></div>
                                             </div>
                                         </div>
 
-                                        <div class="single-input-item btn-hover">
-                                            <button type="submit" class="save-btn sqr-btn">
-                                                Add New Address
-                                            </button>
-                                        </div>
+                                    </div>
+                                    <div class="single-input-item btn-hover">
+                                        <button type="submit" class="save-btn sqr-btn">
+                                            Add New Address
+                                        </button>
                                     </div>
                                 </div>
                             </form>
+
                             <% if(addressData.length> 0){ %>
-                                <% addressData.forEach(data=>{%>
+                                <% addressData.forEach((data,index)=>{%>
 
                                     <table style="
-                width: 90%;
-                height: 300px;
+                width: 70%;
+                height: 260px;
+               
                 background-color: rgb(255, 255, 255);
                 box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1),
                   0px 6px 6px rgba(0, 0, 0, 0.1);
               ">
+                                        <tr>
+                                            <th class="data-radio"><input type="radio" name="addressId"
+                                                    value="<%=data._id%>" <%if(index==0){%> checked <%}%> ></th>
                                         <tr>
                                             <th class="data-cell">Name :</th>
                                             <td class="table-data">
                                                 <%= data.name %>
                                             </td>
                                         </tr>
-
                                         <tr>
                                             <th class="data-cell">Mobile No:</th>
                                             <td class="table-data">
@@ -197,27 +228,23 @@
                                                 <%= data.state %>
                                             </td>
                                         </tr>
-
                                         <tr>
                                             <th class="data-cell">Pincode:</th>
                                             <td class="table-data">
                                                 <%= data.pincode %>
                                             </td>
-                                        </tr>
-                                        <br />
+                                        </tr><br />
                                         <tr>
                                             <th class="data-cell">Landmark:</th>
                                             <td class="table-data">
                                                 <%= data.landmark %>
                                             </td>
                                         </tr>
-
-                                        <td class="data-cell" style="padding-top: 25px">  
-                                            
-                                            <a class="check-btn sqr-btn" data-bs-toggle="modal" id="sendId" onclick="sendAddressId('<%= data._id %>')"
+                                        <td class="data-cell" style="padding-top: 25px">
+                                            <a class="check-btn sqr-btn" data-bs-toggle="modal" id="sendId"
+                                                onclick="sendAddressId('<%= data._id %>')"
                                                 data-bs-target="#exampleModal"><i class="fa fa-edit"></i>Edit
                                                 Address</a>
-
                                         </td>
                                     </table>
                                     <%})%>
@@ -255,75 +282,49 @@
                                                                 </span></li>
                                                         </ul>
                                                     </div>
-                                                    <div class="your-order-info order-shipping">
-                                                        <ul>
-                                                            <li>
-                                                                Shipping
-                                                                <p>Enter your full address</p>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
+
                                                     <div class="your-order-info order-total">
                                                         <ul>
                                                             <li>Total <span>
                                                                     <%= total%>
                                                                 </span></li>
                                                         </ul>
+                                                        <input type="hidden" id="totalvalue" value=" <%= total%>" />
                                                     </div>
                                 </div>
                                 <div class="payment-method">
                                     <div class="pay-top sin-payment">
-                                        <input id="payment_method_1" class="input-radio" type="radio" value="cheque"
-                                            checked="checked" name="payment_method" />
-                                        <label for="payment_method_1"> Direct Bank Transfer </label>
-                                        <div class="payment-box payment_method_bacs">
-                                            <p>
-                                                Make your payment directly into our bank account. Please
-                                                use your Order ID as the payment reference.
-                                            </p>
-                                        </div>
+                                        <input id="payment_method_1" class="input-radio" type="radio"
+                                            value="Net Banking" checked="checked" name="payment_method" />
+                                        <label for="payment_method_1">Net Banking</label>
+
                                     </div>
                                     <div class="pay-top sin-payment">
-                                        <input id="payment-method-2" class="input-radio" type="radio" value="cheque"
-                                            name="payment_method" />
-                                        <label for="payment-method-2">Check payments</label>
-                                        <div class="payment-box payment_method_bacs">
-                                            <p>
-                                                Make your payment directly into our bank account. Please
-                                                use your Order ID as the payment reference.
-                                            </p>
-                                        </div>
+                                        <input id="payment-method-2" class="input-radio" type="radio"
+                                            value=" Credi/Debit/ATM Card" name="payment_method" />
+                                        <label for="payment-method-2"> Credi/Debit/ATM Card</label>
+
                                     </div>
                                     <div class="pay-top sin-payment">
-                                        <input id="payment-method-3" class="input-radio" type="radio" value="cheque"
-                                            name="payment_method" />
-                                        <label for="payment-method-3">Cash on delivery </label>
-                                        <div class="payment-box payment_method_bacs">
-                                            <p>
-                                                Make your payment directly into our bank account. Please
-                                                use your Order ID as the payment reference.
-                                            </p>
-                                        </div>
+                                        <input id="payment-method-3" class="input-radio" type="radio"
+                                            value="Cash On Delivery" name="payment_method" />
+                                        <label for="payment-method-3">Cash On Delivery </label>
                                     </div>
                                     <div class="pay-top sin-payment sin-payment-3">
-                                        <input id="payment-method-4" class="input-radio" type="radio" value="cheque"
+                                        <input id="payment-method-4" class="input-radio" type="radio" value="RazorPay"
                                             name="payment_method" />
-                                        <label for="payment-method-4">PayPal
-                                            <img alt=""
-                                                src="/userpublic/indexassets/assets/images/icon-img/payment.png" /><a
-                                                href="#">What is PayPal?</a></label>
-                                        <div class="payment-box payment_method_bacs">
-                                            <p>
-                                                Make your payment directly into our bank account. Please
-                                                use your Order ID as the payment reference.
-                                            </p>
-                                        </div>
+                                        <label for="payment-method-4">RazorPay</label>
+
                                     </div>
                                 </div>
                             </div>
+                            <!-- !------------------------------- place Orderr Button ------------------------------------------>
                             <div class="Place-order btn-hover">
-                                <a href="#">Place Order</a>
+                                <a onclick="handleAddressSelection()">Place Order</a>
                             </div>
+
+                            <!-- !------------------------------- place Orderr Button ------------------------------------------>
+
                         </div>
                     </div>
                 </div>
@@ -343,29 +344,32 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                   
-                    
-                       
-                    <form  > 
+
+
+
+                    <form>
                         <div class="modal-body">
                             <div class="different-address open-toggle mt-30">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6">
                                         <div class="billing-info mb-20">
                                             <label>User Name</label>
-                                            <input type="text" placeholder="(Name)*" id="username1"  name="username"  />
+                                            <input type="text" placeholder="(Name)*" id="username1" name="username"
+                                                required />
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <div class="billing-info mb-20">
                                             <label>Mobile Number</label>
-                                            <input type="text" placeholder="(10 Digits )*"  id="usermobile1" name="usermobile" />
+                                            <input type="text" placeholder="(10 Digits )*" id="usermobile1"
+                                                name="usermobile" />
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="billing-info mb-20">
                                             <label>Address</label>
-                                            <input type="text" placeholder="(House No. Building Name)*"  id="address1" name="address" />
+                                            <input type="text" placeholder="(House No. Building Name)*" id="address1"
+                                                name="address" />
                                         </div>
                                     </div>
 
@@ -373,31 +377,33 @@
                                         <div class="billing-info mb-20">
                                             <label>Street Address</label>
 
-                                            <input placeholder="(Road name,Area, colony)*" type="text"id="streetaddress1" name="streetaddress" />
+                                            <input placeholder="(Road name,Area, colony)*" type="text"
+                                                id="streetaddress1" name="streetaddress" />
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="billing-info mb-20">
                                             <label>City</label>
-                                            <input type="text"   placeholder="(your city)*"  id="city1"  name="city"  />
+                                            <input type="text" placeholder="(your city)*" id="city1" name="city" />
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <div class="billing-info mb-20">
                                             <label>Pincode</label>
-                                            <input type="text"   placeholder="(Required)*"  id="pincode1" name="pincode" />
+                                            <input type="text" placeholder="(Required)*" id="pincode1" name="pincode" />
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <div class="billing-info mb-20">
                                             <label>State</label>
-                                            <input type="text" placeholder="(State)*"   id="state1" name="state" />
+                                            <input type="text" placeholder="(State)*" id="state1" name="state" />
                                         </div>
                                     </div>
                                     <div class="col-lg-12 col-md-12">
                                         <div class="billing-info mb-20">
                                             <label>Landmark</label>
-                                            <input type="text" placeholder="(Famous place your Area)*" id="landmark1"  name="landmark" />
+                                            <input type="text" placeholder="(Famous place your Area)*" id="landmark1"
+                                                name="landmark" />
                                         </div>
                                     </div>
 
@@ -405,108 +411,233 @@
                                 </div>
                             </div>
 
-                            
+                            //!
+
                             <div class="modal-footer">
-                               
+
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button  class="green"  onclick="updateAddress()" >Save changes</button>
-                                
+                                <button class="green" onclick="updateAddress()">Save changes</button>
+
                             </div>
                         </div>
-                        
+
                 </div>
             </div>
             </form>
-            
-           
+
+
         </div>
         <!-----------------------------------------------------------------End  Moda --------------------------------------------------------------->
 
 
-    <script>
-       
-    let addressId;
-             function sendAddressId(id) {
-            
+        <script>
 
-            fetch(`/checkoutpage/${id}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id }),
-            })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("Network response was not ok");
-                    }
-                    return response.json();
+            let addressId;
+            function sendAddressId(id) {
+
+
+                fetch(`/checkoutpage/${id}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ id }),
                 })
-                .then((data) => {
-                    console.log(data)
-                    document.getElementById("username1").value = data.addressDataSecond.name
-                    document.getElementById("usermobile1").value = data.addressDataSecond.mobile
-                    document.getElementById("pincode1").value = data.addressDataSecond.pincode
-                    document.getElementById("address1").value = data.addressDataSecond.address
-                    document.getElementById("streetaddress1").value = data.addressDataSecond.streetaddress
-                    document.getElementById("city1").value = data.addressDataSecond.city
-                    document.getElementById("state1").value = data.addressDataSecond.state
-                    document.getElementById("landmark1").value = data.addressDataSecond.landmark
-                    addressId = data.addressDataSecond._id
-                  
-                    
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        console.log(data)
+                        document.getElementById("username1").value = data.addressDataSecond.name
+                        document.getElementById("usermobile1").value = data.addressDataSecond.mobile
+                        document.getElementById("pincode1").value = data.addressDataSecond.pincode
+                        document.getElementById("address1").value = data.addressDataSecond.address
+                        document.getElementById("streetaddress1").value = data.addressDataSecond.streetaddress
+                        document.getElementById("city1").value = data.addressDataSecond.city
+                        document.getElementById("state1").value = data.addressDataSecond.state
+                        document.getElementById("landmark1").value = data.addressDataSecond.landmark
+                        addressId = data.addressDataSecond._id
+
+
+                    })
+
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }
+
+
+
+            function updateAddress() {
+                console.log("uuuu");
+
+
+                let username = document.getElementById("username1").value;
+                let usermobile = document.getElementById("usermobile1").value
+                let address = document.getElementById("address1").value;
+                let streetaddress = document.getElementById("streetaddress1").value;
+                let pincode = document.getElementById("pincode1").value;
+                let state = document.getElementById("state1").value;
+                let landmark = document.getElementById("landmark1").value;
+                let city = document.getElementById("city1").value;
+                // let addressId = document.getElementById("addressId1").value
+
+
+
+                fetch('/checkoutpage', {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ addressId, username, usermobile, address, streetaddress, pincode, state, landmark, city }),
                 })
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
 
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
+                        if (data.success) {
+
+                            window.location.reload()
 
 
+                        } else {
+                            message.innerHTML = "Somthing wrong";
+                        }
+                    })
 
-        function updateAddress() {
-            console.log("uuuu");
-           
-
-          let username = document.getElementById("username1").value;
-          let usermobile = document.getElementById("usermobile1").value
-          let address = document.getElementById("address1").value;
-          let streetaddress = document.getElementById("streetaddress1").value;
-          let pincode = document.getElementById("pincode1").value;
-          let state = document.getElementById("state1").value;
-          let landmark = document.getElementById("landmark1").value;
-          let city = document.getElementById("city1").value;
-         // let addressId = document.getElementById("addressId1").value
-                
-           
-      
-          fetch('/checkoutpage', {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({addressId,username,usermobile,address,streetaddress,pincode,state,landmark,city}),
-          })
-            .then((response) => {
-              if (!response.ok) {
-                throw new Error("Network response was not ok");
-              }
-              return response.json();
-            })
-            .then((data) => {
-                
-              if  (data.success) {
-                
-                window.location.reload()
-               
-                
-              } else {
-                message.innerHTML = "Somthing wrong";
-              }
-            })
-      
-            .catch((err) => {
-              console.log(err);
-            });
-        }
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }
         </script>
 
+
+
+
+        <script>
+            function validateForm() {
+                var username = document.getElementById('username2').value;
+                if (username.trim() === '') {
+                    document.getElementById('usernameError').innerHTML = 'Please enter your name.';
+                    return false;
+                } else {
+                    document.getElementById('usernameError').innerHTML = '';
+                }
+
+                var usermobile = document.getElementById('usermobile2').value;
+                if (!/^\d{10}$/.test(usermobile)) {
+                    document.getElementById('usermobileError').innerHTML = 'Please enter a valid 10-digit mobile number.';
+                    return false;
+                } else {
+                    document.getElementById('usermobileError').innerHTML = '';
+                }
+
+
+                var address = document.getElementById('address2').value;
+                if (address.trim() === '') {
+                    document.getElementById('addressError').innerHTML = 'Please enter your address.';
+                    return false;
+                } else {
+                    document.getElementById('addressError').innerHTML = '';
+                }
+
+
+                var streetaddress = document.getElementById('streetaddress2').value;
+                if (streetaddress.trim() === '') {
+                    document.getElementById('streetaddressError').innerHTML = 'Please enter your street address.';
+                    return false;
+                } else {
+                    document.getElementById('streetaddressError').innerHTML = '';
+                }
+
+
+                var pincode = document.getElementById('pincode2').value;
+                if (!/^\d{6}$/.test(pincode)) {
+                    document.getElementById('pincodeError').innerHTML = 'Please enter a valid 6-digit pincode.';
+                    return false;
+                } else {
+                    document.getElementById('pincodeError').innerHTML = '';
+                }
+
+                var city = document.getElementById('city2').value;
+                if (city.trim() === '') {
+                    document.getElementById('cityError').innerHTML = 'Please enter your city.';
+                    return false;
+                } else {
+                    document.getElementById('cityError').innerHTML = '';
+                }
+
+
+                var state = document.getElementById('state2').value;
+                if (state.trim() === '') {
+                    document.getElementById('stateError').innerHTML = 'Please enter your state.';
+                    return false;
+                } else {
+                    document.getElementById('stateError').innerHTML = '';
+                }
+
+
+                var landmark = document.getElementById('landmark2').value;
+                if (landmark.trim() === '') {
+                    document.getElementById('landmarkError').innerHTML = 'Please enter your landmark.';
+                    return false;
+                } else {
+                    document.getElementById('landmarkError').innerHTML = '';
+                }
+                return true;
+            }
+        </script>
+
+        <script>
+            function handleAddressSelection() {
+                const paymentMethodRadios = document.querySelectorAll('input[name="payment_method"]');
+                for (const radio of paymentMethodRadios) {
+                    if (radio.checked) {
+                        paymentmethod = radio.value;
+                    }
+                }
+                console.log(paymentmethod)
+
+                var radioButtons = document.querySelectorAll('input[name="addressId"]');
+                radioButtons.forEach(function (radioButton) {
+                    if (radioButton.checked) {
+                        activeAddressId = radioButton.value;
+                    }
+                });
+                console.log("================================", activeAddressId)
+            
+
+                fetch('/orderpage', {
+                    method: "post",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ activeAddressId,paymentmethod }),
+                })
+
+
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+
+                        console.log('Fetched address data:', data);
+
+                    })
+                    .catch(error => {
+                        console.error('Error fetching address data:', error);
+                    });
+
+
+
+
+            }
+
+        </script>
 
 
         <%- include('../partials/mainfooter.ejs')%>

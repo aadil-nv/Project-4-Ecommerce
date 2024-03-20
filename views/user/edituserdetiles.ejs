@@ -1,5 +1,9 @@
 <%- include('../partials/mainheader.ejs')%>
-
+  <style>
+    .error-message {
+      color: red;
+    }
+  </style>
 
   <div class="col-lg-9 col-md-8"
     style="justify-content: center; align-items: center; display: flex; margin-top: 100px; margin-bottom: 100px; padding-left: 30%;">
@@ -56,18 +60,33 @@
       let username = document.getElementById("user-name").value;
       let usermobile = document.getElementById("user-mobile").value;
       let message = document.getElementById("msg");
-      const userName = document.getElementById('user-name').value.trim()
-      const userMobile = document.getElementById('user-mobile').value.trim()
+      var userName = document.getElementById('user-name').value.trim();
+      var userMobile = document.getElementById('user-mobile').value.trim();
+      var userNameError = document.getElementById('userNameError');
+      var userMobileError = document.getElementById('userMobileError');
+      var onlyLetters = /^[A-Za-z]+$/;
+      var onlyNumbers = /^[0-9]+$/;
 
+      userNameError.textContent = '';
+      userMobileError.textContent = '';
 
-      if (!/^[a-zA-Z]+$/.test(userName)) {
-        document.getElementById("userNameError").innerHTML = 'Name must contain only characters.'; 
-        return false; // Prevent form submission
+      if (userName.trim() === '') {
+        userNameError.innerHTML = 'Please enter a valid username!';
+        return false;
+      } else if (!userName.trim()) {
+        userNameError.innerHTML = 'Please enter a valid username!';
+        return false;
       }
 
-      if (!/^\d{10}$/.test(userMobile)) {
-        document.getElementById("userMobileError").innerHTML  = 'Mobile No must be 10 digits and contain only numbers.';
-        return false; // Prevent form submission
+      if (userMobile === '') {
+        userMobileError.innerHTML = 'Please enter a valid mobile number!';
+        return false;
+      } else if (!onlyNumbers.test(userMobile)) {
+        userMobileError.innerHTML = 'Mobile number can only contain numbers!';
+        return false;
+      } else if (userMobile.length !== 10) {
+        userMobileError.innerHTML = 'Mobile number must be 10 digits long!';
+        return false;
       }
 
 
@@ -85,13 +104,14 @@
         .then((data) => {
           if (data.already) {
             message.innerHTML = data.already;
+           
           } else if (data.success) {
             window.location.href = "/edituserdetiles";
           } else {
-            message.innerHTML = "Somthing wrong";
+            message.innerHTML = "Something wrong";
+           
           }
         })
-
         .catch((err) => {
           console.log(err);
         });
