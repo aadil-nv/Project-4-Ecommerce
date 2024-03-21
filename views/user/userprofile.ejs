@@ -82,10 +82,10 @@
 
                                             <div class="tab-pane fade" id="orders" role="tabpanel">
                                                 <div class="myaccount-content">
-                                                    <h3>Orders</h3>
+                                                    <h3>Orders History</h3>
                                                     <div class="myaccount-table table-responsive text-center">
                                                         
-                                                                                                               <table class="table table-bordered">
+                                                        <table class="table table-bordered">
                                                             <thead class="thead-light">
 
                                                                 <tr>
@@ -93,6 +93,7 @@
                                                                     <th>Product Name</th>
                                                                     <th>Quantity</th>
                                                                     <th>Price</th>
+                                                                    <th>Current Status</th>
                                                                     <th>Action</th>
                                                                 </tr>
                                                             </thead>
@@ -105,9 +106,12 @@
                                                                     <td><%=product.productId.productname %></td>
                                                                     <td><%=product.quantity %></td>
                                                                     <td>₹<%=product.totalProductAmount %></td>
-                                                                    <td><a href="cart.html"
+                                                                    <td><%=product.productStatus %></td>
+                                                                  
+                                                                    <td><a href="/orders/<%=item._id %>"
                                                                             class="check-btn sqr-btn ">View</a>
                                                                     </td>
+                                                                    
                                                                 </tr>
                                                                
                                                             </tbody>

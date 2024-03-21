@@ -1,0 +1,322 @@
+<%- include('../partials/asidenav.ejs')%>
+
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Order detail</h2>
+                <p>order detiles of: <%= orderData.userId.name %>
+                </p>
+            </div>
+        </div>
+        <div class="card">
+            <header class="card-header">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
+                        <span> <i class="material-icons md-calendar_today"></i> <b>Wed, Aug 13, 2020, 4:34PM</b> </span>
+                        <br />
+                        <small class="text-muted">Order ID: <%= orderData.orderId %></small>
+                    </div>
+                    <div class="col-lg-6 col-md-6 ms-auto text-md-end">
+
+                        <button
+                            style="width: 130px; height: 40px; border: none; background-color: seagreen; color: white;">save</button>
+                        <input type="hidden" value="<%= orderData._id %>" id="orderId">
+                        <a class="btn btn-secondary print ms-2" href="#"><i
+                                class="icon material-icons md-print"></i></a>
+                    </div>
+                </div>
+            </header>
+            <!-- card-header end// -->
+            <div class="card-body">
+                <div class="row mb-50 mt-20 order-info-wrap">
+                    <div class="col-md-4">
+                        <article class="icontext align-items-start">
+                            <span class="icon icon-sm rounded-circle bg-primary-light">
+                                <i class="text-primary material-icons md-person"></i>
+                            </span>
+                            <div class="text">
+                                <!-- <h5>data: <%= orderData %></h5> -->
+                                <h6 class="mb-1">Customer</h6>
+
+
+                                <p class="mb-1">
+                                    <%= orderData.userId.name %> <br />
+                                        <%= orderData.userId.email %> <br />
+                                            +91<%= orderData.userId.mobile %>
+                                </p>
+
+
+                                <a href="#">View profile</a>
+                            </div>
+                        </article>
+                    </div>
+                    <!-- col// -->
+                    <div class="col-md-4">
+                        <article class="icontext align-items-start">
+                            <span class="icon icon-sm rounded-circle bg-primary-light">
+                                <i class="text-primary material-icons md-local_shipping"></i>
+                            </span>
+                            <div class="text">
+                                <h6 class="mb-1">Order info</h6>
+                                <p class="mb-1">
+                                    Shipping: Furni express <br />
+                                    Pay method:<%= orderData.paymentMethod %><br />
+                                        Status: <%= orderData.orderStatus %>
+                                </p>
+                                <a href="#">Download info</a>
+                            </div>
+                        </article>
+                    </div>
+                    <!-- col// -->
+                    <div class="col-md-4">
+                        <article class="icontext align-items-start">
+                            <span class="icon icon-sm rounded-circle bg-primary-light">
+                                <i class="text-primary material-icons md-place"></i>
+                            </span>
+                            <div class="text">
+                                <h6 class="mb-1">Deliver to</h6>
+                                <p class="mb-1">
+                                    Address:<%= orderData.deliveryAddress.address %> <br />,<%=
+                                            orderData.deliveryAddress.streetaddress %>,<%=
+                                                orderData.deliveryAddress.city %>,<%= orderData.deliveryAddress.landmark
+                                                    %> <br />,
+                                                    Pincode<%= orderData.deliveryAddress.pincode %>
+                                                        ID:<%= orderData._id %>
+                                </p>
+                                <a href="#">View profile</a>
+                            </div>
+                        </article>
+                    </div>
+                    <!-- col// -->
+                </div>
+                <!-- row // -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th width="30%">Product</th>
+                                        <th width="10%">Unit Price</th>
+                                        <th width="10%">Quantity</th>
+                                        <th width="10%" class="text-end">Total</th>
+                                        <th width="10%" class="text-end">Status</th>
+                                        <th width="22%" class="text-end">Status</th>
+                                        <th width="10%" class="text-end">Save</th>
+                                    </tr>
+                                </thead>
+                                <% orderData.orderedItem.forEach(item=>{ %>
+
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <a class="itemside" href="#">
+                                                    <div class="left">
+                                                        <img src="/uploads/<%=item.productId.productimage[0]%>"
+                                                            width="90" height="90" alt="Item"
+                                                            style="border-radius: 25px;" />
+                                                    </div>
+                                                    <div class="info"></div>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <%=item.productId.productname%>
+                                            </td>
+                                            <td>
+                                                <%=item.quantity%>
+                                            </td>
+                                            <td class="text-end">
+                                                <%=item.totalProductAmount%>
+                                            </td>
+                                            <td class="text-center">
+                                                <%=item.productStatus%>
+                                            </td>
+                                            <td>
+                                                <select id="statusSelect_<%= item.productId._id %>"
+                                                    class="form-select d-inline-block mb-lg-0 mr-5 mw-200">
+                                                    <option value="null">Change status</option>
+                                                    <option value="Order Cancelled">Order Cancelled</option>
+                                                    <option value="Shipped">Shipped</option>
+                                                    <option value="Delivered">Delivered</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <button onclick="saveStatus('<%= item.productId._id %>')">Save</button>
+                                            </td>
+                                        </tr>
+
+                                        <% }) %>
+                                            <tr>
+                                                <td colspan="6" style="padding-top:90px ;">
+                                                    <article class="float-end">
+                                                        <dl class="dlist">
+                                                            <dt>Subtotal:</dt>
+                                                            <dd>
+                                                                <%= orderData.orderAmount %>
+                                                            </dd>
+                                                        </dl>
+                                                        <dl class="dlist">
+                                                            <dt>Shipping cost:</dt>
+                                                            <dd>$00.00</dd>
+                                                        </dl>
+                                                        <dl class="dlist">
+                                                            <dt>Grand total:</dt>
+                                                            <dd><b class="h5">
+                                                                    <%= orderData.orderAmount %>
+                                                                </b></dd>
+                                                        </dl>
+                                                        <dl class="dlist">
+
+                                                            <dt class="text-muted">Status: </dt>
+                                                            <dd>
+
+                                                                <span
+                                                                    class="badge rounded-pill alert-success text-success">
+                                                                    <%=orderData.orderStatus%>
+                                                                </span>
+
+                                                            </dd>
+                                                        </dl>
+                                                    </article>
+                                                </td>
+                                            </tr>
+                                    </tbody>
+
+                            </table>
+                        </div>
+                        <!-- table-responsive// -->
+                    </div>
+                    <!-- col// -->
+                    <!-- <div class="col-lg-1"></div>
+                <div class="col-lg-3">
+                    <div class="box shadow-sm bg-light">
+                        <h6 class="mb-15">Payment info</h6>
+                        <p>
+                            <img src="/adminpublic/adminlogin/imgs/card-brands/2.png" class="border" height="20" /> Master Card **** **** 4768 <br />
+                            Business name: Grand Market LLC <br />
+                            Phone: +1 (800) 555-154-52
+                        </p>
+                    </div>
+                   
+                </div> -->
+                    <!-- col// -->
+                </div>
+            </div>
+            <!-- card-body end// -->
+        </div>
+        <!-- card end// -->
+    </section>
+    <!-- content-main end// -->
+    <footer class="main-footer font-xs">
+        <div class="row pb-30 pt-15">
+            <div class="col-sm-6">
+                <script>
+                    document.write(new Date().getFullYear());
+                </script>
+                &copy; Nest - HTML Ecommerce Template .
+            </div>
+            <div class="col-sm-6">
+                <div class="text-sm-end">All rights reserved</div>
+            </div>
+        </div>
+    </footer>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="path/to/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="/adminpublic/adminlogin/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/select2.min.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="/adminpublic/adminlogin/js/main.js?v=1.1" type="text/javascript"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        function saveStatus(productId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Once confirmed, the status will be updated!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, update status!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const statusSelect = document.getElementById(`statusSelect_${productId}`);
+                    const selectedStatus = statusSelect.value;
+                    const orderId = document.getElementById('orderId').value;
+    
+                    fetch(`/orderdetiles/${productId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ selectedStatus, productId, orderId })
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Status updated successfully:', data);
+                        Swal.fire(
+                            'Success!',
+                            'Status has been updated successfully.',
+                            'success'
+                        ).then(() => {
+                           setTimeout(()=>{
+                            window.location.reload()
+                           },100)
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error updating status:', error);
+                        Swal.fire(
+                            'Error!',
+                            'An error occurred while updating status.',
+                            'error'
+                        );
+                    });
+                }
+            });
+        }
+    </script>
+    
+     
+   
+    <!-- <script>
+        function saveStatus(productId) {
+
+
+            const statusSelect = document.getElementById(`statusSelect_${productId}`);
+            const selectedStatus = statusSelect.value;
+            const orderId = document.getElementById('orderId').value
+
+
+            fetch(`/orderdetiles/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ selectedStatus, productId, orderId })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Status updated successfully:', data);
+                })
+                .catch(error => {
+                    console.error('Error updating status:', error);
+                });
+        }
+    </script> -->

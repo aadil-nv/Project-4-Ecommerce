@@ -9,6 +9,7 @@ const Products = require("../models/productModel");
 const multer = require("multer");
 const path = require("path");
 const sharp = require("sharp");
+const order = require("../models/orderModal");
 
 // ---------------------Multer image saving--------------------------
 const storage = multer.diskStorage({
@@ -40,7 +41,9 @@ const adminLogin = async (req, res) => {
     if (adminid.adminemail === email && adminid.adminpassword === password) {
       res.redirect("/admindashboard");
     } else {
-      return res.render("admin/adminlogin",{message:"Email or Password were Incorrect"});
+      return res.render("admin/adminlogin", {
+        message: "Email or Password were Incorrect",
+      });
     }
   } catch (error) {
     console.log(error.meaasage);
@@ -282,8 +285,6 @@ const updateProductsFetch = async (req, res) => {
     const product = await Products.findById(productId);
     const imageCount = product.productimage.length;
 
-   
-
     const productData = {};
 
     if (req.body.name) {
@@ -442,7 +443,7 @@ const listProduct = async (req, res) => {
   try {
     const id = req.query.id;
     const product = await Products.findById(id);
-   
+
     if (product.isListed == true) {
       await Products.updateOne({ _id: id }, { isListed: false });
     } else {
@@ -476,6 +477,84 @@ const deleteProductImage = async (req, res) => {
 
 // --------------------------Ending Deleting Image in edit Product detiles  ------------------------------
 
+// --------------------------------------------Load UsersList -------------------------------------------
+
+const adminOrdersList = async (req, res) => {
+  try {
+    const orderData = await order
+      .find()
+      .populate("orderedItem.productId")
+      .populate("deliveryAddress")
+      .populate("userId");
+
+    res.render("admin/orderlist", { orderData });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const adminOrderDetiles = async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const orderData = await order
+      .findById({ _id: orderId })
+      .populate("orderedItem.productId")
+      .populate("deliveryAddress")
+      .populate("userId");
+
+    res.render("admin/orderdetiles", { orderData });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const adminChangeOrderStatus = async (req, res) => {
+  try {
+    const { selectedStatus, productId, orderId } = req.body;
+    console.log("---------------------orderId---------------------", orderId);
+    console.log(
+      "---------------------selectedStatus---------------------",
+      selectedStatus
+    );
+    console.log(
+      "---------------------productId---------------------",
+      productId
+    );
+
+    const orderData = await order
+      .find({ _id: orderId })
+      .populate("orderedItem.productId")
+      .populate("deliveryAddress")
+      .populate("userId");
+
+    if (selectedStatus === "null") {
+      return res.status(400).json({ message: "selectedStatus is null" });
+    }
+
+    const updatedOrder = await order
+      .findOneAndUpdate(
+        { _id: orderId, "orderedItem.productId": productId },
+        { $set: { "orderedItem.$.productStatus": selectedStatus } },
+        { new: true }
+      )
+      .populate("orderedItem.productId")
+      .populate("deliveryAddress")
+      .populate("userId");
+
+    if (!updatedOrder) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    console.log("Updated order:", updatedOrder);
+    res
+      .status(200)
+      .json({ message: "Order status updated successfully", updatedOrder });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+// --------------------------------------------End Load UsersList -------------------------------------------
+
 // ------------------------------------------------End--------------------------------------------------------
 
 module.exports = {
@@ -497,4 +576,7 @@ module.exports = {
   updateProductsFetch,
   listProduct,
   deleteProductImage,
+  adminOrdersList,
+  adminOrderDetiles,
+  adminChangeOrderStatus,
 };

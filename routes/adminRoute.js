@@ -43,4 +43,14 @@ admin_route.post('/editproductdetilesfetch/:id',upload.array('photos'),admincont
 admin_route.get('/listProduct',admincontroller.listProduct) 
 admin_route.get('/editproductdetilesfetch/:id',admincontroller.deleteProductImage)
 
+
+//todo------------------------------week-9-------------------------------------------------
+
+admin_route.get('/orderslist',admincontroller.adminOrdersList)
+admin_route.get('/orderdetiles/:id',admincontroller.adminOrderDetiles)
+admin_route.post('/orderdetiles/:id',admincontroller.adminChangeOrderStatus)
+
+
+
+
 module.exports = admin_route;

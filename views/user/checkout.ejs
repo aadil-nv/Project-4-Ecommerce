@@ -626,6 +626,14 @@
                     .then(data => {
 
                         console.log('Fetched address data:', data);
+                        Swal.fire({
+                        title: 'Order Placed Successfully',
+                        icon: 'success',
+                      confirmButtonText: 'OK'
+                      });
+                      setTimeout(()=>{
+                        window.location.href=`/orders/${data.newOrder._id}`
+                      },1500)
 
                     })
                     .catch(error => {

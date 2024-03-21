@@ -1,0 +1,116 @@
+<%- include('../partials/asidenav.ejs')%>
+
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Order List</h2>
+            <p>Lorem ipsum dolor sit amet.</p>
+        </div>
+        <div>
+            <input type="text" placeholder="Search order ID" class="form-control bg-white" />
+        </div>
+    </div>
+    <div class="card mb-4">
+        <header class="card-header">
+            <div class="row gx-3">
+                <div class="col-lg-4 col-md-6 me-auto">
+                    <input type="text" placeholder="Search..." class="form-control" />
+                </div>
+                <div class="col-lg-2 col-6 col-md-3">
+                    <select class="form-select">
+                        <option>Status</option>
+                        <option>Active</option>
+                        <option>Disabled</option>
+                        <option>Show all</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-6 col-md-3">
+                    <select class="form-select">
+                        <option>Show 20</option>
+                        <option>Show 30</option>
+                        <option>Show 40</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+        <!-- card-header end// -->
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Order ID</th>
+                            <th scope="col">User Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Date</th>
+                            <th scope="col" class="text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <% if(orderData.length> 0){ %> 
+                        <%   orderData.forEach((item) => { %>
+                            <%   item.orderedItem.forEach((data) => { %>
+                    <tbody>
+                        <tr>
+                            <td><%= item.orderId %></td>
+                            <td><b><%= item.userId.name %></b></td>
+                            <td><%= item.userId.email %></td>
+
+                            <td><%= data.totalProductAmount%></td>
+                            
+                            <td><span class="badge rounded-pill alert-warning"><%= data.productStatus%></span></td>
+                            <td>03.12.2020</td>
+                            <td class="text-end">   
+                                <a href="/orderdetiles/<%= item._id %>" class="btn btn-md rounded font-sm">Detail</a>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                    <% }); %>
+                    <% }); %>
+                    <% }%>
+                </table>
+            </div>
+            <!-- table-responsive //end -->
+        </div>
+        <!-- card-body end// -->
+    </div>
+    <!-- card end// -->
+    <div class="pagination-area mt-15 mb-50">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-start">
+                <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                <li class="page-item"><a class="page-link" href="#">02</a></li>
+                <li class="page-item"><a class="page-link" href="#">03</a></li>
+                <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                <li class="page-item"><a class="page-link" href="#">16</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
+<!-- content-main end// -->
+<footer class="main-footer font-xs">
+    <div class="row pb-30 pt-15">
+        <div class="col-sm-6">
+            <script>
+                document.write(new Date().getFullYear());
+            </script>
+            &copy; Nest - HTML Ecommerce Template .
+        </div>
+        <div class="col-sm-6">
+            <div class="text-sm-end">All rights reserved</div>
+        </div>
+    </div>
+</footer>
+</main>
+<script src="/adminpublic/adminlogin/js/vendors/jquery-3.6.0.min.js"></script>
+<script src="/adminpublic/adminlogin/js/vendors/bootstrap.bundle.min.js"></script>
+<script src="/adminpublic/adminlogin/js/vendors/select2.min.js"></script>
+<script src="/adminpublic/adminlogin/js/vendors/perfect-scrollbar.js"></script>
+<script src="/adminpublic/adminlogin/js/vendors/jquery.fullscreen.min.js"></script>
+<!-- Main Script -->
+<script src="/adminpublic/adminlogin/js/main.js?v=1.1" type="text/javascript"></script>

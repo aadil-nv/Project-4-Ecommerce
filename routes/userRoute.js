@@ -78,9 +78,11 @@ user_route.post('/checkoutpage',userAuth.isLogin,usercontroller.updatecartAddres
 user_route.post('/checkoutpageone',userAuth.isLogin,usercontroller.addCheckoutAddress)
 
 
-
-
 user_route.post('/orderpage',userAuth.isLogin,usercontroller.placeOrder)
+
+user_route.get('/orders/:id',userAuth.isLogin,usercontroller.loadOrderPage)
+
+user_route.post('/ordersone/:id',userAuth.isLogin,usercontroller.orderCancel)
 
 
 

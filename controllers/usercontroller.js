@@ -8,7 +8,7 @@ const { log } = require("console");
 const Products = require("../models/productModel");
 const Address = require("../models/addressModel");
 const Cart = require("../models/cartModel");
-const order=require('../models/orderModal')
+const order = require("../models/orderModal");
 
 // --------------OTP Generating-----------------
 const generateOTP = () => {
@@ -234,17 +234,9 @@ const loadUserProfile = async (req, res) => {
   try {
     const userData = await User.findOne({ _id: req.session.user });
     const addressData = await Address.find({ userId: req.session.user });
-    const orderData= await order.find({userId:req.session.user}).populate('orderedItem.productId')
-
-
-    orderData.forEach((item) => {
-      item.orderedItem.forEach((product) => {
-        console.log(product.productId.productname)
-      });
-    });
-
-
-    console.log("========================================",orderData)
+    const orderData = await order
+      .find({ userId: req.session.user })
+      .populate("orderedItem.productId");
 
     let added = req.query.msg;
 
@@ -256,14 +248,14 @@ const loadUserProfile = async (req, res) => {
           addressData,
           message,
           added,
-          orderData
+          orderData,
         });
       } else {
         return res.render("user/userprofile", {
           userData,
           addressData,
           message,
-          orderData
+          orderData,
         });
       }
     }
@@ -319,7 +311,11 @@ const backToUserHome = async (req, res) => {
 
 const loadShopPage = async (req, res) => {
   try {
-    res.render("user/shop", { User });
+
+    const productData=await Products.find()
+
+
+    res.render("user/shop", { User,productData });
   } catch (error) {
     console.log(error.message);
   }
@@ -398,7 +394,7 @@ const loadViewCart = async (req, res) => {
         total += product.quantity * product.productId.productprice;
       });
     });
-   
+
     res.render("user/cart", { cartDetiles, total });
   } catch (error) {
     console.log(error.message);
@@ -501,7 +497,7 @@ const addUserAddress = async (req, res) => {
         state: req.body.state,
         landmark: req.body.landmark,
         userId: req.session.user,
-        status:false
+        status: false,
       });
       await newAddress.save();
       const message = "New address addedd Succesfully";
@@ -547,7 +543,7 @@ const updateUserAddress = async (req, res) => {
         city: req.body.city,
         state: req.body.state,
         landmark: req.body.landmark,
-        status:false
+        status: false,
       }
     );
 
@@ -749,7 +745,7 @@ const updatecartAddress = async (req, res) => {
         city: city,
         state: state,
         landmark: landmark,
-        status:false
+        status: false,
       }
     );
   } catch (error) {
@@ -759,7 +755,6 @@ const updatecartAddress = async (req, res) => {
 
 const addCheckoutAddress = async (req, res) => {
   try {
-  
     const userData = await User.findOne({ _id: req.session.user });
 
     if (userData) {
@@ -773,7 +768,7 @@ const addCheckoutAddress = async (req, res) => {
         state: req.body.state,
         landmark: req.body.landmark,
         userId: req.session.user,
-        status:false
+        status: false,
       });
       await newAddress.save();
       const message = "New address addedd Succesfully";
@@ -787,94 +782,49 @@ const addCheckoutAddress = async (req, res) => {
 
 
 
-
-
-//!-------------------------------------------------------Place Oreder Page ---------------------------------------------
-
-// const placeOrder = async (req, res) => {
-//   try {
-//     const { activeAddressId, paymentmethod } = req.body;
-//     const userId = req.session.user;
-//     const cartData = await Cart.findOne({ userId }).populate("products.productId");
-//     const currentAddress = await Address.findById(activeAddressId);
-
-   
-
-//     console.log("paymentmethod:", paymentmethod);
-//     console.log("userId:", userId);
-//     console.log("activeAddressId:", currentAddress);
-//     console.log("cartData:", cartData);
-
-//     const orderedItems = cartData.products.map(product => {
-//       const totalProductAmount = product.quantity * (product.productId?.price || 0); // Ensure price is valid
-//       return {
-//         productId: product.productId,
-//         quantity: product.quantity,
-//         productStatus: "pending",
-//         totalProductAmount: product.totalPrice
-//       };
-//     });
-
-//     const orderAmount = orderedItems.reduce((total, item) => total + item.totalProductAmount, 0);
-
-//     const newOrder = new order({
-//       userId,
-//       cartId: cartData._id,
-//       orderId:orderId,
-//       orderedItem: orderedItems,
-//       orderAmount:cartData.total,
-//       deliveryAddress: currentAddress,
-//       orderStatus: "pending",
-//       deliveryDate: new Date(),
-//       shippingDate: new Date(),
-//       paymentMethod: paymentmethod,
-//     });
-
-//     await newOrder.save();
-
-//     res.send("Order placed successfully");
-//   } catch (error) {
-//     console.error(error.message);
-//     res.status(500).send("Internal server error");
-//   }
-// };
-
 const placeOrder = async (req, res) => {
   try {
-    // Define generateRandomOrderId function
     const generateRandomOrderId = (length) => {
-      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      let result = '';
+      const characters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      let result = "";
       for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * characters.length));
+        result += characters.charAt(
+          Math.floor(Math.random() * characters.length)
+        );
       }
       return result;
     };
 
     const { activeAddressId, paymentmethod } = req.body;
     const userId = req.session.user;
-    const cartData = await Cart.findOne({ userId }).populate("products.productId");
+    const cartData = await Cart.findOne({ userId }).populate(
+      "products.productId"
+    );
     const currentAddress = await Address.findById(activeAddressId);
 
-    const orderedItems = cartData.products.map(product => {
-      const totalProductAmount = product.quantity * (product.productId?.price || 0); // Ensure price is valid
+    const orderedItems = cartData.products.map((product) => {
+      const totalProductAmount =
+        product.quantity * (product.productId?.price || 0);
       return {
         productId: product.productId,
         quantity: product.quantity,
         productStatus: "pending",
-        totalProductAmount: product.totalPrice
+        totalProductAmount: product.totalPrice,
       };
     });
 
-    const orderAmount = orderedItems.reduce((total, item) => total + item.totalProductAmount, 0);
+    const orderAmount = orderedItems.reduce(
+      (total, item) => total + item.totalProductAmount,
+      0
+    );
 
-    // Generate random order ID
     const orderId = generateRandomOrderId(12);
 
     const newOrder = new order({
       userId,
       cartId: cartData._id,
-      orderId, // Assign the generated order ID
+      orderId,
       orderedItem: orderedItems,
       orderAmount: cartData.total,
       deliveryAddress: currentAddress,
@@ -889,26 +839,61 @@ const placeOrder = async (req, res) => {
     for (const item of orderedItems) {
       const productId = item.productId;
       const quantity = item.quantity;
-      
+
       await Products.findOneAndUpdate(
         { _id: productId },
-        { $inc: {productquadity: -quantity } }
+        { $inc: { productquadity: -quantity } }
       );
     }
 
-    res.send("Order placed successfully");
+    res.status(200).json({ newOrder });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal server error");
   }
 };
 
-module.exports = placeOrder;
 
 
+//todo-------------------------------------------------------End Load Oreder Page ---------------------------------------------
 
+//-------------------------------------------------------- load OrderPAge -------------------------------------------
 
-//!-------------------------------------------------------End Load Oreder Page ---------------------------------------------
+const loadOrderPage = async (req, res) => {
+  try {
+    const orderId = req.params.id;
+
+    const orderData = await order
+      .find({ _id: orderId })
+      .populate("orderedItem.productId")
+      .populate("deliveryAddress");
+
+    
+    res.render("user/orders", { orderData });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const orderCancel = async (req, res) => {
+  try {
+    const { productId, orderId } = req.body;
+
+    const userId = req.session.user;
+
+    await order.findOneAndUpdate(
+      { _id: orderId, "orderedItem.productId": productId },
+      { $set: { "orderedItem.$.productStatus": "Order Cancelled" } }
+    );
+
+    res.status(200).json({ message: "deletion successfull" });
+  } catch (error) {
+    console.log(error.messsage);
+  }
+};
+
+//--------------------------------------------------------End load OrderPAge -------------------------------------------
+
 // -------------------Exporting Controllers-----------------------
 
 module.exports = {
@@ -944,7 +929,9 @@ module.exports = {
   editUseraddressInCheckout,
   updatecartAddress,
   addCheckoutAddress,
-  placeOrder
+  placeOrder,
+  loadOrderPage,
+  orderCancel,
 };
 
 // ------------------------------End------------------------------------
