@@ -12,15 +12,22 @@
                                     <span>Showing 1–12 of 60 results</span>
                                 </div>
                             </div>
+
+
                             <div class="shop-topbar-right">
                                 <div class="shop-sorting-area">
-                                    <select class="nice-select nice-select-style-1">
+                                    <select  id="sortingSelect" class="nice-select nice-select-style-1"  onchange="redirectToSelectedPage()">
                                         <option>Default Sorting</option>
-                                        <option>Sort by popularity</option>
-                                        <option>Sort by average rating</option>
-                                        <option>Sort by latest</option>
+                                        <option  value="popularity">Sort -- popularity</option>
+                                        <option value="lowToHigh">Price -- Low to High</option>
+                                        <option value="highTolow">Price -- High to Low</option>
+                                        <option value="ATOZ">Name -- A-Z</option>
+                                        <option value="ZTOA">Name -- Z-A</option>
                                     </select>
                                 </div>
+
+
+
                                 <div class="shop-view-mode nav">
                                     <a class="active" href="#shop-1" data-bs-toggle="tab"><i class=" ti-layout-grid3 "></i> </a>
                                     <a href="#shop-2" data-bs-toggle="tab" class=""><i class=" ti-view-list-alt "></i></a>
@@ -28,16 +35,20 @@
                             </div>
                         </div>
                         <div class="shop-bottom-area">
+                            
                             <div class="tab-content jump">
                                 <div id="shop-1" class="tab-pane active">
-                                    <div class="row">
+                                    <div class="row"   >
 
-                                        <%  productData.forEach(data=>{%>
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-                                            <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200">
+
+
+ <!-- !ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg -->
+                                            <%  productData.forEach(data=>{%>
+                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12"   id="Container" >
+                                            <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200" >
                                                 <div class="product-img img-zoom mb-25">
                                                     <a href="/producttab/<%= data._id %>">
-                                                        <img src="/uploads/<%= data.productimage[0] %>" alt="">
+                                                        <img  src="/uploads/<%= data.productimage[0] %>" alt="">
                                                     </a>
                                                     <div class="product-badge badge-top badge-right badge-pink">
                                                         <span>-10%</span>
@@ -55,15 +66,35 @@
                                                 <div class="product-content">
                                                     <h3><a href=/producttab/<%= data._id %>><%= data.productname %></a></h3>
                                                     <div class="product-price">
-                                                        <span class="old-price">1000 </span>
-                                                        <span class="new-price"><%= data.productprice %></span>
+                                                        <!-- <span class="old-price">₹1000 </span> -->
+                                                        <span class="new-price">₹<%= data.productprice %></span>
                                                     </div>
+                                                    <% if (data.productquadity > 100) { %>
+                                                        <div class="product-price">
+                                                            <span class="new-price"><p>Lot of stock</p></span>
+                                                        </div>
+                                                    <% } else if (data.productquadity < 100 && data.productquadity >= 50) { %>
+                                                        <div class="product-price">
+                                                            <span class="new-price"><p>More stock</p></span>
+                                                        </div>
+                                                    <% } else if (data.productquadity < 50 && data.productquadity >= 10) { %>
+                                                        <div class="product-price">
+                                                            <span class="new-price"><p>Limited stock</p></span>
+                                                        </div>
+                                                    <% } else if (data.productquadity < 10) { %>
+                                                        <div class="product-price">
+                                                            <span class="new-price"><p>Low stock</p></span>
+                                                        </div>
+                                                    <% } %>
                                                 </div>
                                             </div>
                                         </div>
-
                                         <% }) %>
- 
+<!-- !ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg -->
+
+
+
+                                        
                                     </div>
                                     <div class="pagination-style-1" data-aos="fade-up" data-aos-delay="200">
                                         <ul>
@@ -74,7 +105,7 @@
                                         </ul>
                                     </div>
                                 </div>
-
+                                
                                
                                 <div id="shop-2" class="tab-pane">
                                     <div class="shop-list-wrap mb-30">
@@ -254,7 +285,7 @@
                             <div class="sidebar-widget mb-40" data-aos="fade-up" data-aos-delay="200">
                                 <div class="search-wrap-2">
                                     <form class="search-2-form" action="#">
-                                        <input placeholder="Search*" type="text">
+                                        <input placeholder="Search*" type="text" name="search">
                                         <button class="button-search"><i class=" ti-search "></i></button>
                                     </form>
                                 </div>
@@ -291,51 +322,8 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="sidebar-widget sidebar-widget-border mb-40 pb-35" data-aos="fade-up" data-aos-delay="200">
-                                <div class="sidebar-widget-title mb-25">
-                                    <h3>Choose Colour</h3>
-                                </div>
-                                <div class="sidebar-widget-color sidebar-list-style">
-                                    <ul>
-                                        <li><a class="black" href="#">Black <span>4</span></a></li>
-                                        <li><a class="blue" href="#">Blue <span>9</span></a></li>
-                                        <li><a class="brown" href="#">Brown <span>5</span></a></li>
-                                        <li><a class="red" href="#">Red <span>3</span></a></li>
-                                        <li><a class="orange" href="#">Orange <span>4</span></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="sidebar-widget sidebar-widget-border mb-40 pb-35" data-aos="fade-up" data-aos-delay="200">
-                                <div class="sidebar-widget-title mb-25">
-                                    <h3>Size</h3>
-                                </div>
-                                <div class="sidebar-widget-size sidebar-list-style">
-                                    <ul>
-                                        <li><a href="#">XL <span>4</span></a></li>
-                                        <li><a href="#">M <span>9</span></a></li>
-                                        <li><a href="#">LM <span>5</span></a></li>
-                                        <li><a href="#">L <span>3</span></a></li>
-                                        <li><a href="#">ML <span>4</span></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="sidebar-widget" data-aos="fade-up" data-aos-delay="200">
-                                <div class="sidebar-widget-title mb-25">
-                                    <h3>Tags</h3>
-                                </div>
-                                <div class="sidebar-widget-tag">
-                                    <a href="#">All, </a>
-                                    <a href="#">Clothing, </a>
-                                    <a href="#"> Kids, </a>
-                                    <a href="#">Accessories, </a>
-                                    <a href="#">Stationery, </a>
-                                    <a href="#">Homelife, </a>
-                                    <a href="#">Appliances, </a>
-                                    <a href="#">Clothing, </a>
-                                    <a href="#">Baby, </a>
-                                    <a href="#">Beauty </a>
-                                </div>
-                            </div>
+                           
+                         
                         </div>
                     </div>
                 </div>
@@ -363,5 +351,30 @@
                 });
             }
         </script>
+
+
+<script>
+    function redirectToSelectedPage() {
+        const selectElement = document.getElementById('sortingSelect');
+        const selectedValue = selectElement.value;
+            console.log("=============================",selectedValue)
+        if (selectedValue === 'popularity') {
+            window.location.href = '/productspopular';
+        } else if (selectedValue === 'lowToHigh') {
+            window.location.href = '/productslowtohigh';
+        } else if (selectedValue === 'highTolow') {
+            window.location.href = '/productshightolow';
+        } else if (selectedValue === 'ATOZ') {
+            window.location.href = '/productsatoz';
+        } else if (selectedValue === 'ZTOA') {
+            window.location.href = '/productsztoa';
+        }
+    }
+</script>
+
+  
+
+
         
+ 
         <%- include('../partials/mainfooter.ejs')%>   

@@ -1,6 +1,19 @@
 <%- include('../partials/mainheader.ejs')%>
     <!-- mini cart start -->
 
+<style>
+    #hurry{
+        color: orangered;
+    }
+    #limited{
+        color: blue;
+
+    }
+    #available{
+        color: green;
+    }
+</style>
+
     <div class="product-details-area pb-100 pt-100">
         <div class="container">
             <div class="row">
@@ -136,7 +149,19 @@
 
                         <div class="product-details-meta">
                             <ul>
-                                <li><span class="title">Stock:</span> Available</li>
+                                
+                                <% if (savedData.productquadity > 100) { %>
+                                    <li><h6 class="title">Stock:</h6> <h6 id="available">Stock Avilable</h6></li>
+                                <% } else if (savedData.productquadity < 100 && savedData.productquadity >= 50) { %>
+                                    <li><h6 class="title">Stock:</h6> <h6 id="limited">Limited stock Only</h6></li>
+                                <% } else if (savedData.productquadity < 50 && savedData.productquadity >= 10) { %>
+                                    <li><h6 class="title">Stock:</h6><h6 id="hurry">Hurry few left</h6> </li>
+                                <% } else if (savedData.productquadity < 10) { %>
+                                    <li><h6 class="title">Stock:</h6><h6 style="color: red; ">Only(<%= savedData.productquadity %>) Avilable</h6></li>
+                                <% } %>
+
+
+
                                 <li><span class="title">Category:</span>
                                     <ul>
                                         <li><a href="#">
@@ -163,7 +188,7 @@
                             <div class="single-product-cart btn-hover" style="color: rgb(231, 162, 94);">
                                 <button
                                     style="background-color: rgb(206, 178, 53); width: 150px; height: 70px ; color: rgb(184, 26, 26); border: none;"><a
-                                        href="">Buy Now</a></button>
+                                        href="">Check out</a></button>
                             </div>
                             <div class=" btn-hover">
 

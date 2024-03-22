@@ -1,15 +1,16 @@
 <%- include('../partials/mainheader.ejs')%>
-<style>
-        .error-message{
+    <style>
+        .error-message {
             color: red;
             font-weight: 600;
         }
-</style>
+    </style>
 
 
 
-    <p id="msg4" class="text-danger" style="color: red; justify-content: center; align-items: center; display: flex; font-weight: 600;"></p>
- 
+    <p id="msg4" class="text-danger"
+        style="color: red; justify-content: center; align-items: center; display: flex; font-weight: 600;"></p>
+
     <div class="col-lg-9 col-md-8" style="margin-left: 14%; padding-top: 50px;">
         <div class="tab-content" id="myaccountContent">
 
@@ -25,7 +26,7 @@
                                     <div class="single-input-item">
                                         <label for="first-name" class="required">User Name</label>
                                         <input type="text" id="username" name="username"
-                                            value="<%=  addressData.name %>"  />
+                                            value="<%=  addressData.name %>" />
                                         <span id="usernameError" class="error-message"></span>
                                     </div>
                                 </div>
@@ -117,7 +118,7 @@
         function updateAddress(id) {
 
             let username = document.getElementById("username").value;
-                console.log("ddddddddddddd",username)
+            console.log("ddddddddddddd", username)
 
             let usermobile = document.getElementById("usermobile").value;
             let address = document.getElementById("address").value;
@@ -129,85 +130,85 @@
             let message = document.getElementById("msg4");
 
             var username1 = document.getElementById('username').value.trim();
-        if (!username1.match(/^[A-Za-z]+$/)) {
-            document.getElementById('usernameError').textContent = 'Username can only contain letters!';
-            return false;
-        } else {
-            document.getElementById('usernameError').textContent = '';
-        }
+            if (!username1.match(/^[A-Za-z]+$/)) {
+                document.getElementById('usernameError').textContent = 'Username can only contain letters!';
+                return false;
+            } else {
+                document.getElementById('usernameError').textContent = '';
+            }
 
-        // Mobile Number validation
-        var usermobile1= document.getElementById('usermobile').value.trim();
-        if (!usermobile1.match(/^\d+$/)) {
-            document.getElementById('usermobileError').textContent = 'Mobile number can only contain numbers!';
-            return false;
-        } else if (usermobile.length !== 10) {
-            document.getElementById('usermobileError').textContent = 'Mobile number must be 10 digits long!';
-            return false;
-        } else {
-            document.getElementById('usermobileError').textContent = '';
-        }
+            // Mobile Number validation
+            var usermobile1 = document.getElementById('usermobile').value.trim();
+            if (!usermobile1.match(/^\d+$/)) {
+                document.getElementById('usermobileError').textContent = 'Mobile number can only contain numbers!';
+                return false;
+            } else if (usermobile.length !== 10) {
+                document.getElementById('usermobileError').textContent = 'Mobile number must be 10 digits long!';
+                return false;
+            } else {
+                document.getElementById('usermobileError').textContent = '';
+            }
 
-        // Address validation
-        var address1 = document.getElementById('address').value.trim();
-        if (!address1) {
-            document.getElementById('addressError').textContent = 'Address is required!';
-            return false;
-        } else {
-            document.getElementById('addressError').textContent = '';
-        }
+            // Address validation
+            var address1 = document.getElementById('address').value.trim();
+            if (!address1) {
+                document.getElementById('addressError').textContent = 'Address is required!';
+                return false;
+            } else {
+                document.getElementById('addressError').textContent = '';
+            }
 
-        // Street Address validation
-        var streetaddress1 = document.getElementById('streetaddress').value.trim();
-        if (!streetaddress1) {
-            document.getElementById('streetaddressError').textContent = 'Street address is required!';
-            return false;
-        } else {
-            document.getElementById('streetaddressError').textContent = '';
-        }
+            // Street Address validation
+            var streetaddress1 = document.getElementById('streetaddress').value.trim();
+            if (!streetaddress1) {
+                document.getElementById('streetaddressError').textContent = 'Street address is required!';
+                return false;
+            } else {
+                document.getElementById('streetaddressError').textContent = '';
+            }
 
-        // Pincode validation
-        var pincode1 = document.getElementById('pincode').value.trim();
-        if (!pincode1.match(/^\d+$/)) {
-            document.getElementById('pincodeError').textContent = 'Pincode can only contain numbers!';
-            return false;
-        } else if (pincode.length !== 6) {
-            document.getElementById('pincodeError').textContent = 'Pincode must be 6 digits long!';
-            return false;
-        } else {
-            document.getElementById('pincodeError').textContent = '';
-        }
+            // Pincode validation
+            var pincode1 = document.getElementById('pincode').value.trim();
+            if (!pincode1.match(/^\d+$/)) {
+                document.getElementById('pincodeError').textContent = 'Pincode can only contain numbers!';
+                return false;
+            } else if (pincode.length !== 6) {
+                document.getElementById('pincodeError').textContent = 'Pincode must be 6 digits long!';
+                return false;
+            } else {
+                document.getElementById('pincodeError').textContent = '';
+            }
 
-        // City validation
-        var city1 = document.getElementById('city').value.trim();
-        if (!city1) {
-            document.getElementById('cityError').textContent = 'City is required!';
-            return false;
-        } else {
-            document.getElementById('cityError').textContent = '';
-        }
+            // City validation
+            var city1 = document.getElementById('city').value.trim();
+            if (!city1) {
+                document.getElementById('cityError').textContent = 'City is required!';
+                return false;
+            } else {
+                document.getElementById('cityError').textContent = '';
+            }
 
-        // State validation
-        var state1 = document.getElementById('state').value.trim();
-        if (!state1) {
-            document.getElementById('stateError').textContent = 'State is required!';
-            return false;
-        } else {
-            document.getElementById('stateError').textContent = '';
-        }
+            // State validation
+            var state1 = document.getElementById('state').value.trim();
+            if (!state1) {
+                document.getElementById('stateError').textContent = 'State is required!';
+                return false;
+            } else {
+                document.getElementById('stateError').textContent = '';
+            }
 
-        // Landmark validation
-        var landmark1 = document.getElementById('landmark').value.trim();
-        if (!landmark1) {
-            document.getElementById('landmarkError').textContent = 'Landmark is required!';
-            return false;
-        } else {
-            document.getElementById('landmarkError').textContent = '';
-        }
+            // Landmark validation
+            var landmark1 = document.getElementById('landmark').value.trim();
+            if (!landmark1) {
+                document.getElementById('landmarkError').textContent = 'Landmark is required!';
+                return false;
+            } else {
+                document.getElementById('landmarkError').textContent = '';
+            }
 
-      
-        
-    
+
+
+
 
 
             fetch(`/edituseraddress/${id}`, {
@@ -222,7 +223,7 @@
                     return response.json();
                 })
                 .then((data) => {
-                  
+
                     if (data.already) {
                         message.innerHTML = data.already;
                     } else if (data.success) {

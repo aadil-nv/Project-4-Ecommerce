@@ -36,16 +36,9 @@ user_route.get("/producttab/:id",userAuth.isLogin, usercontroller.loadProductTab
 
 user_route.get('/logout',usercontroller.logout)
 
-user_route.get(
-  "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
+user_route.get("/google",passport.authenticate("google", { scope: ["profile", "email"] }));
 
-user_route.get(
-  "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/failed" }),
-  usercontroller.loadGoogleAuth
-);
+user_route.get("/google/callback",passport.authenticate("google", { failureRedirect: "/failed" }),usercontroller.loadGoogleAuth);
 
 
 // --------------------------------- wee2 project-------------------------
@@ -83,6 +76,16 @@ user_route.post('/orderpage',userAuth.isLogin,usercontroller.placeOrder)
 user_route.get('/orders/:id',userAuth.isLogin,usercontroller.loadOrderPage)
 
 user_route.post('/ordersone/:id',userAuth.isLogin,usercontroller.orderCancel)
+
+user_route.get("/productspopular",userAuth.isLogin, usercontroller.sortByPopularity);
+user_route.get("/productslowtohigh",userAuth.isLogin, usercontroller.sortByPriceLowToHigh);
+user_route.get("/productshightolow",userAuth.isLogin, usercontroller.sortByPriceHighToLow);
+user_route.get("/productsatoz",userAuth.isLogin, usercontroller.sortByAtoZ);
+user_route.get("/productsztoa",userAuth.isLogin, usercontroller.sortByZtoA);
+
+
+
+
 
 
 

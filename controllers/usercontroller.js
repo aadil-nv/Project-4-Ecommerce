@@ -313,6 +313,7 @@ const loadShopPage = async (req, res) => {
   try {
 
     const productData=await Products.find()
+  
 
 
     res.render("user/shop", { User,productData });
@@ -366,12 +367,13 @@ const loadProductTab = async (req, res) => {
 
 // ----------------------------------------------Loding Google Auth-------------------------------------------
 
-const loadGoogleAuth = async (req, res) => {
+const loadGoogleAuth = async (req, res ) => {
   try {
     const ProductData = await Products.find();
-    const gUser = req.user;
+    const gUser = req.user
 
-    res.render("user/index", { ProductData });
+
+    res.render("user/index", { ProductData,User ,gUser});
   } catch (error) {
     console.log(error.message);
   }
@@ -748,6 +750,7 @@ const updatecartAddress = async (req, res) => {
         status: false,
       }
     );
+    res.json({message:"successfully"})
   } catch (error) {
     console.log(error.message);
   }
@@ -892,6 +895,57 @@ const orderCancel = async (req, res) => {
   }
 };
 
+
+const sortByPopularity= async (req,res)=>{
+  try {
+   const productData= await Products.find().sort({_id:-1})
+   res.render('user/shop',{productData})
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+const sortByPriceLowToHigh= async (req,res)=>{
+  try {
+   const productData= await Products.find().sort({productprice:1})
+   res.render('user/shop',{productData})
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+const sortByPriceHighToLow= async (req,res)=>{
+  try {
+   const productData= await Products.find().sort({productprice:-1})
+   res.render('user/shop',{productData})
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+const sortByAtoZ= async (req,res)=>{
+  try {
+   const productData= await Products.find().sort({productname:1})
+   res.render('user/shop',{productData})
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+const sortByZtoA= async (req,res)=>{
+  try {
+   const productData= await Products.find().sort({productname:-1})
+   console.log("==============productData=================",productData)
+   res.render('user/shop',{productData})
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+
+
+
 //--------------------------------------------------------End load OrderPAge -------------------------------------------
 
 // -------------------Exporting Controllers-----------------------
@@ -932,6 +986,12 @@ module.exports = {
   placeOrder,
   loadOrderPage,
   orderCancel,
+  sortByPopularity,
+  sortByPriceLowToHigh,
+  sortByPriceHighToLow,
+  sortByAtoZ,
+  sortByZtoA,
+
 };
 
 // ------------------------------End------------------------------------
