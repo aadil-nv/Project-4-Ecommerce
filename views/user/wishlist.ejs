@@ -1,0 +1,214 @@
+<%- include('../partials/mainheader.ejs')%>
+    <style>
+        #stock1 {
+            font-size: 15px;
+            color: red;
+        }
+
+        #stock2 {
+            font-size: 15px;
+            color: rgb(235, 88, 34);
+        }
+
+        #stock3 {
+            font-size: 15px;
+            color: rgb(116, 81, 16);
+
+        }
+
+        #stock4 {
+            font-size: 15px;
+            color: blue;
+
+        }
+
+        #stock5 {
+            font-size: 15px;
+            color: rgb(3, 160, 50);
+        }
+        .swal2-popup {
+            width: 300px; 
+        height: 160px; 
+        font-size: 9px;
+    }
+    </style>
+
+    <div class="wishlist-area pb-100 pt-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <form action="#">
+                        <div class="wishlist-table-content">
+                            <div class="table-content table-responsive">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th class="width-remove">Remove</th>
+                                            <th class="width-thumbnail">Product</th>
+                                            <th class="width-name">Product Name</th>
+                                            <th class="width-price"> Unit price </th>
+                                            <th class="width-stock-status"> Stock status </th>
+                                            <th class="width-wishlist-cart">Cart</th>
+                                        </tr>
+                                    </thead>
+                                    <% if(wishlistData.length> 0){ %>
+                                        <% wishlistData.forEach((item)=>{ %>
+                                            <% item.products.forEach((data,index)=>{ %>
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="product-remove"><button
+                                                                onclick="removewishlistProduct('<%=data.productId._id %>')"><i
+                                                                    class="fa-solid fa-xmark"></i></button></td>
+                                                        <td class="product-thumbnail">
+                                                            <a href="product-details.html"><img
+                                                                    src="/uploads/<%= data.productId.productimage[0] %>"
+                                                                    alt="" /></a>
+                                                        </td>
+                                                        <td class="product-name">
+                                                            <h5><a href="product-details.html">
+                                                                    <%= data.productId.productname %>
+                                                                </a></h5>
+                                                        </td>
+                                                        <td class="product-wishlist-price"><span class="amount">
+                                                                <%= data.productId.productprice %>
+                                                            </span></td>
+                                                        <td class="stock-status">
+
+                                                            <% if (data.productId.productquadity> 100) { %>
+
+                                                                <span class="new-price">
+                                                                    <p id="stock5">Stock Available</p>
+                                                                </span>
+
+                                                                <% } else if (data.productId.productquadity < 100 &&
+                                                                    data.productId.productquadity>= 50) { %>
+
+                                                                    <span class="new-price">
+                                                                        <p id="stock4">Limited Stock Only</p>
+                                                                    </span>
+
+                                                                    <% } else if (data.productId.productquadity < 50 &&
+                                                                        data.productId.productquadity>= 10) { %>
+
+                                                                        <span class="new-price">
+                                                                            <p id="stock3">Hurry few left</p>
+                                                                        </span>
+
+                                                                        <% } else if (data.productId.productquadity <10
+                                                                            && data.productId.productquadity>= 1) { %>
+
+                                                                            <span class="new-price">
+                                                                                <p id="stock2">Only (
+                                                                                    <%=data.productId.productquadity %>
+                                                                                        )Available</p>
+                                                                            </span>
+
+                                                                            <% } else if (data.productId.productquadity
+                                                                                < 1) { %>
+
+                                                                                <span class="new-price">
+                                                                                    <p id="stock1">Out of Stock</p>
+                                                                                </span>
+
+                                                                                <% } %>
+                                                        </td>
+                                                        <td class="wishlist-cart btn-hover"><button onclick="addItemInCart('<%=data.productId._id %>')">Add to Cart</button>
+                                                        </td>
+                                                    </tr>
+
+
+                                                </tbody>
+                                                <% })%>
+                                                    <% })%>
+                                                        <%}%>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function removewishlistProduct(productId) {
+            console.log('=================productId=====================', productId)
+            fetch('/user/wishlistone', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ productId })
+            })
+                .then((response) => {
+
+                    return response.json();
+                })
+                .then((data) => {
+                    window.location.reload();
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+
+
+<script>
+    function addItemInCart(id) {
+        console.log(id);
+        fetch(`/producttab/${id}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+        })
+        .then((response) => {
+            if (response.ok) {
+                return response.json(); 
+            } else {
+                throw new Error("Product already in cart");
+            }
+        })
+        .then((data) => {
+            if (data && data.message === "Product already in cart") {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Warning",
+                    text: 'Product already in cart',
+                    position: "top-end",
+                    timer: 800,
+                    showConfirmButton: false
+                });
+            } else if (data && data.message === "Product added to cart successfully") {
+                Swal.fire({
+                    icon: "success",
+                    title: "Success!",
+                    text: "Product added to cart successfully",
+                    position: "top-end",
+                    timer: 800,
+                    showConfirmButton: false
+                });
+            } else {
+                throw new Error("Invalid response data");
+            }
+           
+            // window.location.href = "/viewcart";
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+            Swal.fire({
+                icon: "error",
+                title: "Error!",
+                text: error.message,
+                position: "top-end",
+                timer: 3000,
+                showConfirmButton: false
+            });
+            
+            // window.location.href = "/viewcart";
+        });
+    }
+</script>
+
+
+    <%- include('../partials/mainfooter.ejs')%>

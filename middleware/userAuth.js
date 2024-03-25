@@ -35,7 +35,39 @@ const isLogout = async (req, res, next) => {
     }
 }
 
+
+
+
+
+
+
+
+const isUserBlock = async (req,res,next) => {
+
+   try {
+    const checkUser = await User.findById(req.session.user);
+       
+    if(checkUser.is_blocked === true){
+        req.session.user = null;
+        res.redirect('/login');
+    }else{
+        next();
+    }
+    
+   } catch (error) {
+    consoel.log(error.message)
+   }
+
+};
+
+
+
+
+
+
+
 module.exports = {
     isLogin,
-    isLogout
+    isLogout,
+    isUserBlock
 }

@@ -1,9 +1,92 @@
 <%- include('../partials/mainheader.ejs')%>
-        <!-- mini cart start -->
+  
+<style>
+    #container1{
+        border-radius: 25px;
+        background-color: rgb(226, 235, 235);
+        height: 360px;
+        width: 200px;
+        
+    }
+    #productname{
+      font-size: 15px;
+      padding-left: 6px;
+      font-weight: 600;
+        
+    }
+    #offer{
+      color: #f5f5f5;
+      background-color: rgb(241, 145, 80)   ;
+      width: 40px;
+      border-radius: 25px; 
+      text-align: center;       
+    }
+    #productprice{
+        font-weight: 600;
+        padding-left: 6px;
+    }
+    .product-content{
+        margin-bottom: 55px;
+    }
+    .product-price{
+        padding-left: 6px; 
+        font-size:10px;
+    }
+    #stock1{
+        font-size: 10px;
+        color: red;
+    }
+    #stock2{
+        font-size: 10px;
+        color: rgb(235, 88, 34);
+    }
+    #stock3{
+        font-size: 10px;
+        color: rgb(116, 81, 16);
+
+    }
+    #stock4{
+        font-size: 10px;
+        color: blue;
+        
+    }
+    #stock5{
+        font-size: 10px;
+        color: rgb(3, 160, 50);
+    }
+   @media (max-width: 1200px) {
+    #container1{
+        width: 170px;
+        height: 320px;
+    }
+
+   }
+   @media (max-width: 1440px) {
+    #container1{
+        width: 140px;
+        height: 280px;
+    }
+
+   }
+   @media (max-width: 1508px) {
+    #container1{
+        width: 190px;
+        height: 340px;
+    }
+
+   }
+  
+    .swal2-popup {
+        width: 300px; 
+        height: 160px; 
+        font-size: 9px;
+    }
+
+</style>
        
 
-        <div class="shop-area shop-page-responsive pt-100 pb-100">
-            <div class="container">
+        <div class="shop-area shop-page-responsive pt-50 pb-100">
+            <div class="container" >
                 <div class="row flex-row-reverse">
                     <div class="col-lg-9">
                         <div class="shop-topbar-wrapper mb-40">
@@ -44,17 +127,17 @@
 
  <!-- !ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg -->
                                             <%  productData.forEach(data=>{%>
-                                        <div class="col-lg-3 col-md-3 col-sm-6 col-12"   id="Container" >
-                                            <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200" >
+                                        <div class="col-6 col-sm-4 col-md-3 col-lg-3 col-xl-3"   id="Container" >
+                                            <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200" id="container1">
                                                 <div class="product-img img-zoom mb-25">
                                                     <a href="/producttab/<%= data._id %>">
                                                         <img  src="/uploads/<%= data.productimage[0] %>" alt="">
                                                     </a>
                                                     <div class="product-badge badge-top badge-right badge-pink">
-                                                        <span>-10%</span>
+                                                        <p id="offer">40%</p>
                                                     </div>
                                                     <div class="product-action-wrap">
-                                                        <button class="product-action-btn-1" title="Wishlist"><i class="pe-7s-like"></i></button>
+                                                        <button class="product-action-btn-1" title="Wishlist"  onclick="wishlstProductId('<%= data._id %>')" ><i class="pe-7s-like"></i></button>
                                                         <button class="product-action-btn-1" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                             <i class="pe-7s-look"></i>
                                                         </button>
@@ -64,38 +147,42 @@
                                                     </div>
                                                 </div>
                                                 <div class="product-content">
-                                                    <h3><a href=/producttab/<%= data._id %>><%= data.productname %></a></h3>
+                                                    <h3 id="productname"><a href=/producttab/<%= data._id %> ><%= data.productname %></a></h3>
                                                     <div class="product-price">
                                                         <!-- <span class="old-price">₹1000 </span> -->
-                                                        <span class="new-price">₹<%= data.productprice %></span>
+                                                        <span class="new-price"  id="productprice">₹<%= data.productprice %></span>
                                                     </div>
                                                     <% if (data.productquadity > 100) { %>
                                                         <div class="product-price">
-                                                            <span class="new-price"><p>Lot of stock</p></span>
+                                                            <span class="new-price"><p id="stock5">Stock Available</p></span>
                                                         </div>
                                                     <% } else if (data.productquadity < 100 && data.productquadity >= 50) { %>
                                                         <div class="product-price">
-                                                            <span class="new-price"><p>More stock</p></span>
+                                                            <span class="new-price"><p  id="stock4">Limited Stock Only</p></span>
                                                         </div>
                                                     <% } else if (data.productquadity < 50 && data.productquadity >= 10) { %>
                                                         <div class="product-price">
-                                                            <span class="new-price"><p>Limited stock</p></span>
+                                                            <span class="new-price"><p  id="stock3">Hurry few left</p></span>
                                                         </div>
-                                                    <% } else if (data.productquadity < 10) { %>
+                                                    <% } else if (data.productquadity <10 && data.productquadity >= 1) { %>
                                                         <div class="product-price">
-                                                            <span class="new-price"><p>Low stock</p></span>
+                                                            <span class="new-price"><p  id="stock2">Only (<%=data.productquadity %>)Available</p></span>
                                                         </div>
+                                                        <% } else if (data.productquadity < 1) { %>   
+                                                            <div class="product-price">
+                                                                <span class="new-price"><p id="stock1">Out of Stock</p></span>
+                                                            </div>
                                                     <% } %>
                                                 </div>
                                             </div>
                                         </div>
                                         <% }) %>
+                                    </div>
 <!-- !ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg -->
 
 
 
                                         
-                                    </div>
                                     <div class="pagination-style-1" data-aos="fade-up" data-aos-delay="200">
                                         <ul>
                                             <li><a class="active" href="#">1</a></li>
@@ -329,6 +416,9 @@
                 </div>
             </div>
         </div>
+        <!-- Include SweetAlert CSS -->
+
+<!-- Include SweetAlert JS -->
 
         <script>
             function addItemInCart(id) {
@@ -372,8 +462,93 @@
     }
 </script>
 
-  
 
+
+    function wishlstProductId(id) {
+        console.log('=======================productId==========================',id)
+      fetch('/user/wishlist', {
+        method: 'POST', 
+        headers: {
+          'Content-Type': 'application/json',
+         
+        },
+        body: JSON.stringify({ id: id }) 
+      })
+      .then(response => {
+        if (response.ok) {
+            swal({
+                    title: "Success!",
+                    text: "Product added to wishlist successfully",
+                    icon: "success",
+                    position: "top-end", // Display at the top right corner
+                    timer: 3000, // Auto close after 3 seconds
+                    buttons: false // Hide the "Close" button
+                });
+          
+          console.log('Product added to wishlist successfully');
+        } else {
+          
+          console.error('Error adding product to wishlist');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+    </script> -->
+    <script>
+   
+  function wishlstProductId(id) {
+    console.log('=======================productId==========================', id)
+    fetch('/user/wishlist', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: id })
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.json(); // Parse response JSON if response is okay
+        } else {
+            throw new Error('Error adding product to wishlist');
+        }
+    })
+    .then(data => {
+        console.log('Response Data:', data); // Log the parsed data to the console
+        if (data && data.message) {
+            Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: data.message,
+                    position: 'top-end',
+                    timer: 900,
+                    showConfirmButton: false
+                });
+        } else {
+            throw new Error('Invalid response data');
+        }
+    })
+    .catch(error => {
+        Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: error.message,
+                position: 'top-end',
+                timer: 1000,
+                showConfirmButton: false
+            });
+      
+        console.error('Error:', error);
+    });
+}
+
+
+
+
+    </script>
+    
+    
 
         
  

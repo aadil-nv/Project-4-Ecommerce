@@ -1,6 +1,6 @@
 <%- include('../partials/asidenav.ejs')%>
 
-    <section class="content-main">
+    <section class="content-main"  style="background-color: rgb(211, 218, 218);">
         <div class="content-header">
             <div>
                 <h2 class="content-title card-title">Category Lists</h2>
@@ -78,13 +78,13 @@
                                                   
                                                     
                                                         
-                                                        <a href="/adminBlockcategory/<%= data._id %>" ><button  class="btn btn-sm rounded font-sm "  style="background-color: #3BB77E;  align-items: center; justify-content: center;  color: white; width: 68px ;">Block</button></a>
+                                                        <a  onclick="confirmBlockCategory('<%= data._id %>')" ><button  class="btn btn-sm rounded font-sm "  style="background-color: #3BB77E;  align-items: center; justify-content: center;  color: white; width: 68px ;">Block</button></a>
 
                                                 </td>
                                                 <%}else{%>
                                                     <td >
                                                     
-                                                        <a href="/adminBlockcategory/<%= data._id %>"><button  class="btn btn-sm rounded font-sm "  style="background-color: #be2222;  align-items: center; justify-content: center; color: white; ">unBlock</button></a>
+                                                        <a  onclick="confirmUnBlockCategory('<%= data._id %>')"><button  class="btn btn-sm rounded font-sm "  style="background-color: #be2222;  align-items: center; justify-content: center; color: white; ">unBlock</button></a>
 
 
                                                     </td>
@@ -137,6 +137,9 @@
         </div>
     </footer>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="path/to/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/adminpublic/adminlogin/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/adminpublic/adminlogin/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/adminpublic/adminlogin/js/vendors/select2.min.js"></script>
@@ -144,6 +147,39 @@
     <script src="/adminpublic/adminlogin/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script src="/adminpublic/adminlogin/js/main.js?v=1.1" type="text/javascript"></script>
-    </body>
+  
+    <script>
+        function confirmBlockCategory(categoryId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You are about to Block this category!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3BB77E',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, block it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "/adminBlockcategory/" + categoryId;
+        }
+    });
+}
+        function confirmUnBlockCategory(categoryId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You are about to unBlock this category!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#db0b2e',
+        cancelButtonColor: '#3BB77E',
+        confirmButtonText: 'Yes, unBlock it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "/adminBlockcategory/" + categoryId;
+        }
+    });
+}
 
-    </html>
+    </script>
+
+   

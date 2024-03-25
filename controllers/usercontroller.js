@@ -9,6 +9,7 @@ const Products = require("../models/productModel");
 const Address = require("../models/addressModel");
 const Cart = require("../models/cartModel");
 const order = require("../models/orderModal");
+const Wishlist = require("../models/wishlistModel");
 
 // --------------OTP Generating-----------------
 const generateOTP = () => {
@@ -311,12 +312,9 @@ const backToUserHome = async (req, res) => {
 
 const loadShopPage = async (req, res) => {
   try {
+    const productData = await Products.find();
 
-    const productData=await Products.find()
-  
-
-
-    res.render("user/shop", { User,productData });
+    res.render("user/shop", { User, productData });
   } catch (error) {
     console.log(error.message);
   }
@@ -367,13 +365,14 @@ const loadProductTab = async (req, res) => {
 
 // ----------------------------------------------Loding Google Auth-------------------------------------------
 
-const loadGoogleAuth = async (req, res ) => {
+const loadGoogleAuth = async (req, res) => {
   try {
     const ProductData = await Products.find();
-    const gUser = req.user
-
-
-    res.render("user/index", { ProductData,User ,gUser});
+    const gUser = req.user;
+    if (gUser) {
+      req.session.user = gUser;
+      res.redirect("/");
+    }
   } catch (error) {
     console.log(error.message);
   }
@@ -750,7 +749,7 @@ const updatecartAddress = async (req, res) => {
         status: false,
       }
     );
-    res.json({message:"successfully"})
+    res.json({ message: "successfully" });
   } catch (error) {
     console.log(error.message);
   }
@@ -782,8 +781,6 @@ const addCheckoutAddress = async (req, res) => {
     console.log(error.message);
   }
 };
-
-
 
 const placeOrder = async (req, res) => {
   try {
@@ -856,8 +853,6 @@ const placeOrder = async (req, res) => {
   }
 };
 
-
-
 //todo-------------------------------------------------------End Load Oreder Page ---------------------------------------------
 
 //-------------------------------------------------------- load OrderPAge -------------------------------------------
@@ -869,9 +864,9 @@ const loadOrderPage = async (req, res) => {
     const orderData = await order
       .find({ _id: orderId })
       .populate("orderedItem.productId")
-      .populate("deliveryAddress");
+      .populate("deliveryAddress")
+      .populate("userId");
 
-    
     res.render("user/orders", { orderData });
   } catch (error) {
     console.log(error.message);
@@ -895,58 +890,118 @@ const orderCancel = async (req, res) => {
   }
 };
 
-
-const sortByPopularity= async (req,res)=>{
+const sortByPopularity = async (req, res) => {
   try {
-   const productData= await Products.find().sort({_id:-1})
-   res.render('user/shop',{productData})
+    const productData = await Products.find().sort({ _id: -1 });
+    res.render("user/shop", { productData });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+const sortByPriceLowToHigh = async (req, res) => {
+  try {
+    const productData = await Products.find().sort({ productprice: 1 });
+    res.render("user/shop", { productData });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+const sortByPriceHighToLow = async (req, res) => {
+  try {
+    const productData = await Products.find().sort({ productprice: -1 });
+    res.render("user/shop", { productData });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+const sortByAtoZ = async (req, res) => {
+  try {
+    const productData = await Products.find().sort({ productname: 1 });
+    res.render("user/shop", { productData });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+const sortByZtoA = async (req, res) => {
+  try {
+    const productData = await Products.find().sort({ productname: -1 });
+
+    res.render("user/shop", { productData });
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+//todo---------------------------------------------------weeek3 project----------------------------------------------------------
+
+const loadWishliist = async (req, res) => {
+  try {
+    const userId= req.session.user
+    const wishlistData= await Wishlist.find({userId}).populate("products.productId")
+
+    
+    res.render("user/wishlist",{wishlistData});
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const addProductInWishlist = async (req, res) => {
+  try {
+    const { id } = req.body;
+    const userId = req.session.user;
+
+    const existingProduct = await Wishlist.findOne({
+      userId: req.session.user,
+      'products.productId': id
+    })
+
+    if (existingProduct) {
+      return res.json({ message: "Product already exists in wishlist" });
+    }
+    const wishlists = await Wishlist.findOneAndUpdate(
+      { userId: req.session.user },
+      {
+        $addToSet: {
+          products: {
+            productId: id,
+          },
+        },
+      },
+      { new: true, upsert: true }
+    );
+
+      res.json({message:"product added to wishlist successfully"})
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+
+const removeWishlistProduct=async (req,res)=>{
+  try {
+    const {productId}=req.body
+    const userId=req.session.user
+    const wishlistData= await Wishlist.find({userId}).populate("products.productId")
+
+    const wishlist = await Wishlist.findOne({ userId });
+    if (!wishlist) {
+      return res.status(404).json({ error: "Wishlist not found" });
+    }
+    wishlist.products = wishlist.products.filter(product => product.productId.toString() !== productId);
+    await wishlist.save();
+
+    res.status(200).json({ message: "Product removed from wishlist successfully" });
+
+
+    console.log('================productid=========================',productId)
     
   } catch (error) {
     console.log(error.message)
   }
 }
-const sortByPriceLowToHigh= async (req,res)=>{
-  try {
-   const productData= await Products.find().sort({productprice:1})
-   res.render('user/shop',{productData})
-    
-  } catch (error) {
-    console.log(error.message)
-  }
-}
-const sortByPriceHighToLow= async (req,res)=>{
-  try {
-   const productData= await Products.find().sort({productprice:-1})
-   res.render('user/shop',{productData})
-    
-  } catch (error) {
-    console.log(error.message)
-  }
-}
-const sortByAtoZ= async (req,res)=>{
-  try {
-   const productData= await Products.find().sort({productname:1})
-   res.render('user/shop',{productData})
-    
-  } catch (error) {
-    console.log(error.message)
-  }
-}
-const sortByZtoA= async (req,res)=>{
-  try {
-   const productData= await Products.find().sort({productname:-1})
-   console.log("==============productData=================",productData)
-   res.render('user/shop',{productData})
-    
-  } catch (error) {
-    console.log(error.message)
-  }
-}
-
-
-
-
 //--------------------------------------------------------End load OrderPAge -------------------------------------------
+
 
 // -------------------Exporting Controllers-----------------------
 
@@ -991,7 +1046,9 @@ module.exports = {
   sortByPriceHighToLow,
   sortByAtoZ,
   sortByZtoA,
-
+  loadWishliist,
+  addProductInWishlist,
+  removeWishlistProduct
 };
 
 // ------------------------------End------------------------------------

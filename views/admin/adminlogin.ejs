@@ -23,7 +23,15 @@
                 <div class="card mx-auto card-login" style="background-color: rgb(58, 211, 122); ;">
                     <div class="card-body" >
                         <h2 class="card-title mb-4"  >Admin Sign In</h2>
-                        <div style="justify-content: center; align-items: center;"><p id="show1" style="color: crimson;"></p></div>
+                        <div style="justify-content: center; align-items: center;">
+                            <p id="show1" style="color: crimson;"></p>
+                            <% if(typeof message!=='undefined' ){ %>
+
+                                <h6 id="errorMessage"  style="color: red;" style="justify-content: center; text-align: center;">
+                                    <%= message %>
+                                </h6>
+                                <% } %>
+                        </div>
                         <form action="" method="post" onsubmit="return handleSubmit()">
                             <div class="mb-3">
                                 <input class="form-control"  id="email" name="email" placeholder="Username or email" type="text" />

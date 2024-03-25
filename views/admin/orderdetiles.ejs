@@ -1,10 +1,20 @@
 <%- include('../partials/asidenav.ejs')%>
 
-    <section class="content-main">
+
+<style>
+    #detilesSave{
+        background-color: blue;
+        border: none;
+        color: white;
+
+        
+    }
+</style>
+    <section class="content-main"  style="background-color: rgb(211, 218, 218);">
         <div class="content-header">
             <div>
-                <h2 class="content-title card-title">Order detail</h2>
-                <p>order detiles of: <%= orderData.userId.name %>
+                <h2 class="content-title card-title">Order Detailes</h2>
+                <p>Order Detiles of: <%= orderData.userId.name %>
                 </p>
             </div>
         </div>
@@ -12,17 +22,16 @@
             <header class="card-header">
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
-                        <span> <i class="material-icons md-calendar_today"></i> <b>Wed, Aug 13, 2020, 4:34PM</b> </span>
+                        <p> <i class="material-icons md-calendar_today"></i> <b><%= orderData.deliveryDate %></b> </p>
+
                         <br />
-                        <small class="text-muted">Order ID: <%= orderData.orderId %></small>
+                        <small >Order ID:- <%= orderData.orderId %></small>
                     </div>
                     <div class="col-lg-6 col-md-6 ms-auto text-md-end">
 
-                        <button
-                            style="width: 130px; height: 40px; border: none; background-color: seagreen; color: white;">save</button>
+                       
                         <input type="hidden" value="<%= orderData._id %>" id="orderId">
-                        <a class="btn btn-secondary print ms-2" href="#"><i
-                                class="icon material-icons md-print"></i></a>
+                       
                     </div>
                 </div>
             </header>
@@ -99,10 +108,10 @@
                                         <th width="30%">Product</th>
                                         <th width="10%">Unit Price</th>
                                         <th width="10%">Quantity</th>
-                                        <th width="10%" class="text-end">Total</th>
-                                        <th width="10%" class="text-end">Status</th>
-                                        <th width="22%" class="text-end">Status</th>
-                                        <th width="10%" class="text-end">Save</th>
+                                        <th width="10%" >Total</th>
+                                        <th width="10%" >Status</th>
+                                        <th width="18%" >Change Status</th>
+                                        <th width="10%" >Save</th>
                                     </tr>
                                 </thead>
                                 <% orderData.orderedItem.forEach(item=>{ %>
@@ -125,10 +134,10 @@
                                             <td>
                                                 <%=item.quantity%>
                                             </td>
-                                            <td class="text-end">
-                                                <%=item.totalProductAmount%>
+                                            <td >
+                                                ₹<%=item.totalProductAmount%>
                                             </td>
-                                            <td class="text-center">
+                                            <td >
                                                 <%=item.productStatus%>
                                             </td>
                                             <td>
@@ -141,7 +150,7 @@
                                                 </select>
                                             </td>
                                             <td>
-                                                <button onclick="saveStatus('<%= item.productId._id %>')">Save</button>
+                                                <button id="detilesSave" onclick="saveStatus('<%= item.productId._id %>')">Save</button>
                                             </td>
                                         </tr>
 
@@ -152,29 +161,29 @@
                                                         <dl class="dlist">
                                                             <dt>Subtotal:</dt>
                                                             <dd>
-                                                                <%= orderData.orderAmount %>
+                                                                ₹<%= orderData.orderAmount %>
                                                             </dd>
                                                         </dl>
                                                         <dl class="dlist">
                                                             <dt>Shipping cost:</dt>
-                                                            <dd>$00.00</dd>
+                                                            <dd>₹00.00</dd>
                                                         </dl>
                                                         <dl class="dlist">
                                                             <dt>Grand total:</dt>
                                                             <dd><b class="h5">
-                                                                    <%= orderData.orderAmount %>
+                                                                ₹<%= orderData.orderAmount %>
                                                                 </b></dd>
                                                         </dl>
                                                         <dl class="dlist">
 
                                                             <dt class="text-muted">Status: </dt>
                                                             <dd>
-
+                                                                
                                                                 <span
                                                                     class="badge rounded-pill alert-success text-success">
-                                                                    <%=orderData.orderStatus%>
+                                                                    <%= orderData.orderStatus%>
                                                                 </span>
-
+                                                                
                                                             </dd>
                                                         </dl>
                                                     </article>

@@ -104,7 +104,7 @@
                                                             <div class="product-quality"
                                                                 onclick="qtyControl(this,'<%=data.productId._id %>','<%= index %>')">
                                                                 <input class="cart-plus-minus input-text qty text"
-                                                                    name="quantity" min="1" value="<%=data.quantity %>" onchange="handleQuantityChange('<%= index %>')" 
+                                                                    name="quantity" min="1"  value="<%=data.quantity %>" onchange="handleQuantityChange('<%= index %>')" 
                                                                     readonly />
                                                             </div>
                                                             <p id="stock<%= index %>" style="color: red"></p>
@@ -113,7 +113,7 @@
                                                         <%}else{%>
 
                                                             <td class="cart-quality">
-                                                                <p>out of Stock</p>
+                                                                <p style="color: red">out of Stock</p>
                                                                 <div class="product-quality"
                                                                     onclick="qtyControl(this,'<%=data.productId._id %>')"
                                                                     style="display: none">
@@ -164,7 +164,7 @@
                     <div class="grand-total-wrap">
                         <div class="grand-total-content">
                             <h3>Subtotal <span id="total">
-                                    <%= total%>
+                                ₹<%= total%>
                                 </span></h3>
                             <br />
                             <h6>Discout <span>₹900</span></h6>
@@ -173,110 +173,18 @@
                             <h6>Delivery Charges <span>₹100</span></h6>
 
                             <hr />
-                            <!-- <div class="grand-total">
-                                <h4>Total Amount<span >₹<%= total %></span></h4>
-                            </div> -->
+                               
                         </div>
+                       
                         <div class="grand-total-btn btn-hover">
                             <a class="btn theme-color" href="/checkoutpage">Proceed to checkout</a>
                         </div>
+                        
                     </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="cart-calculate-discount-wrap mb-40">
-                        <h4>Calculate shipping</h4>
-                        <div class="calculate-discount-content">
-                            <div class="select-style mb-15">
-                                <select class="select-two-active">
-                                    <option>Bangladesh</option>
-                                    <option>Bahrain</option>
-                                    <option>Azerbaijan</option>
-                                    <option>Barbados</option>
-                                    <option>Barbados</option>
-                                </select>
-                            </div>
-                            <div class="select-style mb-15">
-                                <select class="select-two-active">
-                                    <option>State / County</option>
-                                    <option>Bahrain</option>
-                                    <option>Azerbaijan</option>
-                                    <option>Barbados</option>
-                                    <option>Barbados</option>
-                                </select>
-                            </div>
-                            <div class="input-style">
-                                <input type="text" placeholder="Town / City" />
-                            </div>
-                            <div class="input-style">
-                                <input type="text" placeholder="Postcode / ZIP" />
-                            </div>
-                            <div class="calculate-discount-btn btn-hover">
-                                <a class="btn theme-color" href="#">Update</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="cart-calculate-discount-wrap mb-40">
-                        <h4>Coupon Discount</h4>
-                        <div class="calculate-discount-content">
-                            <p>Enter your coupon code if you have one.</p>
-                            <div class="input-style">
-                                <input type="text" placeholder="Coupon code" />
-                            </div>
-                            <div class="calculate-discount-btn btn-hover">
-                                <a class="btn theme-color" href="#">Apply Coupon</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--------------------------------------------------------------------- suB tOTAL  ------------------------------------------------------------------------------>
-
-                <div class="col-lg-4 col-md-12 col-12">
-                    <div class="grand-total-wrap">
-                        <div class="grand-total-content">
-                            <h3>
-                                Subtotal
-                                <span>
-                                    <!-- <%= total %> -->
-                                </span>
-                            </h3>
-                            <div class="grand-shipping">
-                                <span>Shipping</span>
-                                <ul>
-                                    <li>
-                                        <input type="radio" name="shipping" value="info" checked="checked" /><label>Free
-                                            shipping</label>
-                                    </li>
-                                    <li>
-                                        <input type="radio" name="shipping" value="info" checked="checked" /><label>Flat
-                                            rate: <span>$100.00</span></label>
-                                    </li>
-                                    <li>
-                                        <input type="radio" name="shipping" value="info"
-                                            checked="checked" /><label>Local pickup: <span>$120.00</span></label>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="shipping-country">
-                                <p>Shipping to Bangladesh</p>
-                            </div>
-                            <div class="grand-total">
-                                <h4>Total <span>$185.00</span></h4>
-                            </div>
-                        </div>
-                        <div class="grand-total-btn btn-hover">
-                            <a class="btn theme-color" href="checkout.html">Proceed to checkout</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!---------------------------------------------------------------------eND suB tOTAL  ------------------------------------------------------------------------------>
-            </div>
+            
         </div>
     </div>
 

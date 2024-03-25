@@ -12,6 +12,10 @@
     #available{
         color: green;
     }
+    .swiper-container{
+        width: 400px;
+        border-radius: 25px;
+    }
 </style>
 
     <div class="product-details-area pb-100 pt-100">
@@ -156,8 +160,11 @@
                                     <li><h6 class="title">Stock:</h6> <h6 id="limited">Limited stock Only</h6></li>
                                 <% } else if (savedData.productquadity < 50 && savedData.productquadity >= 10) { %>
                                     <li><h6 class="title">Stock:</h6><h6 id="hurry">Hurry few left</h6> </li>
-                                <% } else if (savedData.productquadity < 10) { %>
+                                <% } else if (savedData.productquadity < 10  && savedData.productquadity >= 1) { %>
+                                    <li><h6 class="title">Stock:</h6><h6 style="color: rgb(236, 118, 63); ">Only(<%= savedData.productquadity %>) Avilable</h6></li>
+                                <% } else if (savedData.productquadity < 1) { %> 
                                     <li><h6 class="title">Stock:</h6><h6 style="color: red; ">Only(<%= savedData.productquadity %>) Avilable</h6></li>
+
                                 <% } %>
 
 

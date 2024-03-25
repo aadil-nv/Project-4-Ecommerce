@@ -28,7 +28,7 @@
                                                     <label>Enter Your Email :</label>
                                                 <input type="text" id="email" name="email" placeholder="(e.g., example@example.com)">
                                                 <label>Enter Your Paasword :</label>
-                                                <input type="password" id="password" name="password" placeholder="(e.g.,5 Digit Password)"  >
+                                                <input type="password" id="password" name="password" placeholder="(Password)"  >
                                                 
                                                 <div class="button-box btn-hover"  style="justify-content: center; align-items: center; display: flex;">
                                                     <button type="submit">Login</button>
@@ -70,12 +70,12 @@
       
               let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
               if (!email.match(emailRegex)) {
-               document.getElementById("show1").innerHTML = "Enter a valid Email address";
+               document.getElementById("show1").innerHTML = "Enter a valid Email address or Pssaword";
                return false;
             }
             let passwordeRegex=/^\d{5}$/
               if(!password.match(passwordeRegex)){
-               document.getElementById("show1").innerHTML="Enter Correct Password";
+               document.getElementById("show1").innerHTML="Enter a valid Email address or Pssaword";
                return false;
            }
            return true

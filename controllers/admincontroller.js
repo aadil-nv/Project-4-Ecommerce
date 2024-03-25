@@ -66,7 +66,7 @@ const adminDashboard = async (req, res) => {
 
 const adminUsersList = async (req, res) => {
   try {
-    const user = await User.find();
+    const user = await User.find().sort({_id:-1});
 
     res.render("admin/userslist", { user });
   } catch (error) {
@@ -250,7 +250,7 @@ const updateCategory = async (req, res) => {
 // ------------------------------Loading Productlist and sending Product data intothe page ------------------------------------
 const productList = async (req, res) => {
   try {
-    const product = await Products.find();
+    const product = await Products.find().sort({_id:-1});
 
     res.render("admin/productlist", { product });
   } catch (error) {
@@ -485,7 +485,7 @@ const adminOrdersList = async (req, res) => {
       .find()
       .populate("orderedItem.productId")
       .populate("deliveryAddress")
-      .populate("userId");
+      .populate("userId").sort({_id:-1})
 
     res.render("admin/orderlist", { orderData });
   } catch (error) {
@@ -511,15 +511,7 @@ const adminOrderDetiles = async (req, res) => {
 const adminChangeOrderStatus = async (req, res) => {
   try {
     const { selectedStatus, productId, orderId } = req.body;
-    console.log("---------------------orderId---------------------", orderId);
-    console.log(
-      "---------------------selectedStatus---------------------",
-      selectedStatus
-    );
-    console.log(
-      "---------------------productId---------------------",
-      productId
-    );
+    
 
     const orderData = await order
       .find({ _id: orderId })

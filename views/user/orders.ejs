@@ -27,9 +27,10 @@
         }
     </style>
 
-    <div class="breadcrumb-area bg-gray-4 breadcrumb-padding-1" style="background-color: rgb(206, 206, 235)">
-        <h1 id="orderid">#order id here</h1>
-
+    <div class="breadcrumb-area bg-gray-4 breadcrumb-padding-1" style="background-color: rgb(198, 198, 228)">
+        <% orderData.forEach((item)=> { %>
+        <h3 id="orderid">Thankyou for your Purchase <%= item.userId.name %></h3>
+            <% }) %>
         <div class="banner-area pb-70 pt-80">
             <div class="container" style="height: 600px">
                 <div class="row">

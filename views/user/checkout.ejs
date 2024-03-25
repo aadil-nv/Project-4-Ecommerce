@@ -500,7 +500,7 @@
                 
 
                 var username1 = document.getElementById('username1').value.trim();
-            //    consoel.log("===================username1=========================",username1)
+                alert("fghj")
                 if (!username1.match(/^[A-Za-z]+$/)) {
 
                     document.getElementById('usernameError3').innerHTML = 'Username can only contain letters!';
@@ -509,9 +509,9 @@
                     document.getElementById('usernameError3').innerHTML = '';
                 }
                 
-                // Mobile Number validation
+           
                 var usermobile1 = document.getElementById('usermobile1').value.trim();
-            //    consoel.log("===================usermobile1=========================",usermobile1)
+           
             if (!usermobile1.match(/^\d+$/)) {
                 document.getElementById('usermobileError3').textContent = 'Mobile number can only contain numbers!';
                 return false;
@@ -522,9 +522,9 @@
                 document.getElementById('usermobileError3').textContent = '';
             }
             
-            // Address validation
+          
             var address1 = document.getElementById('address1').value.trim();
-           // consoel.log("===================address1=========================",address1)
+        
             if (!address1) {
                 document.getElementById('addressError3').textContent = 'Address is required!';
                 return false;
@@ -532,9 +532,9 @@
                 document.getElementById('addressError3').textContent = '';
             }
             
-            // Street Address validation
+           
             var streetaddress1 = document.getElementById('streetaddress1').value.trim();
-          //  consoel.log("===================streetaddress1=========================",streetaddress1)
+         
             if (!streetaddress1) {
                 document.getElementById('streetaddressError3').textContent = 'Street address is required!';
                 return false;
@@ -542,9 +542,9 @@
                 document.getElementById('streetaddressError3').textContent = '';
             }
             
-            // Pincode validation
+       
             var pincode1 = document.getElementById('pincode1').value.trim();
-           // consoel.log("===================pincode1=========================",pincode1)
+         
             if (!pincode1.match(/^\d+$/)) {
                 document.getElementById('pincodeError3').textContent = 'Pincode can only contain numbers!';
                 return false;
@@ -555,9 +555,9 @@
                 document.getElementById('pincodeError3').textContent = '';
             }
             
-            // City validation
+          
             var city1 = document.getElementById('city1').value.trim();
-           // consoel.log("===================city1=========================",city1)
+          
             if (!city1) {
                 document.getElementById('cityError3').textContent = 'City is required!';
                 return false;
@@ -565,9 +565,9 @@
                 document.getElementById('cityError3').textContent = '';
             }
 
-            // State validation
+         
             var state1 = document.getElementById('state1').value.trim();
-          //  consoel.log("===================state1=========================",state1)
+       
             if (!state1) {
                 document.getElementById('stateError3').textContent = 'State is required!';
                 return false;
@@ -575,9 +575,9 @@
                 document.getElementById('stateError3').textContent = '';
             }
 
-            // Landmark validation
+         
             var landmark1 = document.getElementById('landmark1').value.trim();
-           // consoel.log("===================landmark1=========================",landmark1)
+          
             if (!landmark1) {
                 document.getElementById('landmarkError3').textContent = 'Landmark is required!';
                 return false;
@@ -710,7 +710,7 @@
                         activeAddressId = radioButton.value;
                     }
                 });
-                console.log("================================", activeAddressId)
+               
 
 
                 fetch('/orderpage', {
@@ -750,65 +750,5 @@
 
         </script>
 
-        <!-- <script>
-    function validateForm() {
-        const username = document.getElementById('username1').value.trim();
-        const mobile = document.getElementById('usermobile1').value.trim();
-        const address = document.getElementById('address1').value.trim();
-        const streetAddress = document.getElementById('streetaddress1').value.trim();
-        const city = document.getElementById('city1').value.trim();
-        const pincode = document.getElementById('pincode1').value.trim();
-        const state = document.getElementById('state1').value.trim();
-        const landmark = document.getElementById('landmark1').value.trim();
-
-        if (!username) {
-            document.getElementById('usernameError').innerText = "Username is required";
-            return false;
-        }
-        document.getElementById('usernameError').innerText = "";
-
-        if (!mobile || !/^\d{10}$/.test(mobile)) {
-            document.getElementById('mobileError').innerText = "Please enter a valid 10-digit mobile number";
-            return false;
-        }
-        document.getElementById('mobileError').innerText = "";
-
-        if (!address) {
-            document.getElementById('addressError').innerText = "Address is required";
-            return false;
-        }
-        document.getElementById('addressError').innerText = "";
-
-        if (!streetAddress) {
-            document.getElementById('streetAddressError').innerText = "Street address is required";
-            return false;
-        }
-        document.getElementById('streetAddressError').innerText = "";
-
-        if (!city) {
-            document.getElementById('cityError').innerText = "City is required";
-            return false;
-        }
-        document.getElementById('cityError').innerText = "";
-
-        if (!pincode || !/^\d{6}$/.test(pincode)) {
-            document.getElementById('pincodeError').innerText = "Please enter a valid 6-digit pincode";
-            return false;
-        }
-        document.getElementById('pincodeError').innerText = "";
-
-        if (!state) {
-            document.getElementById('stateError').innerText = "State is required";
-            return false;
-        }
-        document.getElementById('stateError').innerText = "";
-
-        if (!landmark){
-            document.getElementById('landmarkError').innerText = "State is required"
-            return false;  
-        }
-        return true
-    }
-</script> -->
-
+      
         <%- include('../partials/mainfooter.ejs')%>

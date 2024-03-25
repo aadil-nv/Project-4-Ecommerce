@@ -3,7 +3,7 @@
 
 
 
-<section class="content-main">
+<section class="content-main"  style="background-color: rgb(211, 218, 218);">
     <div class="content-header">
         <div>
             <h2 class="content-title card-title">Products</h2>
@@ -52,11 +52,11 @@
 
                                                 <%if (data.isListed===true){ %>
                                             <td >
-                                                <a  href="/listProduct?id=<%= data._id %>"  ><button  class="btn btn-md rounded font-sm" style="width:68px; background-color: #9cb73b;"> List</button></a>
+                                                <a  onclick="confirmBlock('<%= data._id %>')"   ><button  class="btn btn-md rounded font-sm" style="width:68px; background-color: #9cb73b;"> List</button></a>
                                             </td>
                                             <%}else{%>
                                                 <td  >
-                                                    <a  href="/listProduct?id=<%= data._id %>"  ><button  class="btn btn-md rounded font-sm" style="background-color: rgb(218, 79, 79);"> unList</button></a>
+                                                    <a  onclick="confirmUnBlock('<%= data._id %>')"   ><button  class="btn btn-md rounded font-sm" style="background-color: rgb(218, 79, 79);"> unList</button></a>
                                                    
                                                 </td>
                                                 <% } %>
@@ -88,8 +88,46 @@
 </section>
 
 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="path/to/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
->
+
+    <script>
+         function confirmBlock(userId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You are about to unList Product!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#db0b2e',
+        cancelButtonColor: '#3BB77E',
+        confirmButtonText: 'Yes, unList it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "/listProduct?id=" + userId;
+        }
+    });
+}
+
+function confirmUnBlock(userId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You are about to List this Product!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#db0b2e',
+        cancelButtonColor: '#3BB77E',
+        confirmButtonText: 'Yes, List it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+          
+            window.location.href = "/listProduct?id=" + userId;
+        }
+    });
+}
+
+    </script>
+
 

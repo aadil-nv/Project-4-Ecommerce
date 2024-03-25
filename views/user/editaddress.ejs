@@ -130,8 +130,9 @@
             let message = document.getElementById("msg4");
 
             var username1 = document.getElementById('username').value.trim();
+
             if (!username1.match(/^[A-Za-z]+$/)) {
-                document.getElementById('usernameError').textContent = 'Username can only contain letters!';
+                document.getElementById('usernameError').innerHTML = 'Username can only contain letters!';
                 return false;
             } else {
                 document.getElementById('usernameError').textContent = '';
@@ -226,8 +227,8 @@
 
                     if (data.already) {
                         message.innerHTML = data.already;
-                    } else if (data.success) {
-                        // Show success message using SweetAlert
+                    
+                       
                         Swal.fire({
                             title: 'Success!',
                             text: 'Address updated successfully',
@@ -236,7 +237,8 @@
                             onClose: () => {
                                 window.location.href = "/userprofile";
                             }
-                        });
+                            })
+                       
                     } else {
                         message.innerHTML = "Something wrong";
                     }

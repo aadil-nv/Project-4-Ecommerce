@@ -1,15 +1,13 @@
 <%- include('../partials/asidenav.ejs')%>
 
 
-    <section class="content-main">
+    <section class="content-main" style="background-color: rgb(211, 218, 218);">
         <div class="content-header">
             <div>
-                <h2 class="content-title card-title">Customers List</h2>
+                <h2 class="content-title card-title">Users List</h2>
                 
             </div>
-            <div>
-                <input type="text" placeholder="Search users" class="form-control bg-white" />
-            </div>
+           
         </div>
         <div class="card mb-4">
             <header class="card-header">
@@ -69,11 +67,11 @@
                                             <%if (data.is_blocked===false){ %>
                                                 <td class="text-end" style=" align-items: center; justify-content: center; display: flex;"  >
                                                         
-                                                         <a href="/blockuser?id=<%= data._id %>" style="color: white; "><button  class="btn btn-md rounded font-sm" style="background-color: #3BB77E;  width: 80px;  ; ">Block</button></a></td>
+                                                         <a onclick="confirmBlock('<%= data._id %>')"    style="color: white; "><button  class="btn btn-md rounded font-sm" style="background-color: #3BB77E;  width: 80px;  ; ">Block</button></a></td>
                                                 <%}else{%>
                                                     <td class="text-end"   style=" align-items: center; justify-content: center; display: flex;" >
                                                             
-                                                           <a href="/blockuser?id=<%= data._id %>"  style="color: white;"><button class="btn btn-md rounded font-sm" style="background-color: rgb(202, 59, 40); width: 80px; ">unBlock</button></a></td>
+                                                           <a onclick="confirmUnBlock('<%= data._id %>')"  style="color: white;"><button class="btn btn-md rounded font-sm" style="background-color: rgb(202, 59, 40); width: 80px; ">unBlock</button></a></td>
                                                     <% } %>
                                                         <% })%>
                                                             <% }else{ %>
@@ -124,7 +122,10 @@
             </div>
         </div>
     </footer>
-    </main>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="path/to/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/adminpublic/adminlogin/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/adminpublic/adminlogin/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/adminpublic/adminlogin/js/vendors/select2.min.js"></script>
@@ -132,6 +133,41 @@
     <script src="/adminpublic/adminlogin/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script src="/adminpublic/adminlogin/js/main.js?v=1.1" type="text/javascript"></script>
-    </body>
+    <script>
+        function confirmBlock(userId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You are about to block this user!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3BB77E',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, block it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // If the user confirms, redirect to the block user endpoint
+            window.location.href = "/blockuser?id=" + userId;
+        }
+    });
+}
 
-    </html>
+    </script>
+    <script>
+         function confirmUnBlock(userId) {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You are about to unBlock this user!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#db0b2e',
+        cancelButtonColor: '#3BB77E',
+        confirmButtonText: 'Yes, unBlock it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // If the user confirms, redirect to the block user endpoint
+            window.location.href = "/blockuser?id=" + userId;
+        }
+    });
+}
+
+    </script>
