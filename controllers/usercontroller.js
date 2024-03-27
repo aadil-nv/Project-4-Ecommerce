@@ -844,21 +844,21 @@ const   placeOrder = async (req, res) => {
 
     const orderId = "order_"+generateRandomOrderId(9);
 
-    const newOrder = new order({
+    let newOrder = new order({
       userId,
       cartId: cartData._id,
       orderId,
       orderedItem: orderedItems,
       orderAmount: cartData.total,
       deliveryAddress: currentAddress,
-      orderStatus: "pending",
+      paymentStatus: "pending",
       deliveryDate: new Date(),
       shippingDate: new Date(),
       paymentMethod: paymentmethod,
     });
+      req.session.newOrders= newOrder
 
     if(paymentmethod === 'RazorPay'){
-
       const options={
          amount :cartData.total*100,
          currency: "INR",
@@ -872,6 +872,7 @@ const   placeOrder = async (req, res) => {
         })
 
         razorpayInstance.orders.create(options,
+          
         (err, order) => {
           console.log("===============================================")
           console.log("",order)
@@ -880,13 +881,14 @@ const   placeOrder = async (req, res) => {
               console.log(err);
                 res.json({success:false})
             } else {
-               
+
                 res.json({
                   order:order,
                     success: true,
                     order_id:order.id,
                     key_id:"rzp_test_nexg64Tm176iuH",
                     paymentMethod: paymentmethod,
+                   
                 })
             }
 
@@ -1059,7 +1061,7 @@ const removeWishlistProduct=async (req,res)=>{
     wishlist.products = wishlist.products.filter(product => product.productId.toString() !== productId);
     await wishlist.save();
 
-    res.status(200).json({ message: "Product removed from wishlist successfully" });
+    res.status(200).json({ message: "Product removed from wishlist successfully" ,});
 
 
     
@@ -1069,65 +1071,7 @@ const removeWishlistProduct=async (req,res)=>{
 }
 
 
-// const verifyOrder= async (req,res)=>{
-//   try {
-//     const {razorpay_signature,order_id,paymentId}= req.body
-    
-    
-//     const key_secret= "DQNPLFsGnpzS3Jw8pPszj7Xv" 
-    
-//     generated_signature = hmac_sha256(order_id + "|" + paymentId, key_secret);;
 
-//     console.log('================razorpay_signature=======================',razorpay_signature)
-
-//     console.log('================order_id=======================',generated_signature)
-
-//       if(generated_signature === razorpay_signature){
-
-//         await newOrder.save();
-//         res.status(200).json({ success: true, message: "Payment is successful", paymentId });
-//       } else {
-//         console.log("Signature verification failed");
-//         res.status(400).json({ success: false, message: "Payment verification failed" })
-//     }
-//   } catch (error) {
-
-//     console.log(error.message)
-//   }
-// }
-
-
-
-
-
-// let key_secret = "O9XSLdoJltXb4Hr9kO9QBIp";
-
-
-
-// const verifyOrder = async (req, res) => {
-//   try {
-//     const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
-
-//     const keySecret = "DQNPLFsGnpzS3Jw8pPszj7Xv";
-
-//     const text = `${razorpay_order_id}|${razorpay_payment_id}`;
-
-//     const hmac = crypto.createHmac('sha256', keySecret);
-//     hmac.update(text);
-//     const generatedSignature = hmac.digest('hex');
-
-//     if (generatedSignature === razorpay_signature) {
-//       console.log('Payment is successful');
-//       res.status(200).json({ success: true, message: "Payment verification successful" });
-//     } else {
-//       console.log("Signature verification failed");
-//       res.status(400).json({ success: false, message: "Payment verification failed" });
-//     }
-//   } catch (error) {
-//     console.error('Error verifying payment:', error);
-//     res.status(500).send("Internal server error");
-//   }
-// };
 
 
 
@@ -1135,27 +1079,48 @@ const removeWishlistProduct=async (req,res)=>{
 const verifyOrder = async (req, res) => {
   try {
     
-    const { razorpay_signature, order_id, paymentId } = req.body;
+    const { razorpay_signature, order_id, paymentId} = req.body;
+    let key_secret= "DQNPLFsGnpzS3Jw8pPszj7Xv" 
+   
 
-    console.log("====================razorpay_signature==============================",razorpay_signature)
-    console.log("=====================order_id=============================",order_id)
-    console.log("=====================paymentId=============================",paymentId)
 
-    
+    console.log("++++++++db_id+++++++",req.session.newOrders)
+    let newOrder=req.session.newOrders
+
+    const curentData =new  order({
+      userId:newOrder.userId,
+      cartId: newOrder.cartId,
+      orderId:newOrder. orderId,
+      orderedItem: newOrder.orderedItem,
+      orderAmount: newOrder.orderAmount,
+      deliveryAddress: newOrder. deliveryAddress,
+      paymentStatus: "paymentsuccesfull",
+      deliveryDate: newOrder.deliveryDate,
+      shippingDate: newOrder.deliveryDate,
+      paymentMethod: newOrder.paymentMethod,
+    })
+
+
      
-      let key_secret= "DQNPLFsGnpzS3Jw8pPszj7Xv" 
   
     
     var success=validatePaymentVerification({"order_id":order_id,"payment_id": paymentId },razorpay_signature, key_secret);
 
     console.log("=======tyftfufughuuuuuuu================",success)
   if (!success) {
+    await order.insertMany({newOrder})
     console.log("Signature verification failed");
+
     res.status(400).json({ success: false, message: "Payment verification failed" });
                                         
   } else {
     console.log('payment is successful')
-    res.status(200).json({ success: true, message: "Payment verification successful" });
+    curentData.save()
+    
+    
+     
+    console.log("uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",curentData._id)
+        res.status(200).json({ success: true, message: "Payment verification successful",curentData:curentData._id });
     }
   } catch (error) {
     console.log(error.message);

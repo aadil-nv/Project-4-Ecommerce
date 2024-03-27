@@ -1,0 +1,164 @@
+<%- include('../partials/asidenav.ejs')%>
+
+    <section class="content-main">
+        <div class="row">
+            <div class="col-9">
+                <div class="content-header">
+                    <h2 class="content-title">Create Coupons</h2>
+
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label for="product_title" class="form-label">Coupon Name</label>
+                            <input type="text" placeholder="Type here" class="form-control" id="CouponName" />
+                            <p style="color: red;" id="couponNameError"></p>
+                        </div>
+                        <div class="mb-4">
+                            <label for="product_title" class="form-label">Coupon Code</label>
+                            <input type="text" placeholder="Type here" class="form-control" id="CouponCode" />
+                            <p style="color: red;" id="couponCodeError"></p>
+
+                        </div>
+                        <div class="mb-4">
+                            <label for="product_title" class="form-label">Description</label>
+                            <input type="text" placeholder="Type here" class="form-control" id="CouponDescription" />
+                            <p style="color: red;" id="couponDescriptionError"></p>
+
+                        </div>
+                        <div class="mb-4">
+                            <label for="product_title" class="form-label">Expiry Date</label>
+                            <input type="date" placeholder="Type here" class="form-control" id="CouponExpire" />
+                            <p style="color: red;" id="couponExpireError"></p>
+
+                        </div>
+                        <div class="row gx-3">
+                            <div class="col-md-6 mb-3">
+                                <label for="product_sku" class="form-label">Discount Amount</label>
+                                <input type="number" placeholder="Type here" class="form-control" id="CouponDicount" />
+                                <p style="color: red;" id="couponDiscountError"></p>
+
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="product_color" class="form-label">Minimum Amount</label>
+                                <input type="number" placeholder="Type here" class="form-control"
+                                    id="CouponMinAmount" />
+                                <p style="color: red;" id="couponMinAmountError"></p>
+
+                            </div>
+
+                        </div>
+                        <br>
+                        <div class="text-center">
+                            <button class="btn btn-light rounded font-sm mr-5 text-body hover-up"
+                                onclick="saveCoupon()">Save to draft</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <script>
+        function saveCoupon() {
+
+            const couponName = document.getElementById('CouponName').value.trim()
+            const couponCode = document.getElementById('CouponCode').value.trim()
+            const couponDescription = document.getElementById('CouponDescription').value.trim()
+            const couponExpire = document.getElementById('CouponExpire').value.trim()
+            const couponDiscount = document.getElementById('CouponDicount').value.trim()
+            const couponMinAmount = document.getElementById('CouponMinAmount').value.trim()
+
+            if (!couponName.trim()) {
+                document.getElementById('couponNameError').innerHTML = 'Invalid Coupon Name !';
+                return;
+            }
+
+            if (!couponCode.trim()) {
+                document.getElementById('couponCodeError').innerHTML = 'Invlid Coupon Code !';
+                return;
+            }
+
+            if (!couponDescription.trim()) {
+                document.getElementById('couponDescriptionError').innerHTML = 'Invalid Coupon Description !';
+                return;
+            }
+
+            if (!couponExpire) {
+                document.getElementById('couponExpireError').innerHTML = 'Please select a date !';
+                return;
+            }
+
+            if (!couponDiscount.trim() || isNaN(couponDiscount.trim())) {
+                document.getElementById('couponDiscountError').innerHTML = 'Invalid entry !';
+                return;
+            } 
+
+            if (!couponMinAmount.trim() || isNaN(couponMinAmount.trim())) {
+                document.getElementById('couponMinAmountError').innerHTML = 'Invalid entry !';
+                return;
+            } else if (!/^\d{3}$/.test(couponMinAmount.trim())) {
+                document.getElementById('couponMinAmountError').innerHTML = 'Minimumm amount must be greter than RS/-99 !'
+                return;
+            }
+
+
+            const data = {
+                couponName: couponName,
+                couponCode: couponCode,
+                couponDescription: couponDescription,
+                couponExpire: couponExpire,
+                couponDiscount: couponDiscount,
+                couponMinAmount: couponMinAmount
+            };
+            console.log(data)
+
+            fetch('/admin/createcoupon', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ data })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+
+                    if (data.message == "Success") {
+
+                        swal({
+                            title: "Success",
+                            text: "Coupon added successfully",
+                            icon: "success",
+                        });
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
+
+                    } else {
+
+                        swal({
+                            title: "Error",
+                            text: "Failed to add coupon",
+                            icon: "error",
+                        });
+                    }
+
+                })
+                .catch(error => {
+                    console.error('Error saving coupon:', error);
+                    swal({
+                        title: "Error",
+                        text: "An error occurred while saving the coupon",
+                        icon: "error",
+                    });
+                });
+        }
+    </script>

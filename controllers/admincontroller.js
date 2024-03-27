@@ -10,6 +10,7 @@ const multer = require("multer");
 const path = require("path");
 const sharp = require("sharp");
 const order = require("../models/orderModal");
+const Coupon = require("../models/couponModal");
 
 // ---------------------Multer image saving--------------------------
 const storage = multer.diskStorage({
@@ -545,6 +546,57 @@ const adminChangeOrderStatus = async (req, res) => {
     console.log(error.message);
   }
 };
+//!-------------------------------------------week 10-------------------------------------------------------------
+
+const admincouponlist= async (req,res)=>{
+  try {
+
+    const couponData= await Coupon.find()
+    consoel.log(couponData)
+    res.render('admin/couponlist',{couponData})
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+
+const admincouponmanagement=  async (req,res)=>{
+  try {
+    
+    res.render('admin/createcoupon')
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+const addNewCoupon = async (req,res)=>{
+  try {
+
+    const {data}= req.body
+
+    if(!data){
+      res.json({message:"failed"})
+
+    }else{
+      const couponData= new Coupon({
+        couponName: data.couponName,
+        couponCode:data.couponCode,
+        discountAmount:data.couponDiscount,
+        minAmount:data.couponMinAmount,
+        couponDescription:data.couponDescription,
+        expiryDate:data.couponExpire,
+        status:true,
+        used:false
+      })
+      await couponData.save()
+      res.json({message:"Success"})
+  }
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 // --------------------------------------------End Load UsersList -------------------------------------------
 
 // ------------------------------------------------End--------------------------------------------------------
@@ -571,4 +623,7 @@ module.exports = {
   adminOrdersList,
   adminOrderDetiles,
   adminChangeOrderStatus,
+  admincouponlist,
+  addNewCoupon,
+  admincouponmanagement
 };

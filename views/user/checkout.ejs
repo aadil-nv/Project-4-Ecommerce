@@ -720,13 +720,14 @@
                         if (data.paymentMethod === "RazorPay") {
 
                             var options = {
-                                "key":data.key_id,
-                                "amount": data.order.amount ,
+                                "key": data.key_id,
+                                "amount": data.order.amount,
                                 "currency": "INR",
                                 "name": "furni world",
                                 "description": "Pay & Checkout this Course, Upgrade your DSA Skill",
                                 "image": "/user/icon/estoreLogo.png",
                                 "order_id": data.order.id,
+                                
                                 "handler": function (response) {
                                     console.log("++++++++++++++response+++++++++++++++", response)
 
@@ -739,11 +740,14 @@
                                             paymentId: response.razorpay_payment_id,
                                             order_id: response.razorpay_order_id,
                                             razorpay_signature: response.razorpay_signature,
-                                            
+                                           
+
                                         })
                                     })
                                         .then(response => response.json())
                                         .then(data => {
+                                            console.log("-----------------data--------------------------",data.curentData)
+                                            if(data.success===true){
                                             Swal.fire({
                                                 icon: 'success',
                                                 title: 'Order Placed',
@@ -755,11 +759,12 @@
                                                 buttonsStyling: false
                                             })
                                             setTimeout(() => {
-                                                window.location.href = `/orders/${data.newOrder._id}`
+                                                window.location.href = `/orders/${data.curentData}`
                                             }, 1000)
+                                        }
                                         })
 
-                    
+
                                 }
                                 ,
                                 "prefill": {
@@ -779,19 +784,18 @@
 
 
 
-                                var razorpayObject = new Razorpay(options);
-                                razorpayObject.open();
-                                console.log("=================options====================", options)
+                            var razorpayObject = new Razorpay(options);
+                            razorpayObject.open();
+                            console.log("=================options====================", options)
 
-                                razorpayObject.on('payment.failed', function (response) {
-                                    console.log("==================response======================",response);
-                                    alert("This step of Payment Failed");
-                                });
-                                
+                            razorpayObject.on('payment.failed', function (response) {
+                                console.log("==================response======================", response);
+                                alert("This step of Payment Failed");
+                            });
 
 
-                            // var rzp1 = new Razorpay(options)
-                            // rzp1.open()
+
+
 
 
 

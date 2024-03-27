@@ -6,6 +6,7 @@ const admincontroller = require("../controllers/admincontroller");
 const multer=require('multer')
 
 
+
 admin_route.use(bodyParser.json());
 admin_route.use(bodyParser.urlencoded({ extended: true }));
 
@@ -44,11 +45,19 @@ admin_route.get('/listProduct',admincontroller.listProduct)
 admin_route.get('/editproductdetilesfetch/:id',admincontroller.deleteProductImage)
 
 
-//todo------------------------------week-9-------------------------------------------------
+//todo------------------------------------week-9-------------------------------------------------
 
 admin_route.get('/orderslist',admincontroller.adminOrdersList)
 admin_route.get('/orderdetiles/:id',admincontroller.adminOrderDetiles)
 admin_route.post('/orderdetiles/:id',admincontroller.adminChangeOrderStatus)
+
+
+//todo----------------------------------week-10----------------------------------------------------
+
+admin_route.get('/admin/couponlist',admincontroller.admincouponlist)
+admin_route.get('/admin/createcoupon',admincontroller.admincouponmanagement)
+
+admin_route.post('/admin/createcoupon',admincontroller.addNewCoupon)
 
 
 

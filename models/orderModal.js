@@ -48,7 +48,7 @@ const orderSchema= new mongoose.Schema({
         type: Object,
         required: true,
     },
-    orderStatus: {
+    paymentStatus: {
         type: String,
         required: true,
         default:"pending"
