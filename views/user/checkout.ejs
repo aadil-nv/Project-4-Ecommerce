@@ -4,13 +4,11 @@
         .data-cell {
             padding-left: 50px;
             padding-top: 20;
-
         }
 
         .data-radio {
             padding-top: 10px;
             padding-right: 80px;
-
         }
 
         .table-data {
@@ -29,7 +27,8 @@
         .error-message {
             color: red;
         }
-        #save{
+
+        #save {
             background-color: orangered;
             border: none;
             height: 53px;
@@ -173,7 +172,6 @@
                                                 <div class="error-message" id="landmarkError"></div>
                                             </div>
                                         </div>
-
                                     </div>
                                     <div class="single-input-item btn-hover">
                                         <button type="submit" class="save-btn sqr-btn">
@@ -183,20 +181,23 @@
                                 </div>
                             </form>
 
-                            <% if(addressData.length> 0){ %>
-                                <% addressData.forEach((data,index)=>{%>
+                            <% if(addressData.length> 0){ %> <% addressData.forEach((data,index)=>{%>
 
                                     <table style="
                 width: 70%;
                 height: 260px;
-               
+
                 background-color: rgb(255, 255, 255);
                 box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1),
                   0px 6px 6px rgba(0, 0, 0, 0.1);
               ">
                                         <tr>
-                                            <th class="data-radio"><input type="radio" name="addressId"
-                                                    value="<%=data._id%>" <%if(index==0){%> checked <%}%> ></th>
+                                            <th class="data-radio">
+                                                <input type="radio" name="addressId" value="<%=data._id%>"
+                                                    <%if(index==0){%> checked <%}%> >
+                                            </th>
+                                        </tr>
+
                                         <tr>
                                             <th class="data-cell">Name :</th>
                                             <td class="table-data">
@@ -238,7 +239,8 @@
                                             <td class="table-data">
                                                 <%= data.pincode %>
                                             </td>
-                                        </tr><br />
+                                        </tr>
+                                        <br />
                                         <tr>
                                             <th class="data-cell">Landmark:</th>
                                             <td class="table-data">
@@ -266,16 +268,15 @@
                                             <li>Product <span>Total</span></li>
                                         </ul>
                                     </div>
-                                    <% if(cartDetiles.length> 0){ %>
-                                        <% cartDetiles[0].products.forEach((data)=>{ %>
+                                    <% if(cartDetiles.length> 0){ %> <% cartDetiles[0].products.forEach((data)=>{ %>
                                             <div class="your-order-middle">
                                                 <ul>
                                                     <li>
-                                                        <%= data.productId.productname %> <span>
+                                                        <%= data.productId.productname %>
+                                                            <span>
                                                                 <%= data.productId.productprice %>
                                                             </span>
                                                     </li>
-
                                                 </ul>
                                             </div>
                                             <% })%>
@@ -302,13 +303,11 @@
                                         <input id="payment_method_1" class="input-radio" type="radio"
                                             value="Net Banking" checked="checked" name="payment_method" />
                                         <label for="payment_method_1">Net Banking</label>
-
                                     </div>
                                     <div class="pay-top sin-payment">
                                         <input id="payment-method-2" class="input-radio" type="radio"
                                             value=" Credi/Debit/ATM Card" name="payment_method" />
                                         <label for="payment-method-2"> Credi/Debit/ATM Card</label>
-
                                     </div>
                                     <div class="pay-top sin-payment">
                                         <input id="payment-method-3" class="input-radio" type="radio"
@@ -319,7 +318,6 @@
                                         <input id="payment-method-4" class="input-radio" type="radio" value="RazorPay"
                                             name="payment_method" />
                                         <label for="payment-method-4">RazorPay</label>
-
                                     </div>
                                 </div>
                             </div>
@@ -329,13 +327,11 @@
                             </div>
 
                             <!-- !------------------------------- place Orderr Button ------------------------------------------>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
 
         <!----------------------------------------------------------------- Moda --------------------------------------------------------------->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -345,109 +341,97 @@
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Edit Your Address</h5>
                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"
-                            style="border: none;">
+                            style="border: none">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
 
+                    <form>
+                        <div class="modal-body">
+                            <div class="different-address open-toggle mt-30">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="billing-info mb-20">
+                                            <label>User Name</label>
+                                            <input type="text" placeholder="(Name)*" id="username1" name="username" />
+                                        </div>
+                                        <span id="usernameError3" class="error-message" style="color: red"></span>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="billing-info mb-20">
+                                            <label>Mobile Number</label>
+                                            <input type="text" placeholder="(10 Digits )*" id="usermobile1"
+                                                name="usermobile" />
+                                            <span id="usermobileError3" class="error-message" style="color: red"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
+                                            <label>Address</label>
+                                            <input type="text" placeholder="(House No. Building Name)*" id="address1"
+                                                name="address" />
+                                            <span id="addressError3" class="error-message" style="color: red"></span>
+                                        </div>
+                                    </div>
 
-                <form>
-                    <div class="modal-body">
-                        <div class="different-address open-toggle mt-30">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6">
-                                    <div class="billing-info mb-20">
-                                        <label>User Name</label>
-                                        <input type="text" placeholder="(Name)*" id="username1" name="username"/>
-                                    </div>
-                                    <span id="usernameError3" class="error-message"    style="color: red;"></span> 
-                                </div>
-                                <div class="col-lg-6 col-md-6">
-                                    <div class="billing-info mb-20">
-                                        <label>Mobile Number</label>
-                                        <input type="text" placeholder="(10 Digits )*" id="usermobile1"
-                                            name="usermobile" />
-                                            <span id="usermobileError3" class="error-message"   style="color: red;"></span>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="billing-info mb-20">
-                                        <label>Address</label>
-                                        <input type="text" placeholder="(House No. Building Name)*" id="address1"
-                                            name="address" />
-                                            <span id="addressError3" class="error-message"   style="color: red;"></span>
-                                    </div>
-                                </div>
+                                    <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
+                                            <label>Street Address</label>
 
-                                <div class="col-lg-12">
-                                    <div class="billing-info mb-20">
-                                        <label>Street Address</label>
+                                            <input placeholder="(Road name,Area, colony)*" type="text"
+                                                id="streetaddress1" name="streetaddress" />
+                                            <span id="streetaddressError3" class="error-message"
+                                                style="color: red"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="billing-info mb-20">
+                                            <label>City</label>
+                                            <input type="text" placeholder="(your city)*" id="city1" name="city" />
+                                            <span id="cityError3" class="error-message" style="color: red"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="billing-info mb-20">
+                                            <label>Pincode</label>
+                                            <input type="text" placeholder="(Required)*" id="pincode1" name="pincode" />
+                                            <span id="pincodeError3" class="error-message" style="color: red"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="billing-info mb-20">
+                                            <label>State</label>
+                                            <input type="text" placeholder="(State)*" id="state1" name="state" />
+                                            <span id="stateError3" class="error-message"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="billing-info mb-20">
+                                            <label>Landmark</label>
+                                            <input type="text" placeholder="(Famous place your Area)*" id="landmark1"
+                                                name="landmark" />
+                                            <span id="landmarkError3" class="error-message" style="color: red"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                                        <input placeholder="(Road name,Area, colony)*" type="text" id="streetaddress1"
-                                            name="streetaddress" />
-                                            <span id="streetaddressError3" class="error-message"   style="color: red;"></span>
-                                        
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="billing-info mb-20">
-                                        <label>City</label>
-                                        <input type="text" placeholder="(your city)*" id="city1" name="city" />
-                                        <span id="cityError3" class="error-message"   style="color: red;"></span>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6">
-                                    <div class="billing-info mb-20">
-                                        <label>Pincode</label>
-                                        <input type="text" placeholder="(Required)*" id="pincode1" name="pincode" />
-                                        <span id="pincodeError3" class="error-message"  style="color: red;"></span>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-6">
-                                    <div class="billing-info mb-20">
-                                        <label>State</label>
-                                        <input type="text" placeholder="(State)*" id="state1" name="state" />
-                                        <span id="stateError3" class="error-message"></span>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-md-12">
-                                    <div class="billing-info mb-20">
-                                        <label>Landmark</label>
-                                        <input type="text" placeholder="(Famous place your Area)*" id="landmark1"
-                                            name="landmark" />
-                                            <span id="landmarkError3" class="error-message"   style="color: red;"></span>
-                                    </div>
-                                </div>
-
-
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Close
+                                </button>
+                                <button class="green" id="save">Save changes</button>
                             </div>
                         </div>
-
-
-
-                        <div class="modal-footer">
-
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button class="green" id="save" >Save changes</button>
-
-                        </div>
-                    </div>
-            </form>
+                    </form>
                 </div>
             </div>
-
-
-
         </div>
         <!-----------------------------------------------------------------End  Moda --------------------------------------------------------------->
 
-
         <script>
-
             let addressId;
             function sendAddressId(id) {
-
-
                 fetch(`/checkoutpage/${id}`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -460,18 +444,23 @@
                         return response.json();
                     })
                     .then((data) => {
-                        console.log(data)
-                        document.getElementById("username1").value = data.addressDataSecond.name
-                        document.getElementById("usermobile1").value = data.addressDataSecond.mobile
-                        document.getElementById("pincode1").value = data.addressDataSecond.pincode
-                        document.getElementById("address1").value = data.addressDataSecond.address
-                        document.getElementById("streetaddress1").value = data.addressDataSecond.streetaddress
-                        document.getElementById("city1").value = data.addressDataSecond.city
-                        document.getElementById("state1").value = data.addressDataSecond.state
-                        document.getElementById("landmark1").value = data.addressDataSecond.landmark
-                        addressId = data.addressDataSecond._id
-
-
+                        console.log(data);
+                        document.getElementById("username1").value =
+                            data.addressDataSecond.name;
+                        document.getElementById("usermobile1").value =
+                            data.addressDataSecond.mobile;
+                        document.getElementById("pincode1").value =
+                            data.addressDataSecond.pincode;
+                        document.getElementById("address1").value =
+                            data.addressDataSecond.address;
+                        document.getElementById("streetaddress1").value =
+                            data.addressDataSecond.streetaddress;
+                        document.getElementById("city1").value = data.addressDataSecond.city;
+                        document.getElementById("state1").value =
+                            data.addressDataSecond.state;
+                        document.getElementById("landmark1").value =
+                            data.addressDataSecond.landmark;
+                        addressId = data.addressDataSecond._id;
                     })
 
                     .catch((err) => {
@@ -479,117 +468,125 @@
                     });
             }
 
+            const save = document.getElementById("save");
 
-            const save= document.getElementById('save')
+            save.addEventListener("click", (e) => {
+                e.preventDefault();
 
-            save.addEventListener('click',(e)=>{
-               
-                e.preventDefault()
-           
                 console.log("uuuu");
 
-
                 let username = document.getElementById("username1").value;
-                let usermobile = document.getElementById("usermobile1").value
+                let usermobile = document.getElementById("usermobile1").value;
                 let address = document.getElementById("address1").value;
                 let streetaddress = document.getElementById("streetaddress1").value;
                 let pincode = document.getElementById("pincode1").value;
                 let state = document.getElementById("state1").value;
                 let landmark = document.getElementById("landmark1").value;
                 let city = document.getElementById("city1").value;
-                
 
-                var username1 = document.getElementById('username1').value.trim();
-                alert("fghj")
+                var username1 = document.getElementById("username1").value.trim();
+                alert("fghj");
                 if (!username1.match(/^[A-Za-z]+$/)) {
-
-                    document.getElementById('usernameError3').innerHTML = 'Username can only contain letters!';
+                    document.getElementById("usernameError3").innerHTML =
+                        "Username can only contain letters!";
                     return false;
                 } else {
-                    document.getElementById('usernameError3').innerHTML = '';
+                    document.getElementById("usernameError3").innerHTML = "";
                 }
-                
-           
-                var usermobile1 = document.getElementById('usermobile1').value.trim();
-           
-            if (!usermobile1.match(/^\d+$/)) {
-                document.getElementById('usermobileError3').textContent = 'Mobile number can only contain numbers!';
-                return false;
-            } else if (usermobile.length !== 10) {
-                document.getElementById('usermobileError3').textContent = 'Mobile number must be 10 digits long!';
-                return false;
-            } else {
-                document.getElementById('usermobileError3').textContent = '';
-            }
-            
-          
-            var address1 = document.getElementById('address1').value.trim();
-        
-            if (!address1) {
-                document.getElementById('addressError3').textContent = 'Address is required!';
-                return false;
-            } else {
-                document.getElementById('addressError3').textContent = '';
-            }
-            
-           
-            var streetaddress1 = document.getElementById('streetaddress1').value.trim();
-         
-            if (!streetaddress1) {
-                document.getElementById('streetaddressError3').textContent = 'Street address is required!';
-                return false;
-            } else {
-                document.getElementById('streetaddressError3').textContent = '';
-            }
-            
-       
-            var pincode1 = document.getElementById('pincode1').value.trim();
-         
-            if (!pincode1.match(/^\d+$/)) {
-                document.getElementById('pincodeError3').textContent = 'Pincode can only contain numbers!';
-                return false;
-            } else if (pincode.length !== 6) {
-                document.getElementById('pincodeError3').textContent = 'Pincode must be 6 digits long!';
-                return false;
-            } else {
-                document.getElementById('pincodeError3').textContent = '';
-            }
-            
-          
-            var city1 = document.getElementById('city1').value.trim();
-          
-            if (!city1) {
-                document.getElementById('cityError3').textContent = 'City is required!';
-                return false;
-            } else {
-                document.getElementById('cityError3').textContent = '';
-            }
 
-         
-            var state1 = document.getElementById('state1').value.trim();
-       
-            if (!state1) {
-                document.getElementById('stateError3').textContent = 'State is required!';
-                return false;
-            } else {
-                document.getElementById('stateError3').textContent = '';
-            }
+                var usermobile1 = document.getElementById("usermobile1").value.trim();
 
-         
-            var landmark1 = document.getElementById('landmark1').value.trim();
-          
-            if (!landmark1) {
-                document.getElementById('landmarkError3').textContent = 'Landmark is required!';
-                return false;
-            } else {
-                document.getElementById('landmarkError3').textContent = '';
-            }
-                
+                if (!usermobile1.match(/^\d+$/)) {
+                    document.getElementById("usermobileError3").textContent =
+                        "Mobile number can only contain numbers!";
+                    return false;
+                } else if (usermobile.length !== 10) {
+                    document.getElementById("usermobileError3").textContent =
+                        "Mobile number must be 10 digits long!";
+                    return false;
+                } else {
+                    document.getElementById("usermobileError3").textContent = "";
+                }
 
-                fetch('/checkoutpage', {
+                var address1 = document.getElementById("address1").value.trim();
+
+                if (!address1) {
+                    document.getElementById("addressError3").textContent =
+                        "Address is required!";
+                    return false;
+                } else {
+                    document.getElementById("addressError3").textContent = "";
+                }
+
+                var streetaddress1 = document
+                    .getElementById("streetaddress1")
+                    .value.trim();
+
+                if (!streetaddress1) {
+                    document.getElementById("streetaddressError3").textContent =
+                        "Street address is required!";
+                    return false;
+                } else {
+                    document.getElementById("streetaddressError3").textContent = "";
+                }
+
+                var pincode1 = document.getElementById("pincode1").value.trim();
+
+                if (!pincode1.match(/^\d+$/)) {
+                    document.getElementById("pincodeError3").textContent =
+                        "Pincode can only contain numbers!";
+                    return false;
+                } else if (pincode.length !== 6) {
+                    document.getElementById("pincodeError3").textContent =
+                        "Pincode must be 6 digits long!";
+                    return false;
+                } else {
+                    document.getElementById("pincodeError3").textContent = "";
+                }
+
+                var city1 = document.getElementById("city1").value.trim();
+
+                if (!city1) {
+                    document.getElementById("cityError3").textContent = "City is required!";
+                    return false;
+                } else {
+                    document.getElementById("cityError3").textContent = "";
+                }
+
+                var state1 = document.getElementById("state1").value.trim();
+
+                if (!state1) {
+                    document.getElementById("stateError3").textContent =
+                        "State is required!";
+                    return false;
+                } else {
+                    document.getElementById("stateError3").textContent = "";
+                }
+
+                var landmark1 = document.getElementById("landmark1").value.trim();
+
+                if (!landmark1) {
+                    document.getElementById("landmarkError3").textContent =
+                        "Landmark is required!";
+                    return false;
+                } else {
+                    document.getElementById("landmarkError3").textContent = "";
+                }
+
+                fetch("/checkoutpage", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ addressId, username, usermobile, address, streetaddress, pincode, state, landmark, city }),
+                    body: JSON.stringify({
+                        addressId,
+                        username,
+                        usermobile,
+                        address,
+                        streetaddress,
+                        pincode,
+                        state,
+                        landmark,
+                        city,
+                    }),
                 })
                     .then((response) => {
                         if (!response.ok) {
@@ -598,12 +595,9 @@
                         return response.json();
                     })
                     .then((data) => {
-                        
                         if (data.message) {
-                            console.log(data.message)
-                            window.location.reload()
-
-
+                            console.log(data.message);
+                            window.location.reload();
                         } else {
                             message.innerHTML = "Somthing wrong";
                         }
@@ -612,15 +606,8 @@
                     .catch((err) => {
                         console.log(err);
                     });
-            }
-        
-         
-        )
-
+            });
         </script>
-
-
-
 
         <script>
             function validateForm() {
@@ -694,7 +681,8 @@
                 }
                 return true;
             }
- 
+            // -------------------------------------------------------------------------------------------------------------------------------
+
             function handleAddressSelection() {
                 const paymentMethodRadios = document.querySelectorAll('input[name="payment_method"]');
                 for (const radio of paymentMethodRadios) {
@@ -702,7 +690,7 @@
                         paymentmethod = radio.value;
                     }
                 }
-                console.log(paymentmethod)
+
 
                 var radioButtons = document.querySelectorAll('input[name="addressId"]');
                 radioButtons.forEach(function (radioButton) {
@@ -710,7 +698,7 @@
                         activeAddressId = radioButton.value;
                     }
                 });
-               
+
 
 
                 fetch('/orderpage', {
@@ -727,28 +715,108 @@
                         return response.json();
                     })
                     .then(data => {
+                        console.log(data)
 
-                        console.log('Fetched address data:', data);
-                        Swal.fire({
-                            title: 'Order Placed Successfully',
-                            icon: 'success',
-                            confirmButtonText: 'OK'
-                        });
-                        setTimeout(() => {
-                            window.location.href = `/orders/${data.newOrder._id}`
-                        }, 1500)
+                        if (data.paymentMethod === "RazorPay") {
+
+                            var options = {
+                                "key":data.key_id,
+                                "amount": data.order.amount ,
+                                "currency": "INR",
+                                "name": "furni world",
+                                "description": "Pay & Checkout this Course, Upgrade your DSA Skill",
+                                "image": "/user/icon/estoreLogo.png",
+                                "order_id": data.order.id,
+                                "handler": function (response) {
+                                    console.log("++++++++++++++response+++++++++++++++", response)
+
+                                    fetch('/verifyOrder', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                            paymentId: response.razorpay_payment_id,
+                                            order_id: response.razorpay_order_id,
+                                            razorpay_signature: response.razorpay_signature,
+                                            
+                                        })
+                                    })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            Swal.fire({
+                                                icon: 'success',
+                                                title: 'Order Placed',
+                                                showConfirmButton: false,
+                                                timer: 1000,
+                                                customClass: {
+                                                    confirmButton: 'btn btn-primary'
+                                                },
+                                                buttonsStyling: false
+                                            })
+                                            setTimeout(() => {
+                                                window.location.href = `/orders/${data.newOrder._id}`
+                                            }, 1000)
+                                        })
+
+                    
+                                }
+                                ,
+                                "prefill": {
+                                    "contact": "9876543210",
+                                    "name": "Twinkle Sharma",
+                                    "email": "smtwinkle@gmail.com"
+                                },
+                                "notes": {
+                                    "description": "description here",
+                                },
+                                "theme": {
+                                    "color": "#2300a3"
+                                }
+
+
+                            };
+
+
+
+                                var razorpayObject = new Razorpay(options);
+                                razorpayObject.open();
+                                console.log("=================options====================", options)
+
+                                razorpayObject.on('payment.failed', function (response) {
+                                    console.log("==================response======================",response);
+                                    alert("This step of Payment Failed");
+                                });
+                                
+
+
+                            // var rzp1 = new Razorpay(options)
+                            // rzp1.open()
+
+
+
+                        } else {
+                            console.log('Fetched address data:', data);
+                            Swal.fire({
+                                title: 'Order Placed Successfully',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            });
+                            setTimeout(() => {
+                                window.location.href = `/orders/${data.newOrder._id}`
+                            }, 1500)
+                        }
 
                     })
+
                     .catch(error => {
                         console.error('Error fetching address data:', error);
                     });
 
-
-
-
             }
+
+
 
         </script>
 
-      
         <%- include('../partials/mainfooter.ejs')%>

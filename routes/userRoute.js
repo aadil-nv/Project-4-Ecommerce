@@ -89,6 +89,9 @@ user_route.get("/productsztoa",userAuth.isLogin,userAuth.isUserBlock, usercontro
 user_route.get("/user/wishlist",userAuth.isLogin,userAuth.isUserBlock,usercontroller.loadWishliist)
 user_route.post("/user/wishlist",userAuth.isLogin,userAuth.isUserBlock,usercontroller.addProductInWishlist)
 user_route.post("/user/wishlistone",userAuth.isLogin,userAuth.isUserBlock,usercontroller.removeWishlistProduct)
+user_route.post("/verifyorder",userAuth.isLogin,userAuth.isUserBlock,usercontroller.verifyOrder)
+
+
 
 
 
