@@ -59,17 +59,19 @@
                             <th scope="col" class="text-end">Action</th>
                         </tr>
                     </thead>
+                    <% if (couponData.length > 0) {%>
+                        <% couponData.forEach(item=>{ %>
                     <tbody>
                         <tr>
                            
-                            <td><b>Marvin McKinney</b></td>
-                            <td>marvin@example.com</td>
-                            <td>$9.00</td>
-                            <td>54545</td>
-                            <td><span class="badge rounded-pill alert-warning">Active</span></td>
-                            <td>03.12.2020</td>
+                            <td><b><%= item.couponName %></b></td>
+                            <td><%= item.couponCode %></td>
+                            <td><%= item.discountAmount %></td>
+                            <td><%= item.minAmount %></td>
+                            <td><span class="badge rounded-pill alert-warning"><%= item.status %></span></td>
+                            <td><%= item.expiryDate.toDateString() %></td>
                             <td class="text-end">
-                                <a href="#"  ><button id="delete">Delete</button></a>
+                                <button id="delete" onclick="confirmDelete('<%= item._id %>')">Delete</button>
                                 
                                 <!-- dropdown //end -->
                             </td>
@@ -77,6 +79,8 @@
                         
 
                     </tbody>
+                    <% }) %>
+                    <% } %>
                 </table>
             </div>
             <!-- table-responsive //end -->
@@ -99,3 +103,70 @@
         </nav>
     </div>
 </section>
+
+<script>
+    function confirmDelete(couponId) {
+    // Display a confirmation dialog using SweetAlert
+    swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this coupon!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        // If the user clicks the confirm button
+        if (willDelete) {
+            // Call the function to delete the coupon
+            deleteCoupon(couponId);
+        } else {
+            // Inform the user that the action was canceled
+            swal("Your coupon is safe!", {
+                icon: "info",
+            });
+        }
+    });
+}
+ 
+
+function deleteCoupon(couponId) {
+    console.log(couponId)
+    const data = couponId
+    fetch('/admin/deletecoupon', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({data})
+    })
+    .then(response => {
+        // Check if the response indicates success
+        if (response.ok) {
+            // Show success message using SweetAlert
+            swal({
+                title: "Coupon deleted successfully!",
+                icon: "success",
+                button: "OK",
+            })
+            .then(() => {
+                // Refresh the page
+                location.reload();
+            });
+            // Optionally, update the UI or perform other actions
+        } else {
+            // Show error message using SweetAlert
+            swal("Failed to delete coupon!", {
+                icon: "error",
+            });
+            
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        // Show error message using SweetAlert
+        swal("Failed to delete coupon!", {
+            icon: "error",
+        });
+    });
+}
+</script>

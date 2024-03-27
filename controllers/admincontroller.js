@@ -552,7 +552,6 @@ const admincouponlist= async (req,res)=>{
   try {
 
     const couponData= await Coupon.find()
-    consoel.log(couponData)
     res.render('admin/couponlist',{couponData})
     
   } catch (error) {
@@ -597,6 +596,22 @@ const addNewCoupon = async (req,res)=>{
     console.log(error.message)
   }
 }
+
+const deleteCoupon= async (req,res)=>{
+  try {
+    const {data}=req.body
+
+  
+    if(!data){
+      res.json({message : "delete failed"})
+    }else{
+      await Coupon.findByIdAndDelete({_id:data})
+      res.json({message:"delete success"})
+    }
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 // --------------------------------------------End Load UsersList -------------------------------------------
 
 // ------------------------------------------------End--------------------------------------------------------
@@ -625,5 +640,6 @@ module.exports = {
   adminChangeOrderStatus,
   admincouponlist,
   addNewCoupon,
-  admincouponmanagement
+  admincouponmanagement,
+  deleteCoupon
 };

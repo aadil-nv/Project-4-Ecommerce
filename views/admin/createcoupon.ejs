@@ -100,9 +100,6 @@
             if (!couponMinAmount.trim() || isNaN(couponMinAmount.trim())) {
                 document.getElementById('couponMinAmountError').innerHTML = 'Invalid entry !';
                 return;
-            } else if (!/^\d{3}$/.test(couponMinAmount.trim())) {
-                document.getElementById('couponMinAmountError').innerHTML = 'Minimumm amount must be greter than RS/-99 !'
-                return;
             }
 
 
@@ -139,7 +136,7 @@
                             icon: "success",
                         });
                         setTimeout(() => {
-                            location.reload();
+                            window.location.href='/admin/couponlist';
                         }, 1500);
 
                     } else {
