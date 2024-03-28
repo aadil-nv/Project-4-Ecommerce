@@ -34,7 +34,7 @@
             height: 53px;
         }
     </style>
-
+    <p id="totalAmount"></p>
     <div class="checkout-main-area pb-100 pt-70">
         <div class="container">
             <div class="customer-zone mb-20">
@@ -81,12 +81,17 @@
                     Have a coupon?
                     <a class="checkout-click3" href="#">Click here to enter your code</a>
                 </p>
+                <!-- todo---------------------------------------------------- Apply coupon- ------------------------------------------------------>
                 <div class="checkout-login-info3">
                     <form action="#">
-                        <input type="text" placeholder="Coupon code" />
-                        <input type="submit" value="Apply Coupon" />
+
+                        <input type="text" id="couponCodeInput" placeholder="Coupon code" />
+                        <input type="submit" value="Apply Coupon" onclick="applyCoupon()" />
+                        <p id="couponMessage"></p>
+
                     </form>
                 </div>
+                <!-- todo---------------------------------------------------- Apply coupon- ------------------------------------------------------>
             </div>
 
             <div class="checkout-wrap pt-50">
@@ -283,7 +288,7 @@
                                                 <%}%>
                                                     <div class="your-order-info order-subtotal">
                                                         <ul>
-                                                            <li>Subtotal <span>
+                                                            <li>Total <span>
                                                                     <%= total%>
                                                                 </span></li>
                                                         </ul>
@@ -291,7 +296,7 @@
 
                                                     <div class="your-order-info order-total">
                                                         <ul>
-                                                            <li>Total <span>
+                                                            <li>SubTotal <span  id="totalvalue1">
                                                                     <%= total%>
                                                                 </span></li>
                                                         </ul>
@@ -699,12 +704,16 @@
                     }
                 });
 
+                const totalDiscount = document.getElementById("totalvalue1").innerText;
+                         console.log("=======totalValue==========", totalDiscount);
+                const couponCode = document.getElementById("couponCodeInput").value;
+
 
 
                 fetch('/orderpage', {
                     method: "post",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ activeAddressId, paymentmethod }),
+                    body: JSON.stringify({ activeAddressId, paymentmethod,totalDiscount,couponCode }),
                 })
 
 
@@ -727,7 +736,7 @@
                                 "description": "Pay & Checkout this Course, Upgrade your DSA Skill",
                                 "image": "/user/icon/estoreLogo.png",
                                 "order_id": data.order.id,
-                                
+
                                 "handler": function (response) {
                                     console.log("++++++++++++++response+++++++++++++++", response)
 
@@ -740,28 +749,29 @@
                                             paymentId: response.razorpay_payment_id,
                                             order_id: response.razorpay_order_id,
                                             razorpay_signature: response.razorpay_signature,
-                                           
+                                            couponCode:couponCode
+
 
                                         })
                                     })
                                         .then(response => response.json())
                                         .then(data => {
-                                            console.log("-----------------data--------------------------",data.curentData)
-                                            if(data.success===true){
-                                            Swal.fire({
-                                                icon: 'success',
-                                                title: 'Order Placed',
-                                                showConfirmButton: false,
-                                                timer: 1000,
-                                                customClass: {
-                                                    confirmButton: 'btn btn-primary'
-                                                },
-                                                buttonsStyling: false
-                                            })
-                                            setTimeout(() => {
-                                                window.location.href = `/orders/${data.curentData}`
-                                            }, 1000)
-                                        }
+                    
+                                            if (data.success === true) {
+                                                Swal.fire({
+                                                    icon: 'success',
+                                                    title: 'Order Placed',
+                                                    showConfirmButton: false,
+                                                    timer: 1000,
+                                                    customClass: {
+                                                        confirmButton: 'btn btn-primary'
+                                                    },
+                                                    buttonsStyling: false
+                                                })
+                                                setTimeout(() => {
+                                                    window.location.href = `/orders/${data.curentData}`
+                                                }, 1000)
+                                            }
                                         })
 
 
@@ -782,8 +792,6 @@
 
                             };
 
-
-
                             var razorpayObject = new Razorpay(options);
                             razorpayObject.open();
                             console.log("=================options====================", options)
@@ -792,12 +800,6 @@
                                 console.log("==================response======================", response);
                                 alert("This step of Payment Failed");
                             });
-
-
-
-
-
-
 
                         } else {
                             console.log('Fetched address data:', data);
@@ -821,6 +823,43 @@
 
 
 
+        </script>
+
+
+        <script>
+            function applyCoupon() {
+                const couponCode = document.getElementById("couponCodeInput").value;
+                console.log("=======couponCode==========", couponCode)
+
+                fetch('/verifycoupon', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ couponCode })
+                })
+                    .then((response) => {
+                        if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+                        return response.json();
+                    })
+                    .then((data) => {
+                        if (data.total) {
+                            document.getElementById('totalvalue1').innerHTML= data.total;
+                            document.getElementById('totalAmount').innerHTML=data.total
+                            
+                            console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++",data.message)
+                            
+                        } else {
+                            console.log("888888888888888888888888888888888",data)
+                            couponMessage.innerHTML = data.message
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+            }
         </script>
 
         <%- include('../partials/mainfooter.ejs')%>

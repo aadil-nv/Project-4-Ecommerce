@@ -574,12 +574,14 @@ const addNewCoupon = async (req,res)=>{
   try {
 
     const {data}= req.body
+    
 
     if(!data){
       res.json({message:"failed"})
 
     }else{
       const couponData= new Coupon({
+       
         couponName: data.couponName,
         couponCode:data.couponCode,
         discountAmount:data.couponDiscount,
@@ -587,7 +589,9 @@ const addNewCoupon = async (req,res)=>{
         couponDescription:data.couponDescription,
         expiryDate:data.couponExpire,
         status:true,
-        used:false
+       
+  
+       
       })
       await couponData.save()
       res.json({message:"Success"})

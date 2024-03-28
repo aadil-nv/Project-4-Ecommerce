@@ -68,7 +68,7 @@
                                             <tr>
                                                 <td>
                                                     <img src="/uploads/<%=product.productId.productimage[0] %>"
-                                                        width="200px" class="rounded-3" />
+                                                        width="100px" class="rounded-3" />
                                                 </td>
                                                 <td>
                                                     <%=product.productId.productname %>
@@ -154,6 +154,23 @@
                                             <tr>
                                                 <td>
                                                     <%= item.paymentMethod %>
+                                                </td>
+                                            </tr>
+                                            <% }); %>
+                                    </tbody>
+                                </table>
+                                <table class="table table-bordered">
+                                    <thead class="thead-light" id="table">
+                                        <tr>
+                                            <th>Total Paid</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <% orderData.forEach((item)=> { %>
+                                            <tr>
+                                                <td>
+                                                    <%= item.orderAmount %>
                                                 </td>
                                             </tr>
                                             <% }); %>

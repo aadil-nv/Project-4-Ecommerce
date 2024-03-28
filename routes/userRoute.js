@@ -91,6 +91,10 @@ user_route.post("/user/wishlist",userAuth.isLogin,userAuth.isUserBlock,usercontr
 user_route.post("/user/wishlistone",userAuth.isLogin,userAuth.isUserBlock,usercontroller.removeWishlistProduct)
 user_route.post("/verifyorder",userAuth.isLogin,userAuth.isUserBlock,usercontroller.verifyOrder)
 
+user_route.post("/verifycoupon",userAuth.isLogin,userAuth.isUserBlock,usercontroller.verifyCoupon)
+
+
+
 
 
 
