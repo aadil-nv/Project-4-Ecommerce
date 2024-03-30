@@ -304,15 +304,11 @@
                                                     </div>
                                 </div>
                                 <div class="payment-method">
-                                    <div class="pay-top sin-payment">
-                                        <input id="payment_method_1" class="input-radio" type="radio"
-                                            value="Net Banking" checked="checked" name="payment_method" />
-                                        <label for="payment_method_1">Net Banking</label>
-                                    </div>
+                                   
                                     <div class="pay-top sin-payment">
                                         <input id="payment-method-2" class="input-radio" type="radio"
-                                            value=" Credi/Debit/ATM Card" name="payment_method" />
-                                        <label for="payment-method-2"> Credi/Debit/ATM Card</label>
+                                            value="Wallet" name="payment_method" />
+                                        <label for="payment-method-2">Wallet</label>
                                     </div>
                                     <div class="pay-top sin-payment">
                                         <input id="payment-method-3" class="input-radio" type="radio"
@@ -801,7 +797,7 @@
                                 alert("This step of Payment Failed");
                             });
 
-                        } else {
+                        } else if (data.paymentMethod === "Cash On Delivery") {
                             console.log('Fetched address data:', data);
                             Swal.fire({
                                 title: 'Order Placed Successfully',
@@ -810,6 +806,16 @@
                             });
                             setTimeout(() => {
                                 window.location.href = `/orders/${data.newOrder._id}`
+                            }, 1500)
+
+                        }else if (data.paymentmethod === "Wallet"){
+                            Swal.fire({
+                                title: 'Order Placed Successfully',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            });
+                            setTimeout(() => {
+                                window.location.href = `/orders/${data.walletNewOrder._id}`
                             }, 1500)
                         }
 
@@ -830,13 +836,15 @@
             function applyCoupon() {
                 const couponCode = document.getElementById("couponCodeInput").value;
                 console.log("=======couponCode==========", couponCode)
+                const totalDiscount = document.getElementById("totalvalue1").innerText;
+                    console.log("=======totalValue2==========", totalDiscount);
 
                 fetch('/verifycoupon', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ couponCode })
+                    body: JSON.stringify({ couponCode ,totalDiscount })
                 })
                     .then((response) => {
                         if (!response.ok) {
@@ -849,7 +857,7 @@
                             document.getElementById('totalvalue1').innerHTML= data.total;
                             document.getElementById('totalAmount').innerHTML=data.total
                             
-                            console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++",data.message)
+                        
                             
                         } else {
                             console.log("888888888888888888888888888888888",data)

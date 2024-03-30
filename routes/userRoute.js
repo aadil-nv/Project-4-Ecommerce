@@ -93,6 +93,8 @@ user_route.post("/verifyorder",userAuth.isLogin,userAuth.isUserBlock,usercontrol
 
 user_route.post("/verifycoupon",userAuth.isLogin,userAuth.isUserBlock,usercontroller.verifyCoupon)
 
+user_route.post("/user/productreturn",userAuth.isLogin,userAuth.isUserBlock,usercontroller.userReturnProduct)
+
 
 
 

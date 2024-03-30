@@ -19,6 +19,28 @@ var {
   validatePaymentVerification,
 } = require("razorpay/dist/utils/razorpay-utils");
 
+
+// -----------------------------generating referal Code-----------------------------------------
+
+function generateReferralCode(length) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const codeLength = length || 7;
+  let referralCode = '';
+
+  for (let i = 0; i < codeLength; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      referralCode += characters[randomIndex];
+  }
+
+  return referralCode;
+}
+
+
+
+
+
+// -----------------------------End generating referal Code-----------------------------------------
+
 // --------------OTP Generating-----------------
 const generateOTP = () => {
   return Math.floor(1000 + Math.random() * 9000);
@@ -64,6 +86,8 @@ const home = async (req, res) => {
 
 const insertUser = async (req, res) => {
   try {
+    const referalId=generateReferralCode(7)
+
     const checkemail = await User.findOne({ email: req.body.email });
     if (checkemail) {
       return res.render("user/registration", {
@@ -100,6 +124,9 @@ const insertUser = async (req, res) => {
       password: spassword,
       is_admin: 0,
       is_blocked: false,
+      referalId:referalId,
+      wallet:0,
+      walletHistory:[]
     });
 
     userData = user;
@@ -380,8 +407,9 @@ const loadGoogleAuth = async (req, res) => {
   try {
     const ProductData = await Products.find();
     const gUser = req.user;
+    console.log("==================guser=========================",gUser)
     if (gUser) {
-      req.session.user = gUser;
+      req.session.user = gUser._id;
       res.redirect("/");
     }
   } catch (error) {
@@ -794,11 +822,10 @@ const addCheckoutAddress = async (req, res) => {
   }
 };
 
+
 const placeOrder = async (req, res) => {
   try {
-    const { activeAddressId, paymentmethod, totalDiscount, couponCode } =
-      req.body;
-    console.log("ccccccccccccccccccccccccccccccccccccccccccccccc", couponCode);
+    const { activeAddressId, paymentmethod, totalDiscount, couponCode } = req.body;
 
     const generateRandomOrderId = (length) => {
       const characters =
@@ -813,11 +840,11 @@ const placeOrder = async (req, res) => {
     };
 
     const userId = req.session.user;
+   
     const cartData = await Cart.findOne({ userId }).populate(
       "products.productId"
     );
 
-    console.log("=-==-==-=-=-==-=-==-=-=-=-=--=", cartData);
     const currentAddress = await Address.findById(activeAddressId);
 
     const orderedItems = cartData.products.map((product) => {
@@ -832,9 +859,7 @@ const placeOrder = async (req, res) => {
     });
 
     const orderAmount = orderedItems.reduce(
-      (total, item) => total + item.totalProductAmount,
-      0
-    );
+      (total, item) => total + item.totalProductAmount,0);
 
     const orderId = "order_" + generateRandomOrderId(9);
 
@@ -865,10 +890,7 @@ const placeOrder = async (req, res) => {
         key_secret: "DQNPLFsGnpzS3Jw8pPszj7Xv",
       });
 
-      razorpayInstance.orders.create(
-        options,
-
-        (err, order) => {
+      razorpayInstance.orders.create(options,(err, order) => {
           if (err) {
             console.log(err);
             res.json({ success: false });
@@ -879,17 +901,14 @@ const placeOrder = async (req, res) => {
               order_id: order.id,
               key_id: "rzp_test_nexg64Tm176iuH",
               paymentMethod: paymentmethod,
-              couponCode:couponCode
+              couponCode: couponCode
             });
           }
-        }
-      );
-    } else {
-      await newOrder.save();
+        });
 
-     
-      const userIdObjectId = new mongoose.Types.ObjectId(userId);
-      const couponData = await Coupon.findOneAndUpdate({couponCode: couponCode},{$push:{usedUser:{userId:userIdObjectId,used:true,},},},{new:true});
+    } else if(paymentmethod === "Cash On Delivery") {
+
+      await newOrder.save();
 
       for (const item of orderedItems) {
         const productId = item.productId;
@@ -897,13 +916,105 @@ const placeOrder = async (req, res) => {
 
         await Products.findOneAndUpdate(
           { _id: productId },
-          { $inc: { productquadity: -quantity } }
-        );
+          { $inc: { productquadity: -quantity } });}
+
+      if (couponCode) {
+        
+        const couponData = await Coupon.findOneAndUpdate(
+          { couponCode: couponCode },
+          { $push: { usedUser: { userId: req.session.user, used: true } } },
+          { new: true }
+        )
+        const couponDeduction = await Coupon.findOne({ couponCode: couponCode })
+        const discountAmount1 = couponDeduction.discountAmount
+        await order.findOneAndUpdate(
+          { _id: newOrder._id },
+          { $set: { couponDeduction: discountAmount1 } }, { new: true })
       }
 
       await Cart.deleteOne({ userId: req.session.user });
       res.status(200).json({ newOrder, paymentmethod });
+
+    }else if(paymentmethod === "Wallet"){
+
+      const WalletUserData= await User.findById({_id:userId})
+      const walletMoney=WalletUserData.wallet
+      console.log("-------------------WalletUserData---------------------",WalletUserData)
+      console.log("-------------------walletMoney---------------------",walletMoney)
+      console.log("-------------------cartData---------------------",cartData)
+      console.log("-------------------totalDiscount---------------------",totalDiscount)
+
+      if(walletMoney <= totalDiscount ){
+        console.log("Wallet Payment failed InsuficiantFund")
+        return res.json({message:"Failed"})
+        
+      }else{
+
+        let walletNewOrder = new order({
+          userId,
+          cartId: cartData._id,
+          orderId,
+          orderedItem: orderedItems,
+          orderAmount: totalDiscount,
+          deliveryAddress: currentAddress,
+          paymentStatus: "Payment Successfull",
+          deliveryDate: new Date(),
+          shippingDate: new Date(),
+          paymentMethod: paymentmethod,
+        });
+        console.log("-------------------newOrder---------------------",newOrder)
+
+          await walletNewOrder.save()
+
+          for (const item of orderedItems) {
+            const productId = item.productId;
+            const quantity = item.quantity;
+    
+            await Products.findOneAndUpdate(
+              { _id: productId },
+              { $inc: { productquadity: -quantity } });}
+
+              if (couponCode) {
+        
+                const couponData = await Coupon.findOneAndUpdate(
+                  { couponCode: couponCode },
+                  { $push: { usedUser: { userId: req.session.user, used: true } } },
+                  { new: true }
+                )
+                const couponDeduction = await Coupon.findOne({ couponCode: couponCode })
+                const discountAmount1 = couponDeduction.discountAmount
+                await order.findOneAndUpdate(
+                  { _id: walletNewOrder._id },
+                  { $set: { couponDeduction: discountAmount1 } }, { new: true })
+              }
+
+              const userData= await User.findById({_id:userId})
+              console.log("xxxxxxxxxxxxxxxxuserDataxxxxxxxxxxxxxxxxxxxxxxxxxx",userData)
+              const walletMoney= userData.wallet
+              console.log("xxxxxxxxxxxxxxxxxxwalletMoneyxxxxxxxxxxxxxxxxxxxxxxxx",walletMoney)
+              const balanceWallet=walletMoney-totalDiscount
+              console.log("xxxxxxxxxxxxxxxxxxbalanceWalletxxxxxxxxxxxxxxxxxxxxxxxx",balanceWallet)
+              
+
+              const updatedUser = await User.findByIdAndUpdate(userId, {
+                $set: { wallet: balanceWallet }, // Increment the wallet by the specified amount
+                $push: {
+                    walletHistory: {
+                        amount: balanceWallet,
+                        description: `Refund of ORDERID:${walletNewOrder._id}`,
+                        date: new Date(),
+                        status: "Dredit"
+                    }
+                }
+                }, { new: true });
+
+
+              await Cart.deleteOne({ userId: req.session.user });
+             console.log("Wallet Payment successfulll")
+        return res.json({walletNewOrder,paymentmethod})
+      }
     }
+
   } catch (error) {
     console.log("errror : ", error);
     console.error(error.message);
@@ -926,6 +1037,8 @@ const loadOrderPage = async (req, res) => {
     console.log(error.message);
   }
 };
+
+
 
 const orderCancel = async (req, res) => {
   try {
@@ -1059,8 +1172,7 @@ const removeWishlistProduct = async (req, res) => {
 
 const verifyOrder = async (req, res) => {
   try {
-    const { razorpay_signature, order_id, paymentId , couponCode } = req.body;
-    console.log("----------------------------------------",couponCode)
+    const { razorpay_signature, order_id, paymentId, couponCode } = req.body;
     let key_secret = "DQNPLFsGnpzS3Jw8pPszj7Xv";
     const userId = req.session.user;
     const cartData = await Cart.findOne({ userId }).populate(
@@ -1105,18 +1217,12 @@ const verifyOrder = async (req, res) => {
     if (!success) {
       await order.findByIdAndUpdate(
         { _id: cId },
-        { paymentStatus: "Payment Failed" }
-      );
-      res
-        .status(400)
-        .json({ success: false, message: "Payment verification failed" });
+        { paymentStatus: "Payment Failed" });
+      res.status(400).json({ success: false, message: "Payment verification failed" });
+
     } else {
-      await order.findByIdAndUpdate(
-        { _id: cId },
-        { paymentStatus: "Payment Successfull" }
-      );
-      const userIdObjectId = new mongoose.Types.ObjectId(userId);
-      const couponData = await Coupon.findOneAndUpdate({couponCode: couponCode},{$push:{usedUser:{userId:userIdObjectId,used:true,},},},{new:true});
+      
+      await order.findByIdAndUpdate({ _id: cId },{ paymentStatus: "Payment Successfull" });
 
       for (const item of orderedItems) {
         const productId = item.productId;
@@ -1127,16 +1233,23 @@ const verifyOrder = async (req, res) => {
           { $inc: { productquadity: -quantity } }
         );
       }
+      if (couponCode) {
+        
+        const couponData = await Coupon.findOneAndUpdate(
+          { couponCode: couponCode },
+          { $push: { usedUser: { userId: req.session.user, used: true } } },
+          { new: true }
+        )
+        const couponDeduction = await Coupon.findOne({ couponCode: couponCode })
+        const discountAmount1 = couponDeduction.discountAmount
+        await order.findOneAndUpdate(
+          { _id: curentData._id },
+          { $set: { couponDeduction: discountAmount1 } }, { new: true })
+      }
+      
 
       await Cart.deleteOne({ userId: req.session.user });
-
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Payment verification successful",
-          curentData: curentData._id,
-        });
+      res.status(200).json({success: true,message: "Payment verification successful",curentData: curentData._id,});
     }
   } catch (error) {
     console.log(error.message);
@@ -1148,15 +1261,10 @@ const verifyOrder = async (req, res) => {
 
 const verifyCoupon = async (req, res) => {
   try {
-    const { couponCode } = req.body;
+    const { couponCode, totalDiscount } = req.body;
     const userId = req.session.user;
-    const couponData = await Coupon.findOne({ couponCode: couponCode });
-    console.log("==================================================")
-    console.log(couponData)
-    
+    const couponData = await Coupon.findOne({ couponCode: couponCode })
 
-    console.log("==================================================")
-    discountAmount = couponData.discountAmount;
     const cartDetiles = await Cart.find({ userId: userId }).populate("products.productId");
 
     let total = 0;
@@ -1169,30 +1277,137 @@ const verifyCoupon = async (req, res) => {
 
     if (!couponData) {
       return res.status(404).json({ message: "Coupon not found" });
+
+    }
+    if(couponData.expiryDate < Date.now()){
+     
+      return res.json({message: "Coupon Expired"})
+
     }
 
-    const userFound = couponData.usedUser.find(
-      (user) => user.userId.toString() === userId && user.used === true 
-    );
+    if (totalDiscount < couponData.minAmount) {
+      return res.json({ message: "minmum total amount require" })
+    }
 
-    console.log("****************************************")
-    console.log(userFound)
-    console.log("****************************************")
 
-    if (userFound || undefined ) {
-      console.log("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff")
-      return res.json({ message:"Coupon already used" });
-    }else{
+    const userFound = couponData.usedUser.find(user => user.userId.toString() === req.session.user);
+ 
+    if (userFound || undefined) {
+      return res.json({ message: "Coupon already used" });
+    } else {
       let sumTotal = total - couponData.discountAmount;
       return res.status(200).json({ total: sumTotal });
 
     }
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({ message:"Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
+
+const userReturnProduct = async  (req,res)=>{
+  try {
+    const{productId, order_id,paymentMethod,quantity,totalProductAmount, reason}=req.body
+    const userId = req.session.user;
+    console.log("----------------------------------------------")
+    console.log(productId)
+    console.log(order_id)
+    console.log(paymentMethod)
+    console.log(reason)
+    console.log(userId)
+    console.log(quantity)
+    console.log(totalProductAmount)
+    console.log("----------------------------------------------")
+
+
+
+    if(paymentMethod==="Cash On Delivery"){
+
+
+    const updatedOrder = await order.findOneAndUpdate(
+      { _id: order_id, 'orderedItem.productId': productId },
+      { $set: { 'orderedItem.$.productStatus': 'Returned ' } },
+      { new: true });
+
+
+      const updatedUser = await User.findByIdAndUpdate(userId, {
+        $inc: { wallet: totalProductAmount }, // Increment the wallet by the specified amount
+        $push: {
+            walletHistory: {
+                amount: totalProductAmount,
+                description: `Refund of ORDERID:${order_id}`,
+                date: new Date(),
+                status: "credit"
+            }
+        }
+        }, { new: true });
+
+     
+
+        await Products.findOneAndUpdate(
+          { _id: productId },
+          { $inc: { productquadity: +quantity } }
+        );
+      
+
+
+    }else if (paymentMethod==="RazorPay"){
+
+      const updatedOrder = await order.findOneAndUpdate(
+      { _id: order_id, 'orderedItem.productId': productId },
+      { $set: { 'orderedItem.$.productStatus': 'Returned' } },
+      { new: true });
+
+      const updatedUser = await User.findByIdAndUpdate(userId, {
+        $inc: { wallet: totalProductAmount }, // Increment the wallet by the specified amount
+        $push: {
+            walletHistory: {
+                amount: totalProductAmount,
+                description: `Refund of ORDERID:${order_id}`,
+                date: new Date(),
+                status: "credit"
+            }
+        }
+        }, { new: true });
+
+        await Products.findOneAndUpdate(
+          { _id: productId },
+          { $inc: { productquadity: +quantity } }
+        );
+
+
+
+    }else if(paymentMethod==="Wallet"){
+
+      const updatedOrder = await order.findOneAndUpdate(
+      { _id: order_id, 'orderedItem.productId': productId },
+      { $set: { 'orderedItem.$.productStatus': 'Returned' } },
+      { new: true });
+
+      const updatedUser = await User.findByIdAndUpdate(userId, {
+        $inc: { wallet: totalProductAmount }, // Increment the wallet by the specified amount
+        $push: {
+            walletHistory: {
+                amount: totalProductAmount,
+                description: `Refund of ORDERID:${order_id}`,
+                date: new Date(),
+                status: "credit"
+            }
+        }
+        }, { new: true });
+
+        await Products.findOneAndUpdate(
+          { _id: productId },
+          { $inc: { productquadity: +quantity } }
+        );
+
+    }
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 //--------------------------------------------------------End load OrderPAge -------------------------------------------
 
 // -------------------Exporting Controllers-----------------------
@@ -1243,6 +1458,7 @@ module.exports = {
   removeWishlistProduct,
   verifyOrder,
   verifyCoupon,
+  userReturnProduct
 };
 
 // ------------------------------End------------------------------------

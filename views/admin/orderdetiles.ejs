@@ -299,33 +299,4 @@
     
      
    
-    <!-- <script>
-        function saveStatus(productId) {
-
-
-            const statusSelect = document.getElementById(`statusSelect_${productId}`);
-            const selectedStatus = statusSelect.value;
-            const orderId = document.getElementById('orderId').value
-
-
-            fetch(`/orderdetiles/${productId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ selectedStatus, productId, orderId })
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Status updated successfully:', data);
-                })
-                .catch(error => {
-                    console.error('Error updating status:', error);
-                });
-        }
-    </script> -->
+   

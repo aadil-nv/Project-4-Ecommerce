@@ -1,23 +1,14 @@
 <%- include('../partials/asidenav.ejs')%>
 
-<style>
-    #delete{
-        background-color: red;
-        border: none;
-        color: white;
-        width: 70px;
-        height: 35px;
-        border-radius: 5px;
-    }
-</style>
 
 <section class="content-main">
     <div class="content-header">
         <div>
-            <h2 class="content-title card-title">Coupon List</h2>
+            <h2 class="content-title card-title">Offer List</h2>
+          
         </div>
         <div>
-            <a href="/admin/createcoupon" class="btn btn-primary btn-sm rounded">Create Coupon</a>
+            <a href="/admin/createoffer" class="btn btn-primary btn-sm rounded">Create new</a>
         </div>
     </div>
     <div class="card mb-4">
@@ -49,38 +40,38 @@
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                           
-                            <th scope="col">Coupon Code</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Discount Amount</th>
-                            <th scope="col">MIN Amount</th>
+                            <th>#ID</th>
+                            <th scope="col">Offer Name</th>
+                            <th scope="col">Offer</th>
+                            <th scope="col">Offer Type</th>
+                            <th scope="col">Expiry Date</th>
                             <th scope="col">Status</th>
-                            <th scope="col">Expr Date</th>
                             <th scope="col" class="text-end">Action</th>
                         </tr>
                     </thead>
-                    <% if (couponData.length > 0) {%>
-                        <% couponData.forEach(item=>{ %>
                     <tbody>
                         <tr>
-                           
-                            <td><b><%= item.couponName %></b></td>
-                            <td><%= item.couponCode %></td>
-                            <td><%= item.discountAmount %></td>
-                            <td><%= item.minAmount %></td>
-                            <td><span class="badge rounded-pill alert-warning"><%= item.status %></span></td>
-                            <td><%= item.expiryDate.toDateString() %></td>
+                            <td>0901</td>
+                            <td><b>Marvin McKinney</b></td>
+                            <td>marvin@example.com</td>
+                            <td>$9.00</td>
+                            <td><span class="badge rounded-pill alert-warning">Pending</span></td>
+                            <td>03.12.2020</td>
                             <td class="text-end">
-                                <button id="delete" onclick="confirmDelete('<%= item._id %>')">Delete</button>
                                 
+                                <div class="dropdown">
+                                    <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Actvate</a>
+                                        <a class="dropdown-item" href="#">Deactivate</a>
+                                    </div>
+                                </div>
                                 <!-- dropdown //end -->
                             </td>
                         </tr>
                         
-
+                       
                     </tbody>
-                    <% }) %>
-                    <% } %>
                 </table>
             </div>
             <!-- table-responsive //end -->
@@ -113,69 +104,3 @@
 <script src="/adminpublic/adminlogin/js/main.js?v=1.1" type="text/javascript"></script>
 
 
-<script>
-    function confirmDelete(couponId) {
-    // Display a confirmation dialog using SweetAlert
-    swal({
-        title: "Are you sure?",
-        text: "Once deleted, you will not be able to recover this coupon!",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-    })
-    .then((willDelete) => {
-        // If the user clicks the confirm button
-        if (willDelete) {
-            // Call the function to delete the coupon
-            deleteCoupon(couponId);
-        } else {
-            // Inform the user that the action was canceled
-            swal("Your coupon is safe!", {
-                icon: "info",
-            });
-        }
-    });
-}
- 
-
-function deleteCoupon(couponId) {
-    console.log(couponId)
-    const data = couponId
-    fetch('/admin/deletecoupon', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({data})
-    })
-    .then(response => {
-        // Check if the response indicates success
-        if (response.ok) {
-            // Show success message using SweetAlert
-            swal({
-                title: "Coupon deleted successfully!",
-                icon: "success",
-                button: "OK",
-            })
-            .then(() => {
-                // Refresh the page
-                location.reload();
-            });
-            // Optionally, update the UI or perform other actions
-        } else {
-            // Show error message using SweetAlert
-            swal("Failed to delete coupon!", {
-                icon: "error",
-            });
-            
-        }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        // Show error message using SweetAlert
-        swal("Failed to delete coupon!", {
-            icon: "error",
-        });
-    });
-}
-</script>

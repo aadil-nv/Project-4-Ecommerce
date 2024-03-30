@@ -616,6 +616,34 @@ const deleteCoupon= async (req,res)=>{
     console.log(error.message)
   }
 }
+
+
+
+const adminOfferList= async(req,res)=>{
+  try {
+    res.render('admin/offerlist')
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+const createCoupon= async (req,res)=>{
+  try {
+    const categoryData= await Addcategory.find()
+    const productData= await Products.find()
+
+    console.log("*******************************************")
+    console.log(categoryData)
+    console.log(categoryData)
+    console.log("*******************************************")
+
+    res.render('admin/createoffer',{categoryData,categoryData})
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 // --------------------------------------------End Load UsersList -------------------------------------------
 
 // ------------------------------------------------End--------------------------------------------------------
@@ -645,5 +673,7 @@ module.exports = {
   admincouponlist,
   addNewCoupon,
   admincouponmanagement,
-  deleteCoupon
+  deleteCoupon,
+  adminOfferList,
+  createCoupon
 };

@@ -29,6 +29,21 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    referalId:{
+        type:String,
+        required:true
+    },
+    wallet:{
+        type:Number, 
+        required:true, 
+        default:0
+    },
+    walletHistory:[{
+        amount:{type:Number},
+        description:{type:String},
+        date:{type:Date},
+        status:{type:String}
+    }],
 
 })
 

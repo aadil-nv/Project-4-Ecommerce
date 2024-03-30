@@ -60,6 +60,9 @@ admin_route.get('/admin/createcoupon',admincontroller.admincouponmanagement)
 admin_route.post('/admin/createcoupon',admincontroller.addNewCoupon)
 admin_route.post('/admin/deletecoupon',admincontroller.deleteCoupon)
 
+admin_route.get('/admin/offerlist',admincontroller.adminOfferList)
+admin_route.get('/admin/createoffer',admincontroller.createCoupon)
+
 
 
 

@@ -13,6 +13,15 @@
             padding-bottom: 300px;
         }
 
+        #button-user1 {
+            background-color: rgb(37, 0, 122);
+           
+            color: white;
+            width: 120px;
+            height: 35px;
+            border: none;
+            border-radius: 30px;
+        }
         #button-user {
             background-color: red;
             color: white;
@@ -24,6 +33,12 @@
 
         #table {
             border-radius: 30px;
+        }
+        #save {
+            background-color: rgb(10, 129, 40);
+            border: none;
+            height: 53px;
+            color: white;
         }
     </style>
 
@@ -62,7 +77,8 @@
                                 <% orderData.forEach((item)=> { %>
                                     
                                         <input type="hidden" value="<%= item._id%>" id="orderId" name="orderId">
-                                    <%item.orderedItem.forEach((product)=> { %>
+                                        
+                                        <%item.orderedItem.forEach((product)=> { %>
 
                                         <tbody>
                                             <tr>
@@ -70,8 +86,9 @@
                                                     <img src="/uploads/<%=product.productId.productimage[0] %>"
                                                         width="100px" class="rounded-3" />
                                                 </td>
-                                                <td>
+                                                <td id="pooo">
                                                     <%=product.productId.productname %>
+
                                                 </td>
                                                 <td>
                                                     <%=product.quantity %>
@@ -91,13 +108,17 @@
                                                     </td>
                                                     <%}else if(product.productStatus==="Delivered"){%>
                                                         <td>
-                                                            <p>Order Alredy Delivered? Need Help</p>
-                                                           
-                                                        </td>
-
-
+                                                       
+                                                       <!-- <button
+                                                              id="button-user1" class="check-btn sqr-btn"
+                                                        data-bs-toggle="modal" id="sendId" data-whatever="@mdo"
+                                                        data-bs-target="#exampleModal"> Retrun Product </button>
+                                                        
+                                                        </td> -->
+                                                        <button id="button-user1"    onclick="requestReturn('<%= product.productId._id %>','<%= item._id %>','<%= item.paymentMethod %>','<%=  product.quantity %>','<%=  product.totalProductAmount %>'  )">return Product</button>
+                                                       
                                                         <%}else{%>
-                                                    <td>
+                                                       <td>
                                                         <button id="button-user"
                                                             data-product-id="<%= product.productId._id %>"
                                                             onclick="cancelOrder(this)"  >
@@ -353,14 +374,17 @@
         </div>
     </div>
 
+  
+
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-    <script>
+    <script>  
         async function cancelOrder(button) {
             const productId = button.getAttribute("data-product-id");
             const orderId = document.getElementById('orderId').value
                 console.log("--------------orderid is +++   ----------------------------",orderId)
+                console.log("--------------productId is--------------------------",productId)
             // Display a SweetAlert confirmation dialog
             Swal.fire({
                 title: "Are you sure?",
@@ -397,5 +421,130 @@
             });
         }
     </script>
+
+
+
+
+
+<!-- <script>
+ 
+    function returnProduct(id) {
+        
+        const orderId = document.getElementById('orderId').value
+
+        
+        
+        
+        
+        
+        console.log("==============================" , orderId)
+        
+        event.preventDefault();
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to return this product?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, return it!',
+            cancelButtonText: 'No, cancel',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Call fetch method to send the ID of the product to the controller
+                // const productId = document.getElementById('productID').value
+                fetch('/user/productreturn', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ productId: productId }) // Pass the product ID here
+                })
+                .then(response => {
+                    // Handle response from the server
+                    if (response.ok) {
+                        // Product returned successfully
+                        Swal.fire('Returned!', 'Your product has been returned.', 'success');
+                    } else {
+                        // Product return failed
+                        Swal.fire('Error!', 'Failed to return product. Please try again.', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire('Error!', 'An error occurred while returning the product.', 'error');
+                });
+            } else {
+                // User clicked the cancel button or closed the dialog
+                Swal.fire('Cancelled', 'Return action cancelled.', 'info');
+            }
+        });
+    }
+
+
+   
+
+</script> -->
+<script>
+    function requestReturn(productId, order_id,paymentMethod,quantity,totalProductAmount){
+        console.log("=========productId========",productId)
+        console.log("==========order_id=======",order_id)
+  swal.fire({
+    title: 'Reason for return',
+    input: 'text',
+    inputAttributes: {
+      autocapitalize: 'off'
+    },
+    showCancelButton: true,
+    confirmButtonText: 'Submit',
+    preConfirm: inputValue => {
+      if (inputValue === false) {
+        swal.showValidationMessage("Please give reason!");
+        return false;
+      }
+      if (inputValue.trim() === "") {
+        swal.showValidationMessage("Please give reason!");
+        return false;
+      }
+      return inputValue;
+    },
+    customContainerClass: {
+      padding: '2rem',
+      'font-size': '16px',
+      'max-width': '1000px'
+    }
+  }).then(result => {
+    if (result.dismiss === "cancel") {
+      swal.fire("Cancelled", "Return request cancelled");
+    } else if (result.value) {
+      let reason = result.value
+      swal.fire({
+        title: "Return requested",
+        text: "Reason:" + result.value,
+        preConfirm:function(){
+          fetch('/user/productreturn',{
+          method: 'POST',
+          body: JSON.stringify({productId, order_id,paymentMethod,quantity,totalProductAmount, reason  }),
+          headers:{
+            'Content-Type':'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(data=>{
+          var statusChange = document.getElementById('status');
+          statusChange.innerHTML = data.status;
+          document.querySelector('.returnBtn').remove();
+        })
+        },
+        customClass: {
+          confirmButton: 'btn btn-primary'
+        }
+      });
+    }
+  });
+}
+</script>
+
+ 
 
     <%- include('../partials/mainfooter.ejs')%>

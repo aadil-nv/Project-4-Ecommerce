@@ -1,0 +1,119 @@
+<%- include('../partials/asidenav.ejs')%>
+
+    <section class="content-main">
+        <div class="row">
+            <div class="col-9">
+                <div class="content-header">
+                    <h2 class="content-title">Add New OFFER</h2>
+
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4">
+
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-4">
+                                <label for="product_name" class="form-label">Offer Name</label>
+                                <input type="text" placeholder="Type here" class="form-control" id="product_name" />
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Offer Description</label>
+                                <textarea placeholder="Type here" class="form-control" rows="4"></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">OFFER</label>
+                                        <div class="row gx-2">
+                                            <input placeholder="%" type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Expiry Date</label>
+                                        <input placeholder="$" type="text" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <label class="form-label">Status</label>
+                                    <select class="form-select">
+                                        <option>Active</option>
+                                        <option>Deactive</option>
+
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label" id="offerType">Offer Type</label>
+                                <select class="form-select" id="offerSelect">
+                                    <option  value="">select</option>
+                                    <option  value="categorytype">Category</option>
+                                    <option  value="product">Products</option>
+
+                                </select>
+                            </div>
+
+                            <div class="mb-4" id="categorySelectContainer" style="display: none;">
+                                <label class="form-label" id="categoryLabel">Select Category</label>
+                                <select class="form-select" id="categorySelect">
+                                    <option>Category 1</option>
+                                    <option>Category 2</option>
+                                    <option>Category 3</option>
+                                    
+                                </select>
+                            </div>
+
+                            <div class="mb-4" id="productSelectContainer" style="display: none;">
+                                <label class="form-label" id="productLabel">Select Product</label>
+                                <select class="form-select" id="productSelect">
+                                    <option>Product 1</option>
+                                    <option>Product 2</option>
+                                    <option>Product 3</option>
+                                   
+                                </select>
+                            </div>
+                            <label class="text-center"
+                                style="justify-content: center; display: flex; align-items: center;">
+
+                                <button class="btn rounded font-sm hover-up"
+                                    style="color: white; background-color: blue;">ADD OFFER</button>
+                            </label>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <script src="/adminpublic/adminlogin/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/select2.min.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="/adminpublic/adminlogin/js/main.js?v=1.1" type="text/javascript"></script>
+
+    <script>
+        const offerSelect = document.getElementById('offerSelect');
+        const categorySelectContainer = document.getElementById('categorySelectContainer');
+        const productSelectContainer = document.getElementById('productSelectContainer');
+    
+        offerSelect.addEventListener('change', function() {
+            const selectedOption = offerSelect.value;
+    
+            // Hide all select containers
+            categorySelectContainer.style.display = 'none';
+            productSelectContainer.style.display = 'none';
+    
+            // Show the corresponding select container based on the selected option
+            if (selectedOption === 'categorytype') {
+                categorySelectContainer.style.display = 'block';
+            } else if (selectedOption === 'product') {
+                productSelectContainer.style.display = 'block';
+            }
+        });
+    </script>
