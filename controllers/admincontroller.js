@@ -11,6 +11,7 @@ const path = require("path");
 const sharp = require("sharp");
 const order = require("../models/orderModal");
 const Coupon = require("../models/couponModal");
+const Offer = require("../models/offerModal");
 
 // ---------------------Multer image saving--------------------------
 const storage = multer.diskStorage({
@@ -633,12 +634,62 @@ const createCoupon= async (req,res)=>{
     const categoryData= await Addcategory.find()
     const productData= await Products.find()
 
-    console.log("*******************************************")
-    console.log(categoryData)
-    console.log(categoryData)
-    console.log("*******************************************")
 
-    res.render('admin/createoffer',{categoryData,categoryData})
+    res.render('admin/createoffer',{categoryData,productData})
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+
+const addNewOffer= async (req,res)=>{
+  try {
+   const {data}=req.body
+   console.log("******************************************************")
+   console.log(data)
+   console.log("******************************************************")
+
+   const newOffer = new Offer({
+    offerName:data.offerName,
+    description:data.offerDescription,
+    percentage:data.offerPercentage,
+    expiryDate:data.offerExpiryDate,
+    status:data.offerStatus,
+    offerType:data.offerType,
+    offerTypeName:data.offerItem,
+
+   })
+ await newOffer.save()
+
+  
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+
+
+const selectOfferType= async (req,res)=>{
+  try {
+    const {selectedValue}=req.body
+
+    console.log("====================================================")
+    console.log(typeof selectedValue)
+    console.log("====================================================")
+    
+    if(selectedValue=== "category"){
+      const categoryData= await Addcategory.find()
+      console.log("categoryData  ::::",categoryData)
+      return res.json({categoryData})
+      
+    }else{
+      const productData= await Products.find()
+      console.log("productData  ::::",productData)
+      return res.json({productData})
+
+    }
     
   } catch (error) {
     console.log(error.message)
@@ -675,5 +726,7 @@ module.exports = {
   admincouponmanagement,
   deleteCoupon,
   adminOfferList,
-  createCoupon
+  createCoupon,
+  addNewOffer,
+  selectOfferType
 };
