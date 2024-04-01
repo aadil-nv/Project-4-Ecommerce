@@ -13,6 +13,16 @@ const order = require("../models/orderModal");
 const Coupon = require("../models/couponModal");
 const Offer = require("../models/offerModal");
 
+
+
+function getWeek(date) {
+  const onejan = new Date(date.getFullYear(), 0, 1);
+  const millisecsInDay = 86400000;
+  return Math.ceil((((date - onejan) / millisecsInDay) + onejan.getDay() + 1) / 7);
+}
+
+
+
 // ---------------------Multer image saving--------------------------
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -68,7 +78,7 @@ const adminDashboard = async (req, res) => {
 
 const adminUsersList = async (req, res) => {
   try {
-    const user = await User.find().sort({_id:-1});
+    const user = await User.find().sort({ _id: -1 });
 
     res.render("admin/userslist", { user });
   } catch (error) {
@@ -252,7 +262,7 @@ const updateCategory = async (req, res) => {
 // ------------------------------Loading Productlist and sending Product data intothe page ------------------------------------
 const productList = async (req, res) => {
   try {
-    const product = await Products.find().sort({_id:-1});
+    const product = await Products.find().sort({ _id: -1 });
 
     res.render("admin/productlist", { product });
   } catch (error) {
@@ -487,7 +497,7 @@ const adminOrdersList = async (req, res) => {
       .find()
       .populate("orderedItem.productId")
       .populate("deliveryAddress")
-      .populate("userId").sort({_id:-1})
+      .populate("userId").sort({ _id: -1 })
 
     res.render("admin/orderlist", { orderData });
   } catch (error) {
@@ -513,7 +523,7 @@ const adminOrderDetiles = async (req, res) => {
 const adminChangeOrderStatus = async (req, res) => {
   try {
     const { selectedStatus, productId, orderId } = req.body;
-    
+
 
     const orderData = await order
       .find({ _id: orderId })
@@ -549,69 +559,69 @@ const adminChangeOrderStatus = async (req, res) => {
 };
 //!-------------------------------------------week 10-------------------------------------------------------------
 
-const admincouponlist= async (req,res)=>{
+const admincouponlist = async (req, res) => {
   try {
 
-    const couponData= await Coupon.find()
-    res.render('admin/couponlist',{couponData})
-    
+    const couponData = await Coupon.find()
+    res.render('admin/couponlist', { couponData })
+
   } catch (error) {
     console.log(error.message)
   }
 }
 
 
-const admincouponmanagement=  async (req,res)=>{
+const admincouponmanagement = async (req, res) => {
   try {
-    
+
     res.render('admin/createcoupon')
-    
+
   } catch (error) {
     console.log(error.message)
   }
 }
 
-const addNewCoupon = async (req,res)=>{
+const addNewCoupon = async (req, res) => {
   try {
 
-    const {data}= req.body
-    
+    const { data } = req.body
 
-    if(!data){
-      res.json({message:"failed"})
 
-    }else{
-      const couponData= new Coupon({
-       
+    if (!data) {
+      res.json({ message: "failed" })
+
+    } else {
+      const couponData = new Coupon({
+
         couponName: data.couponName,
-        couponCode:data.couponCode,
-        discountAmount:data.couponDiscount,
-        minAmount:data.couponMinAmount,
-        couponDescription:data.couponDescription,
-        expiryDate:data.couponExpire,
-        status:true,
-       
-  
-       
+        couponCode: data.couponCode,
+        discountAmount: data.couponDiscount,
+        minAmount: data.couponMinAmount,
+        couponDescription: data.couponDescription,
+        expiryDate: data.couponExpire,
+        status: true,
+
+
+
       })
       await couponData.save()
-      res.json({message:"Success"})
-  }
+      res.json({ message: "Success" })
+    }
   } catch (error) {
     console.log(error.message)
   }
 }
 
-const deleteCoupon= async (req,res)=>{
+const deleteCoupon = async (req, res) => {
   try {
-    const {data}=req.body
+    const { data } = req.body
 
-  
-    if(!data){
-      res.json({message : "delete failed"})
-    }else{
-      await Coupon.findByIdAndDelete({_id:data})
-      res.json({message:"delete success"})
+
+    if (!data) {
+      res.json({ message: "delete failed" })
+    } else {
+      await Coupon.findByIdAndDelete({ _id: data })
+      res.json({ message: "delete success" })
     }
   } catch (error) {
     console.log(error.message)
@@ -620,81 +630,220 @@ const deleteCoupon= async (req,res)=>{
 
 
 
-const adminOfferList= async(req,res)=>{
+const adminOfferList = async (req, res) => {
   try {
-    res.render('admin/offerlist')
-    
+    const offerData = await Offer.find()
+    res.render('admin/offerlist', { offerData })
+
   } catch (error) {
     console.log(error.message)
   }
 }
 
-const createCoupon= async (req,res)=>{
+const createCoupon = async (req, res) => {
   try {
-    const categoryData= await Addcategory.find()
-    const productData= await Products.find()
+    const categoryData = await Addcategory.find()
+    const productData = await Products.find()
 
 
-    res.render('admin/createoffer',{categoryData,productData})
-    
-  } catch (error) {
-    console.log(error.message)
-  }
-}
+    res.render('admin/createoffer', { categoryData, productData })
 
-
-const addNewOffer= async (req,res)=>{
-  try {
-   const {data}=req.body
-   console.log("******************************************************")
-   console.log(data)
-   console.log("******************************************************")
-
-   const newOffer = new Offer({
-    offerName:data.offerName,
-    description:data.offerDescription,
-    percentage:data.offerPercentage,
-    expiryDate:data.offerExpiryDate,
-    status:data.offerStatus,
-    offerType:data.offerType,
-    offerTypeName:data.offerItem,
-
-   })
- await newOffer.save()
-
-  
-    
   } catch (error) {
     console.log(error.message)
   }
 }
 
 
-
-const selectOfferType= async (req,res)=>{
+const addNewOffer = async (req, res) => {
   try {
-    const {selectedValue}=req.body
+    const { data } = req.body
 
-    console.log("====================================================")
-    console.log(typeof selectedValue)
-    console.log("====================================================")
+    const newOffer = new Offer({
+      offerName: data.offerName,
+      description: data.offerDescription,
+      percentage: data.offerPercentage,
+      expiryDate: data.offerExpiryDate,
+      status: data.offerStatus,
+      offerType: data.offerType,
+      offerTypeName: data.offerItem,
+
+    })
+    await newOffer.save()
+    res.status(200).json({ message: "Offer Added Successfully" })
+
+
+    let newOfferData= newOffer
+
     
-    if(selectedValue=== "category"){
-      const categoryData= await Addcategory.find()
-      console.log("categoryData  ::::",categoryData)
-      return res.json({categoryData})
-      
-    }else{
-      const productData= await Products.find()
-      console.log("productData  ::::",productData)
-      return res.json({productData})
 
+    const offerCategoryData = await Products.find({ categoryId: data.offerItem }).populate('offerId')
+
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    console.log(offerCategoryData)
+    console.log("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
+    const offerProductData = await Products.findOne({ productname: data.offerItem }).populate('offerId')
+
+    let productOldPercentage=offerProductData?.offerId?.percentage
+
+    let categoryOldPercentage = 0;
+
+    if (Array.isArray(offerCategoryData) && offerCategoryData.length > 0) {
+      categoryOldPercentage = Math.max(...offerCategoryData.map(product => product.offerId?.percentage || 0));
     }
     
+    
+    console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",categoryOldPercentage)
+   
+      if (newOffer.offerType === "category") {
+        if( newOfferData.percentage > categoryOldPercentage  || categoryOldPercentage=== undefined){
+          const offerCategoryData = await Products.find({ categoryId: newOfferData.offerTypeName })
+         
+          await Products.updateMany({ categoryId: newOfferData.offerTypeName }, { $set: { offerId:newOfferData} });
+        
+      }
+      } else if(newOffer.offerType === "product") {
+
+        if( newOfferData.percentage > productOldPercentage  || productOldPercentage=== undefined){
+        const offerProductData = await Products.findOne({ productname: newOfferData.offerTypeName});
+
+          await Products.findByIdAndUpdate(offerProductData._id, { $set: { offerId:newOfferData} });
+         
+
+        }
+        
+      }
+
   } catch (error) {
     console.log(error.message)
   }
 }
+
+
+
+const selectOfferType = async (req, res) => {
+  try {
+    const { selectedValue } = req.body
+
+    if (selectedValue === "category") {
+      const categoryData = await Addcategory.find()
+      return res.json({ categoryData })
+
+    } else {
+      const productData = await Products.find()
+      return res.json({ productData })
+
+    }
+
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+
+
+
+const totalSalesReport = async (req, res) => {
+  try {
+    const salesReport= await order.find().populate("orderedItem.productId").populate("deliveryAddress").populate("userId");
+    let totalSalesAmount = 0;
+    let totalSalesAmount2 = 0;
+    
+
+    salesReport.forEach(order => {
+      order.orderedItem.forEach(item => {
+        if (item.productStatus === "Delivered") {
+          console.log("order.couponDeduction ::::",order.couponDeduction)
+          if(order.couponDeduction == 0){
+          totalSalesAmount += item.totalProductAmount;
+        }else{
+          totalSalesAmount2 += item.totalProductAmount
+          totalSalesAmount=totalSalesAmount2-order.couponDeduction
+        }
+      }
+      });
+    });
+
+    let totalCouponDeduction=0
+    salesReport.forEach(item=>{
+      totalCouponDeduction += item.couponDeduction
+    })
+    let salesCount=0
+    salesReport.forEach(item=>{
+      salesCount++
+    })
+    let overAllOrderAmount=0
+    salesReport.forEach(item=>{
+      overAllOrderAmount+= item.orderAmount
+    })
+    
+  
+   res.render('admin/salesreport',{salesReport,totalSalesAmount,totalCouponDeduction,salesCount,overAllOrderAmount})
+
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+const filterSalesReport= async (req,res)=>{
+  try {
+
+    const salesReport= await order.find().populate("orderedItem.productId").populate("deliveryAddress").populate("userId");
+    const {selectedOption}= req.body
+   
+
+    let filteredReport = [];
+
+        if (selectedOption === "yearly") {
+            const currentYear = new Date().getFullYear();
+            filteredReport = salesReport.filter(item => new Date(item.shippingDate).getFullYear() === currentYear);
+        } else if (selectedOption === "monthly") {
+            const currentMonth = new Date().getMonth() + 1;
+            filteredReport = salesReport.filter(item => new Date(item.shippingDate).getMonth() + 1 === currentMonth);
+        } else if (selectedOption === "weekly") {
+            const today = new Date();
+            const currentWeek = getWeek(today);
+            filteredReport = salesReport.filter(item => getWeek(new Date(item.shippingDate)) === currentWeek);
+        } else if (selectedOption === "daily") {
+            const today = new Date().toISOString().slice(0, 10);
+            filteredReport = salesReport.filter(item => item.shippingDate.toISOString().slice(0, 10) === today);
+        } else if (selectedOption === "all") {
+            filteredReport = salesReport; // Send all data
+        }
+
+       
+
+        res.json({ filteredReport });
+
+    
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+
+const filterCustomDate= async (req,res)=>{
+  try {
+
+    const salesReport= await order.find().populate("orderedItem.productId").populate("deliveryAddress").populate("userId");
+
+    const {startDate, endDate}= req.body
+    const adjustedEndDate = new Date(endDate);
+        adjustedEndDate.setDate(adjustedEndDate.getDate() + 1);
+  
+  const filteredSalesReport = salesReport.filter(item => {
+    const shippingDate = new Date(item.shippingDate);
+    return shippingDate >= new Date(startDate) && shippingDate < adjustedEndDate;
+});
+
+  res.json(filteredSalesReport);
+
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+
 // --------------------------------------------End Load UsersList -------------------------------------------
 
 // ------------------------------------------------End--------------------------------------------------------
@@ -728,5 +877,8 @@ module.exports = {
   adminOfferList,
   createCoupon,
   addNewOffer,
-  selectOfferType
+  selectOfferType,
+  totalSalesReport,
+  filterSalesReport,
+  filterCustomDate
 };

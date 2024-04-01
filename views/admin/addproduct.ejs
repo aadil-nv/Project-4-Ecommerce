@@ -8,7 +8,7 @@
                     <h2 class="content-title">Add New Product</h2>
                 </div>
             </div>
-            <form action="/addproduct" method="post" style="border: 1px solid black ; padding: 8px;"
+            <form action="/addproduct" method="post" 
                 onsubmit="return validateForm() " enctype="multipart/form-data">
                 <div class="col-lg-6">
                     <div class="card mb-3">
@@ -16,7 +16,7 @@
                             <div class="mb-2">
                                 <label for="product_title" class="form-label">Product Name</label>
                                 <input type="text" placeholder="Type here" class="form-control" name="productName"
-                                    id="productName" style="border: 1px solid black ; padding: 8px;" />
+                                    id="productName"  />
                                 <p id="errorName" style="color: red"></p>
                             </div>
                             <div class="row gx-3">
@@ -24,7 +24,7 @@
                                     <label for="product_sku" class="form-label">Quantity</label>
                                     <input type="text" placeholder="Type here" class="form-control"
                                         name="productQuantity" id="productQuantity"
-                                        style="border: 1px solid black ; padding: 8px;" />
+                                        />
                                     <p id="errorQuantity" style="color: red"></p>
                                 </div>
                             </div>
@@ -33,7 +33,7 @@
                                     <label for="product_sku" class="form-label">Category</label>
                                     <select type="text" placeholder="Type here" class="form-control"
                                         name="productCategory" id="productCategory"
-                                        style="border: 1px solid black ; padding: 8px;">
+                                       >
                                         <p id="errorCategory" style="color: red"></p>
                                         <%category.forEach(category=>{%>
 
@@ -52,7 +52,7 @@
                                     <label for="product_sku" class="form-label">Price</label>
                                     <input placeholder="Type here" type="number" class="form-control"
                                         name="productPrice" id="productPrice"
-                                        style="border: 1px solid black ; padding: 8px;" />
+                                         />
                                     <p id="errorPrice" style="color: red"></p>
                                 </div>
                             </div>
@@ -64,7 +64,7 @@
                             <div>
                                 <label class="form-label">Description</label>
                                 <input placeholder="Type here" class="form-control" rows="4" name="productDescription"
-                                    id="productDescription" style="border: 1px solid black ; padding: 8px;" />
+                                    id="productDescription"  />
                                 <p id="errorDescription" style="color: red"></p>
                             </div>
                         </div>
@@ -80,13 +80,13 @@
                                 <p id="errorImage" style="color: red"></p>
                             </div>
                             <img class="rounded-2 " style="width: 150px;" id="preview-1" alt=""
-                                style="border: 1px solid black ; padding: 8px;">
+                                >
                             <img class="rounded-2 " style="width: 150px;" id="preview-2" alt=""
-                                style="border: 1px solid black ; padding: 8px;">
+                                >
                             <img class="rounded-2 " style="width: 150px;" id="preview-3" alt=""
-                                style="border: 1px solid black ; padding: 8px;">
+                                >
                             <img class="rounded-2 " style="width: 150px;" id="preview-4" alt=""
-                                style="border: 1px solid black ; padding: 8px;">
+                                >
                         </div>
 
                     </div>

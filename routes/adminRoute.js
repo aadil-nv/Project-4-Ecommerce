@@ -65,6 +65,10 @@ admin_route.get('/admin/createoffer',admincontroller.createCoupon)
 
 admin_route.post('/admin/createoffer',admincontroller.addNewOffer)
 admin_route.post('/admin/selectoffertype',admincontroller.selectOfferType)
+admin_route.get('/admin/salesreports',admincontroller.totalSalesReport)
+
+admin_route.post('/admin/filtersalesreport',admincontroller.filterSalesReport)
+admin_route.post('/admin/filtercustomdate',admincontroller.filterCustomDate)
 
 
 

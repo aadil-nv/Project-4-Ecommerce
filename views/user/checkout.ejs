@@ -797,8 +797,8 @@
                                 alert("This step of Payment Failed");
                             });
 
-                        } else if (data.paymentMethod === "Cash On Delivery") {
-                            console.log('Fetched address data:', data);
+                        }else if (data.paymentmethod === "Cash On Delivery") {
+                            console.log("data.paymentMethod  :::::",data.paymentMethod)
                             Swal.fire({
                                 title: 'Order Placed Successfully',
                                 icon: 'success',

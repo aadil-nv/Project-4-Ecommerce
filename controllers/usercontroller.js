@@ -350,7 +350,8 @@ const backToUserHome = async (req, res) => {
 
 const loadShopPage = async (req, res) => {
   try {
-    const productData = await Products.find();
+    const productData = await Products.find().populate("offerId");
+
 
     res.render("user/shop", { User, productData });
   } catch (error) {
@@ -930,19 +931,22 @@ const placeOrder = async (req, res) => {
         await order.findOneAndUpdate(
           { _id: newOrder._id },
           { $set: { couponDeduction: discountAmount1 } }, { new: true })
+
       }
 
+      
+      console.log("88888888888888888888888888888888888888888888888")
+      console.log(newOrder)
+      
+      console.log("88888888888888888888888888888888888888888888888")
+
       await Cart.deleteOne({ userId: req.session.user });
-      res.status(200).json({ newOrder, paymentmethod });
+      res.json({ newOrder, paymentmethod });
 
     }else if(paymentmethod === "Wallet"){
 
       const WalletUserData= await User.findById({_id:userId})
       const walletMoney=WalletUserData.wallet
-      console.log("-------------------WalletUserData---------------------",WalletUserData)
-      console.log("-------------------walletMoney---------------------",walletMoney)
-      console.log("-------------------cartData---------------------",cartData)
-      console.log("-------------------totalDiscount---------------------",totalDiscount)
 
       if(walletMoney <= totalDiscount ){
         console.log("Wallet Payment failed InsuficiantFund")
@@ -962,7 +966,6 @@ const placeOrder = async (req, res) => {
           shippingDate: new Date(),
           paymentMethod: paymentmethod,
         });
-        console.log("-------------------newOrder---------------------",newOrder)
 
           await walletNewOrder.save()
 
@@ -989,11 +992,8 @@ const placeOrder = async (req, res) => {
               }
 
               const userData= await User.findById({_id:userId})
-              console.log("xxxxxxxxxxxxxxxxuserDataxxxxxxxxxxxxxxxxxxxxxxxxxx",userData)
               const walletMoney= userData.wallet
-              console.log("xxxxxxxxxxxxxxxxxxwalletMoneyxxxxxxxxxxxxxxxxxxxxxxxx",walletMoney)
               const balanceWallet=walletMoney-totalDiscount
-              console.log("xxxxxxxxxxxxxxxxxxbalanceWalletxxxxxxxxxxxxxxxxxxxxxxxx",balanceWallet)
               
 
               const updatedUser = await User.findByIdAndUpdate(userId, {
@@ -1310,17 +1310,7 @@ const userReturnProduct = async  (req,res)=>{
   try {
     const{productId, order_id,paymentMethod,quantity,totalProductAmount, reason}=req.body
     const userId = req.session.user;
-    console.log("----------------------------------------------")
-    console.log(productId)
-    console.log(order_id)
-    console.log(paymentMethod)
-    console.log(reason)
-    console.log(userId)
-    console.log(quantity)
-    console.log(totalProductAmount)
-    console.log("----------------------------------------------")
-
-
+   
 
     if(paymentMethod==="Cash On Delivery"){
 

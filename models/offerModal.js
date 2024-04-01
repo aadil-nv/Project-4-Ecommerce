@@ -23,10 +23,12 @@ const offerSchema = new mongoose.Schema({
         },
     offerType:{
         type:String,
-        required:true},
+        required:true
+    },
     offerTypeName:{
         type:String,
-        required:true}
+        required:true
+    }
 })
 
 module.exports = mongoose.model('offer', offerSchema);

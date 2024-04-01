@@ -49,14 +49,16 @@
                             <th scope="col" class="text-end">Action</th>
                         </tr>
                     </thead>
+                    
+                        <% offerData.forEach(data=> { %>
                     <tbody>
                         <tr>
                             <td>0901</td>
-                            <td><b>Marvin McKinney</b></td>
-                            <td>marvin@example.com</td>
-                            <td>$9.00</td>
-                            <td><span class="badge rounded-pill alert-warning">Pending</span></td>
-                            <td>03.12.2020</td>
+                            <td><b><%= data.offerName  %></b></td>
+                            <td><%= data.percentage  %>%</td>
+                            <td><%= data.offerType  %></td>
+                            <td><span class="badge rounded-pill alert-warning"><%= data.expiryDate.toDateString()  %></span></td>
+                            <td><%= data.status  %></td>
                             <td class="text-end">
                                 
                                 <div class="dropdown">
@@ -67,11 +69,13 @@
                                     </div>
                                 </div>
                                 <!-- dropdown //end -->
+
                             </td>
                         </tr>
                         
-                       
                     </tbody>
+                    <% }) %>
+               
                 </table>
             </div>
             <!-- table-responsive //end -->

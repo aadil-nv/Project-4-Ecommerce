@@ -44,6 +44,12 @@ app.use("/", adminRoute);
 app.get("/adminlogin", (req, res) => {
   res.render("admin/adminlogin");
 });
+//?-----------------------------------------------------------------------------
+app.get("*",(req,res)=>{
+  res.render('user/error404')
+})
+//?-----------------------------------------------------------------------------
+
 
 app.listen("7777", () => {
   console.log("server has started on http://localhost:7777");

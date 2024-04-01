@@ -23,6 +23,10 @@ const productSchema = new mongoose.Schema({
     isListed: {
         type:Boolean,
         default:true
+    },
+    offerId :{
+        type:mongoose.Types.ObjectId,
+        ref:"offer", 
     }
 })
 

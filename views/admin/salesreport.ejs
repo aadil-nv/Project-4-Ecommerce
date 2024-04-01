@@ -1,0 +1,328 @@
+<%- include('../partials/asidenav.ejs')%>
+
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">OverAll SalesReport</h2>
+
+            </div>
+
+        </div>
+        <div class="card mb-4">
+            <header class="card-header">
+                <div class="row gx-3">
+                    <div class="col-lg-4 col-md-6 me-auto">
+                        <input type="text" placeholder="Search..." class="form-control" />
+                    </div>
+                    <div class="col-lg-2 col-6 col-md-3">
+                        <select class="form-select" onchange="fetchData()">
+                            <option value="all">All</option>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="m  onthly">Monthly</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-2 col-6">
+                        <input type="date" class="form-control" id="startdate" />
+                    </div>
+                    <div class="col-lg-2 col-6">
+                        <input type="date" class="form-control" id="enddate" />
+                    </div>
+                    <div class="col-lg-2 col-6">
+                        <a class="btn btn-primary btn-sm rounded" onclick="fetchReport2()">Report</a>
+                    </div>
+                </div>
+            </header>
+            <!-- card-header end// -->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="tablebody">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th scope="col">Order ID</th>
+                                <th scope="col">Billing Name</th>
+                                <th scope="col">Offer Applied</th>
+                                <th scope="col">Coupon Applied</th>
+                                <th scope="col">PaymentMethod</th>
+                                <th scope="col" class="text-end">Total</th>
+                            </tr>
+                        </thead>
+
+                        <% if(salesReport.length> 0) {%>
+                            <% salesReport.forEach(item=>{ %>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <%= item.shippingDate.toDateString() %>
+                                        </td>
+                                        <td><b>
+                                                <%= item.orderId %>
+                                            </b></td>
+                                        <td>
+                                            <%= item.deliveryAddress.name %>
+                                        </td>
+                                        <td>0.00</td>
+                                        <td>
+                                            <%= item.couponDeduction %>
+                                        </td>
+                                        <td><span class="badge rounded-pill alert-warning">
+                                                <%= item.paymentMethod %>
+                                            </span></td>
+
+                                        <td class="text-end">
+                                            <% let totalAmount=0; %>
+                                                <% item.orderedItem.forEach(product=> { %>
+                                                    <% totalAmount +=product.totalProductAmount; %>
+                                                        <% }) %>
+                                                            Rs.<%= totalAmount %>/-
+                                        </td>
+
+                                    </tr>
+
+                                </tbody>
+                                <% }) %>
+                                    <% } %>
+                    </table>
+                </div>
+                <!-- table-responsive //end -->
+            </div>
+            <!-- card-body end// -->
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6>OverAll SalesCount : <%= salesCount %>
+                            </h6>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6>OverAll Order Amount :Rs.<%= overAllOrderAmount %>/-</h6>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6>Total products :Rs.<%= totalCouponDeduction %>/-</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6>Total Sales : Rs.<%= totalSalesAmount %>/- </h6>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6>Offer Deduction :Rs.500/-</h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h6>Coupon Dedeuction:Rs.<%= totalCouponDeduction %>/-</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+        <div class="pagination-area mt-15 mb-50">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-start">
+                    <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                    <li class="page-item"><a class="page-link" href="#">02</a></li>
+                    <li class="page-item"><a class="page-link" href="#">03</a></li>
+                    <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                    <li class="page-item"><a class="page-link" href="#">16</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+
+    <script src="/adminpublic/adminlogin/js/vendors/jquery-3.6.0.min.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/bootstrap.bundle.min.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/select2.min.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/perfect-scrollbar.js"></script>
+    <script src="/adminpublic/adminlogin/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- Main Script -->
+    <script src="/adminpublic/adminlogin/js/main.js?v=1.1" type="text/javascript"></script>
+
+    <script>
+        function fetchData() {
+            const selectedOption = document.querySelector('.form-select').value;
+            console.log("selectedOption  :::::", selectedOption)
+
+            fetch('/admin/filtersalesreport', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ selectedOption })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    updateTable(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+
+
+        function updateTable(salesReport) {
+            console.log(":::::::salesReport::::::::::>>", salesReport.filteredReport)
+
+            const tableBody = document.getElementById('tablebody');
+
+            // Remove all existing table rows
+            while (tableBody.firstChild) {
+                tableBody.removeChild(tableBody.firstChild);
+            }
+
+            if (salesReport.filteredReport.length > 0) {
+                salesReport.filteredReport.forEach(item => {
+                    console.log(":::::::item::::::::::>>", item)
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                <td>${item.shippingDate ? new Date(item.shippingDate).toDateString() : ''}</td>
+                <td><b>${item.orderId}</b></td>
+                <td>${item.deliveryAddress ? item.deliveryAddress.name : ''}</td>
+                <td>0.00</td>
+                <td>${item.couponDeduction}</td>
+                <td><span class="badge rounded-pill alert-warning">${item.paymentMethod}</span></td>
+                <td class="text-end">
+                    Rs.${calculateTotalAmount(item.orderedItem)}/-
+                </td>`;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td colspan="7" class="text-center">No data available</td>`;
+                tableBody.appendChild(row);
+            }
+        }
+
+        function calculateTotalAmount(orderedItems) {
+            let totalAmount = 0;
+            orderedItems.forEach(product => {
+                totalAmount += product.totalProductAmount || 0;
+            });
+            return totalAmount;
+        }
+
+    </script>
+
+    <script>
+        function fetchReport2() {
+            const startDate = document.getElementById('startdate').value;
+            console.log(startDate)
+            const endDate = document.getElementById('enddate').value;
+            console.log(endDate)
+
+            if (!startDate || !endDate) {
+                // Show SweetAlert indicating that both start and end dates are required
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Please select both start and end dates.'
+                });
+                return;
+            }
+
+            // Send the start and end dates to the controller using fetch
+            fetch('/admin/filtercustomdate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ startDate, endDate })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    filterTable(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+
+        function filterTable(customData) {
+            console.log(":::::::customData::::::::::>>", customData.filteredSalesReport)
+
+            const tableBody = document.getElementById('tablebody');
+
+            // Remove all existing table rows
+            while (tableBody.firstChild) {
+                tableBody.removeChild(tableBody.firstChild);
+            }
+
+            if (customData.length > 0) {
+                customData.forEach(item => {
+                    console.log(":::::::item::::::::::>>", item)
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                <td>${item.shippingDate ? new Date(item.shippingDate).toDateString() : ''}</td>
+                <td><b>${item.orderId}</b></td>
+                <td>${item.deliveryAddress ? item.deliveryAddress.name : ''}</td>
+                <td>0.00</td>
+                <td>${item.couponDeduction}</td>
+                <td><span class="badge rounded-pill alert-warning">${item.paymentMethod}</span></td>
+                <td class="text-end">
+                    Rs.${calculateTotalAmount(item.orderedItem)}/-
+                </td>`;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td colspan="7" class="text-center">No data available</td>`;
+                tableBody.appendChild(row);
+            }
+        }
+
+        function calculateTotalAmount(orderedItems) {
+            let totalAmount = 0;
+            orderedItems.forEach(product => {
+                totalAmount += product.totalProductAmount || 0;
+            });
+            return totalAmount;
+        }
+    </script>>

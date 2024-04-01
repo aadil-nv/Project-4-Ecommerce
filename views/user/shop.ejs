@@ -148,10 +148,19 @@
                                                 </div>
                                                 <div class="product-content">
                                                     <h3 id="productname"><a href=/producttab/<%= data._id %> ><%= data.productname %></a></h3>
-                                                    <div class="product-price">
-                                                        <!-- <span class="old-price">₹1000 </span> -->
-                                                        <span class="new-price"  id="productprice">₹<%= data.productprice %></span>
-                                                    </div>
+<!-- todo------------------------------------------------------------- produvt price ------------------------------------------------------------------------------->
+
+                                            <div class="product-price">
+                                            <span class="new-price" id="productprice"><%= data.productprice %></span>
+                                                </div>
+
+           <!-- <% if(data.offerId !== undefined){ %>
+            <span class="new-price" id="productprice"><%= data.offerId.offerName %></span>
+            <% }else{ %>
+            <% } %> -->
+
+        
+<!-- todo------------------------------------------------------------- produvt price ------------------------------------------------------------------------------->
                                                     <% if (data.productquadity > 100) { %>
                                                         <div class="product-price">
                                                             <span class="new-price"><p id="stock5">Stock Available</p></span>
@@ -463,39 +472,6 @@
 </script>
 
 
-
-    function wishlstProductId(id) {
-        console.log('=======================productId==========================',id)
-      fetch('/user/wishlist', {
-        method: 'POST', 
-        headers: {
-          'Content-Type': 'application/json',
-         
-        },
-        body: JSON.stringify({ id: id }) 
-      })
-      .then(response => {
-        if (response.ok) {
-            swal({
-                    title: "Success!",
-                    text: "Product added to wishlist successfully",
-                    icon: "success",
-                    position: "top-end", // Display at the top right corner
-                    timer: 3000, // Auto close after 3 seconds
-                    buttons: false // Hide the "Close" button
-                });
-          
-          console.log('Product added to wishlist successfully');
-        } else {
-          
-          console.error('Error adding product to wishlist');
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-    }
-    </script> -->
     <script>
    
   function wishlstProductId(id) {

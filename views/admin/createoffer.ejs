@@ -16,18 +16,21 @@
                         <div class="mb-4">
                             <label for="product_name" class="form-label">Offer Name</label>
                             <input type="text" placeholder="Type here" class="form-control" id="offername" />
+                            <div id="offernameError" class="error-message" style="color: red;"></div>
                         </div>
                         <div class="mb-4">
                             <label class="form-label">Offer Description</label>
-                            <textarea placeholder="Type here" class="form-control" rows="4"
-                                id="offerdescription"></textarea>
+                            <input placeholder="Type here" class="form-control" rows="4" id="offerdescription"></input>
+                            <div id="offerdescriptionError" class="error-message" style="color: red;"></div>
                         </div>
                         <div class="row">
                             <div class="col-lg-4">
                                 <div class="mb-4">
                                     <label class="form-label">OFFER</label>
                                     <div class="row gx-2">
-                                        <input placeholder="%" type="number" class="form-control" id="offerpercentage" />
+                                        <input placeholder="%" type="number" class="form-control"
+                                            id="offerpercentage" />
+                                        <div id="offerpercentageError" class="error-message" style="color: red;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -35,6 +38,7 @@
                                 <div class="mb-4">
                                     <label class="form-label">Expiry Date</label>
                                     <input placeholder="$" type="date" class="form-control" id="offerexpirydate" />
+                                    <div id="offerexpirydateError" class="error-message" style="color: red;"></div>
                                 </div>
                             </div>
                             <div class="col-lg-4">
@@ -43,6 +47,7 @@
                                     <option value="active">Active</option>
                                     <option value="deactive">Deactive</option>
                                 </select>
+                                <div id="offerstatusError" class="error-message" style="color: red;"></div>
                             </div>
                             <div class="mb-4">
                                 <label class="form-label">Offer Type</label>
@@ -51,29 +56,33 @@
                                     <option value="category">Category</option>
                                     <option value="product">Products</option>
                                 </select>
+                                <div id="offerSelectError" class="error-message" style="color: red;"></div>
                             </div>
-                            
+
                             <div class="mb-4" id="selectContainer" style="display: none;">
                                 <label class="form-label" id="selectLabel">Select</label>
                                 <select class="form-select" id="selectBox">
                                     <!-- Options will be populated dynamically -->
                                 </select>
+                                <div id="selectBoxError" class="error-message" style="color: red;"></div>
                             </div>
-                        
-                        
 
-                        <label class="text-center" style="justify-content: center; display: flex; align-items: center;">
 
-                            <button class="btn rounded font-sm hover-up" style="color: white; background-color: blue;"
-                                id="addOfferBtn" onclick="addOffer()">ADD OFFER</button>
-                        </label>
 
+                            <label class="text-center"
+                                style="justify-content: center; display: flex; align-items: center;">
+
+                                <button class="btn rounded font-sm hover-up"
+                                    style="color: white; background-color: blue;" id="addOfferBtn"
+                                    onclick="addOffer()">ADD OFFER</button>
+                            </label>
+
+                        </div>
                     </div>
+
                 </div>
 
             </div>
-
-        </div>
     </section>
 
     <script src="/adminpublic/adminlogin/js/vendors/jquery-3.6.0.min.js"></script>
@@ -116,8 +125,75 @@
             const offerStatus = document.getElementById('offerstatus').value;
             const offerType = document.getElementById('offerSelect').value;
             const offerItem = document.getElementById('selectBox').value;
+            console.log("dddddddddddd", offerItem)
+
             // const selectedCategory = document.getElementById('categorySelect').value;
             // const selectedProduct = document.getElementById('productSelect').value;
+
+            if (offerName === '') {
+                document.getElementById('offernameError').innerText = 'Offer name is required';
+                return false;
+            } else if (/\s/.test(offerName)) {
+                document.getElementById('offernameError').innerText = 'Offer name cannot contain spaces';
+                return false;
+            }
+
+            // Validate offer description
+            if (offerDescription === '') {
+                document.getElementById('offerdescriptionError').innerText = 'Offer description is required';
+                return false;
+            } else if (!/\w{5,}/.test(offerDescription)) {
+                document.getElementById('offerdescriptionError').innerText = 'Offer description must contain at least 5 letters or digits';
+                return false;
+            }
+
+            // Validate offer percentage
+            if (offerPercentage === '') {
+                document.getElementById('offerpercentageError').innerText = 'Offer percentage is required';
+                return false;
+            } else if (/\s/.test(offerPercentage)) {
+                document.getElementById('offerpercentageError').innerText = 'Offer percentage cannot contain spaces';
+                return false;
+            } else if (parseFloat(offerPercentage) < 0) {
+                document.getElementById('offerpercentageError').innerText = 'Offer percentage cannot be negative';
+                return false;
+            } else if (parseFloat(offerPercentage) >= 100) {
+                document.getElementById('offerpercentageError').innerText = 'Offer percentage should be less than 100';
+                return false;
+            }
+
+            // Validate offer expiry date
+            if (offerExpiryDate === '') {
+                document.getElementById('offerexpirydateError').innerText = 'Expiry date is required';
+                return false;
+            } else {
+                const today = new Date();
+                const expiryDate = new Date(offerExpiryDate);
+                if (expiryDate < today) {
+                    document.getElementById('offerexpirydateError').innerText = 'Expiry date cannot be in the past';
+                    return false;
+                }
+            }
+            // Validate offer status
+            if (offerStatus === '') {
+                document.getElementById('offerstatusError').innerText = 'Offer status is required';
+                return false;
+            }
+
+            // Validate offer type
+            if (offerType === '') {
+                document.getElementById('offerSelectError').innerText = 'Offer type is required';
+                return false;
+            }
+
+            // Validate select box
+            if (offerItem === '') {
+                document.getElementById('selectBoxError').innerText = 'Selection is required';
+                return false;
+            }
+
+            // If the form is valid, return true
+
 
             const data = {
                 offerName: offerName,
@@ -126,7 +202,7 @@
                 offerExpiryDate: offerExpiryDate,
                 offerStatus: offerStatus,
                 offerType: offerType,
-                offerItem:offerItem
+                offerItem: offerItem
             };
 
             fetch('/admin/createoffer', {
@@ -138,79 +214,94 @@
             })
                 .then(response => {
                     if (response.ok) {
-
                         console.log('Offer added successfully');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Offer added successfully'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.reload(); // Reload the page if user confirms
+                            }
+                        });
                     } else {
-
                         console.error('Failed to add offer');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Failed to add offer'
+                        });
+
                     }
                 })
-                
+
                 .catch(error => {
                     console.error('Error:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'An error occurred while processing your request'
+                    });
                 });
         }
     </script>
 
-   
 
-  
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('offerSelect').addEventListener('change', function() {
-        const selectedValue = this.value;
-        console.log("Selected value:", selectedValue);
-        const selectContainer = document.getElementById('selectContainer');
-        const selectBox = document.getElementById('selectBox');
 
-        if (selectedValue === "category" || selectedValue === "product") {
-            // Show select box
-            selectContainer.style.display = "block";
 
-            // Fetch data based on selected value and populate the select box
-            fetch('/admin/selectoffertype', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ selectedValue: selectedValue })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                selectBox.innerHTML = ''; // Clear previous optionsdata
-                
-                if (selectedValue === "category" ) {
-                    // If the selected value is "category" and the data is an array
-                    let categoryData1= data.categoryData
-                    categoryData1.forEach(category => {
-                        const option = document.createElement('option');
-                        option.text = category.categoryname;
-                        selectBox.add(option);
-                    });
-                } else if (selectedValue === "product" ) {
-                    // If the selected value is "product" and the data is an array
-                    let productData1= data.productData
-                    productData1.forEach(product => {
-                        const option = document.createElement('option');
-                        option.text = product.productname;
-                        selectBox.add(option);
-                    });
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('offerSelect').addEventListener('change', function () {
+                const selectedValue = this.value;
+                console.log("Selected value:", selectedValue);
+                const selectContainer = document.getElementById('selectContainer');
+                const selectBox = document.getElementById('selectBox');
+
+                if (selectedValue === "category" || selectedValue === "product") {
+                    // Show select box
+                    selectContainer.style.display = "block";
+
+                    // Fetch data based on selected value and populate the select box
+                    fetch('/admin/selectoffertype', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ selectedValue: selectedValue })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                            selectBox.innerHTML = ''; // Clear previous optionsdata
+
+                            if (selectedValue === "category") {
+                                // If the selected value is "category" and the data is an array
+                                let categoryData1 = data.categoryData
+                                categoryData1.forEach(category => {
+                                    const option = document.createElement('option');
+                                    option.text = category.categoryname;
+                                    selectBox.add(option);
+                                });
+                            } else if (selectedValue === "product") {
+                                // If the selected value is "product" and the data is an array
+                                let productData1 = data.productData
+                                productData1.forEach(product => {
+                                    const option = document.createElement('option');
+                                    option.text = product.productname;
+                                    selectBox.add(option);
+                                });
+                            } else {
+                                console.error('Invalid data received.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
                 } else {
-                    console.error('Invalid data received.');
+                    // Hide select box if no value is selected
+                    selectContainer.style.display = "none";
                 }
-            })
-            .catch(error => {
-                console.error('Error:', error);
             });
-        } else {
-            // Hide select box if no value is selected
-            selectContainer.style.display = "none";
-        }
-    });
-});
+        });
 
-</script>
-
-
-
+    </script>

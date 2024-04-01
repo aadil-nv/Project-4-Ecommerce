@@ -111,7 +111,7 @@
                                                                     <th>Action</th>
                                                                 </tr>
                                                             </thead>
-<% if(orderData.length> 0){ %>
+                                                            <% if(orderData.length> 0){ %>
                                                                 <% orderData.forEach((item)=> { %>
                                                                     <% item.orderedItem.forEach((product)=> { %>
                                                                         <tbody>
@@ -124,7 +124,7 @@
                                                                                 </td>
                                                                                 <td>
                                                                                     <%=product.quantity %>
-                                                                                                                                            </td>
+                                                                                </td>
                                                                                 <td>₹<%=product.totalProductAmount %>
                                                                                 </td>
                                                                                 <td>
@@ -163,7 +163,7 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td>Rs.1000/-</td>
+                                                                    <td>Rs.<%= userData.wallet %>/-</td>
                                                                    
                                                                 </tr>
                                                             </tbody>
@@ -177,7 +177,9 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td><button style="width: 100px; height: 30px; background-color: blue; color: white; border: none;">View</button></td>
+                                                                    <td> <a class="check-btn sqr-btn" data-bs-toggle="modal" id="sendId"
+                                                                        
+                                                                        data-bs-target="#exampleModal"><i class="fa fa-edit"></i>Wallet History</a></td>
                                                                    
                                                                 </tr>
                                                             </tbody>
@@ -391,7 +393,7 @@
 
     <!--todo------------------------------------------------------------------------------------------------------------------------------------ klge -->
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -418,10 +420,66 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
     <!--todo------------------------------------------------------------------------------------------------------------------------------------ klge -->
 
+ <!--todo------------------------------------------------------------------------------------------------------------------------------------ klge -->
+ <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+ aria-hidden="true">
+ <div class="modal-dialog" role="document">
+     <div class="modal-content">
+         <div class="modal-header">
+             <h5 class="modal-title" id="exampleModalLabel">Transaction History</h5>
+             <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"
+                 style="border: none">
+                 <span aria-hidden="true">&times;</span>
+             </button>
+         </div>
+
+         <form>
+             <div class="modal-body">
+                 <div class="different-address open-toggle mt-30">
+                     <div class="row">
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th>Date</th>
+                                <th>Reason</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                              </tr>
+                            </thead>
+                          
+                                <% userData.walletHistory.forEach(item=>{ %>
+                            <tbody>
+                              
+                                <td><%= item.date.toDateString()  %> </td>
+                                <td><%= item.description  %> </td>
+                                <td><%= item.amount  %> </td>
+                                <td><%= item.status  %> </td>
+                              </tr>
+                            
+                            </tbody>
+                            <% }) %>
+                          
+                          </table>
+                     </div>
+                 </div>
+
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                         Close
+                     </button>
+                  
+                 </div>
+             </div>
+         </form>
+     </div>
+ </div>
+</div>
+ 
+ <!--todo------------------------------------------------------------------------------------------------------------------------------------ klge -->
 
 
 
