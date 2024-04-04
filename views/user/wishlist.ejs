@@ -31,6 +31,17 @@
         height: 160px; 
         font-size: 9px;
     }
+    #removebutton{
+        border: none;
+        background-color: rgb(255, 247, 247);
+    }
+    #addtocart{
+        background-color: rgb(206, 116, 42);
+        border: none;
+        width: 90px;
+        height: 35px;
+        color: white;
+    }
     </style>
 
     <div class="wishlist-area pb-100 pt-100">
@@ -57,8 +68,8 @@
                                                 <tbody>
                                                     <tr>
                                                         <td class="product-remove"><button
-                                                                onclick="removewishlistProduct('<%=data.productId._id %>')"><i
-                                                                    class="fa-solid fa-xmark"></i></button></td>
+                                                                onclick="removewishlistProduct('<%=data.productId._id %>')"  id="removebutton"><i
+                                                                    class="fa-solid fa-xmark" ></i></button></td>
                                                         <td class="product-thumbnail">
                                                             <a href="product-details.html"><img
                                                                     src="/uploads/<%= data.productId.productimage[0] %>"
@@ -112,7 +123,7 @@
 
                                                                                 <% } %>
                                                         </td>
-                                                        <td class="wishlist-cart btn-hover"><button onclick="addItemInCart('<%=data.productId._id %>')">Add to Cart</button>
+                                                        <td class="wishlist-cart btn-hover"><button onclick="addItemInCart('<%=data.productId._id %>')" id="addtocart">Add to Cart</button>
                                                         </td>
                                                     </tr>
 

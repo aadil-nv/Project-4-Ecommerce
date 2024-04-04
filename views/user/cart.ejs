@@ -51,6 +51,7 @@
         button:nth-child(1):active {
             box-shadow: inset 4px 5px 10px rgba(0, 0, 0, 0.5);
         }
+        
     </style>
 
     <div class="cart-area pt-100 pb-100">
@@ -88,14 +89,21 @@
                                                         <h5>
                                                             <a href="product-details.html">
                                                                 <%= data.productId.productname %>
+                                                                
                                                             </a>
                                                         </h5>
                                                     </td>
 
                                                     <td class="product-cart-price">
-                                                        <span class="amount">
-                                                            <%= data.productId.productprice %>
-                                                        </span>
+                                                        <% if(data.productId.offerId !== undefined){%>
+                                                            
+                                                            <% const discountedPrice = data.productId.productprice - ( data.productId.productprice  * data.productId.offerId?.percentage / 100);%>
+                                                            <span class="amount"><%= discountedPrice %></span>
+                                                              
+                                                            <%}else{%>
+                                                                <span class="amount"><%= data.productId.productprice %></span>
+                                                                <%}%>
+                                                           
                                                     </td>
 
                                                     <% if(data.productId.productquadity> 0) {%>
@@ -132,7 +140,13 @@
                                                                 </td>
                                                 </tr>
                                                 <% })%>
-                                             <%}%>
+                                             <%}else{%>
+                                               
+                                                <td colspan="7" class="text-center"><a href="/shoppage" id="nocart">Add Products</a></td>
+                                                    
+                                              
+                                                
+                                                <%}%>
                                             </tbody>
                                 </table>
 
@@ -150,9 +164,7 @@
                                         <div class="cart-clear btn-hover">
                                             <button>Update Cart</button>
                                         </div>
-                                        <div class="cart-clear btn-hover">
-                                            <a style="margin-left: 20rem" href="#">Clear Cart</a>
-                                        </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -164,7 +176,7 @@
                     <div class="grand-total-wrap">
                         <div class="grand-total-content">
                             <h3>Subtotal <span id="total">
-                                ₹<%= total%>
+                                ₹<%= total.toFixed(0)%>
                                 </span></h3>
                             <br />
                             <h6>Discout <span>₹900</span></h6>
@@ -232,7 +244,7 @@
                             return response.json();
                         })
                         .then((data) => {
-                            window.location.reload();
+                            location.reload();
                         })
                         .catch((err) => {
                             console.log(err);

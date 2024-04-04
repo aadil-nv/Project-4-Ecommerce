@@ -11,6 +11,7 @@ const Cart = require("../models/cartModel");
 const order = require("../models/orderModal");
 const Wishlist = require("../models/wishlistModel");
 const Coupon = require("../models/couponModal");
+const Offer = require("../models/offerModal");
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 const mongoose = require("mongoose");
@@ -421,26 +422,105 @@ const loadGoogleAuth = async (req, res) => {
 
 // ----------------------------------------------Loding view Cart-------------------------------------------
 
+// const loadViewCart = async (req, res) => {
+//   try {
+//     const user = req.session.user;
+
+//     const cartDetiles = await Cart.find({ userId: user }).populate(
+//       "products.productId"
+//     )
+    
+    
+//     let offerId=0
+//     cartDetiles.forEach((item)=>{
+//       item.products.forEach((product) => {
+//         offerId=product.productId.offerId
+//       });
+//     });
+
+//     if(!offerId){
+//       let total = 0;
+//       cartDetiles.forEach((item) => {
+//         item.products.forEach((product) => {
+//           total += product.quantity * product.productId.productprice;
+//         });
+//       });
+    
+//     }
+//     let offerData= await Offer.findById({_id:offerId})
+//     let offerPercentage= offerData.percentage
+
+//     let total2 = 0;
+//     let total3 = 0;
+//     cartDetiles.forEach((item) => {
+//       item.products.forEach((product) => {
+//         total2 += product.quantity * product.productId.productprice
+//         total3=total2*offerPercentage/100
+//         total=total2-total3
+//       });
+//     });
+    
+
+  
+    
+   
+
+//     res.render("user/cart", { cartDetiles, total,offerPercentage });
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// };
 const loadViewCart = async (req, res) => {
   try {
     const user = req.session.user;
 
-    const cartDetiles = await Cart.find({ userId: user }).populate(
-      "products.productId"
-    );
-    let total = 0;
+    const cartDetiles = await Cart.find({ userId: user }).populate("products.productId").populate({path:'products.productId',populate:{path:"offerId",model:"offer"}})
 
+    let offerId = null;
     cartDetiles.forEach((item) => {
+      item.products.forEach((product) => {
+        if (product.productId && product.productId.offerId) {
+          offerId = product.productId.offerId;
+        }
+      });
+    });
+
+    let offerPercentage = 0;
+    if (offerId) {
+      try {
+        const offerData = await Offer.findById(offerId);
+        if (offerData) {
+          offerPercentage = offerData.percentage;
+        } else {
+          console.log("Offer not found with ID:", offerId);
+        }
+      } catch (error) {
+        console.error("Error fetching offer:", error);
+      }
+    }
+    
+    
+    console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,,,,,,,<<<<<<<")
+
+    let total = 0;
+    cartDetiles .forEach((item) => {
       item.products.forEach((product) => {
         total += product.quantity * product.productId.productprice;
       });
     });
 
-    res.render("user/cart", { cartDetiles, total });
+    let discountedTotal = total;
+    if (offerPercentage > 0) {
+      discountedTotal *= (100 - offerPercentage) / 100;
+    }
+
+    res.render("user/cart", { cartDetiles, total: discountedTotal});
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
   }
 };
+
 
 // ----------------------------------------------Ending  Google Auth-------------------------------------------
 
@@ -730,9 +810,7 @@ const loadtCheckoutPage = async (req, res) => {
     const userId = req.session.user;
 
     const addressData = await Address.find({ userId: userId });
-    const cartDetiles = await Cart.find({ userId: userId }).populate(
-      "products.productId"
-    );
+    const cartDetiles = await Cart.find({ userId: userId }).populate("products.productId");
 
     let total = 0;
 
@@ -1030,7 +1108,7 @@ const loadOrderPage = async (req, res) => {
       .find({ _id: orderId })
       .populate("orderedItem.productId")
       .populate("deliveryAddress")
-      .populate("userId");
+      .populate("userId") 
 
     res.render("user/orders", { orderData });
   } catch (error) {
@@ -1264,6 +1342,11 @@ const verifyCoupon = async (req, res) => {
     const { couponCode, totalDiscount } = req.body;
     const userId = req.session.user;
     const couponData = await Coupon.findOne({ couponCode: couponCode })
+    const couponDiscount= couponData.discountAmount
+    console.log("77777777777777777777777777777777")
+    console.log("77777777777777couponDiscount777777777777777777",couponDiscount)
+    console.log("77777777777777777777777777777777")
+
 
     const cartDetiles = await Cart.find({ userId: userId }).populate("products.productId");
 
@@ -1296,7 +1379,7 @@ const verifyCoupon = async (req, res) => {
       return res.json({ message: "Coupon already used" });
     } else {
       let sumTotal = total - couponData.discountAmount;
-      return res.status(200).json({ total: sumTotal });
+      return res.status(200).json({ total: sumTotal,couponDiscount:couponDiscount });
 
     }
   } catch (error) {

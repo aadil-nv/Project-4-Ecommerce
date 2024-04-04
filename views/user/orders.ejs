@@ -117,7 +117,7 @@
                                                         </td> -->
                                                         <button id="button-user1"    onclick="requestReturn('<%= product.productId._id %>','<%= item._id %>','<%= item.paymentMethod %>','<%=  product.quantity %>','<%=  product.totalProductAmount %>'  )">return Product</button>
                                                        
-                                                        <%}else{%>
+                                                        <%}else if (product.productStatus==="pending"){%>
                                                        <td>
                                                         <button id="button-user"
                                                             data-product-id="<%= product.productId._id %>"
@@ -125,6 +125,9 @@
                                                             Cancel
                                                         </button>
                                                     </td>
+                                                    <%}else if (product.productStatus==="Returned "){%>
+                                                        <td><p>Money will Debited In your wallet</p></td>
+                                                       
                                                     <%}%>
                                             </tr>
                                         </tbody>
@@ -490,7 +493,7 @@
         console.log("=========productId========",productId)
         console.log("==========order_id=======",order_id)
   swal.fire({
-    title: 'Reason for return',
+    title: 'Enter your Reason',
     input: 'text',
     inputAttributes: {
       autocapitalize: 'off'
@@ -499,18 +502,18 @@
     confirmButtonText: 'Submit',
     preConfirm: inputValue => {
       if (inputValue === false) {
-        swal.showValidationMessage("Please give reason!");
+        swal.showValidationMessage("Enter a valid Reason");
         return false;
       }
       if (inputValue.trim() === "") {
-        swal.showValidationMessage("Please give reason!");
+        swal.showValidationMessage("Enter a valid Reason");
         return false;
       }
       return inputValue;
     },
     customContainerClass: {
       padding: '2rem',
-      'font-size': '16px',
+      'font-size': '12px',
       'max-width': '1000px'
     }
   }).then(result => {
@@ -521,6 +524,7 @@
       swal.fire({
         title: "Return requested",
         text: "Reason:" + result.value,
+       
         preConfirm:function(){
           fetch('/user/productreturn',{
           method: 'POST',
@@ -540,6 +544,7 @@
           confirmButton: 'btn btn-primary'
         }
       });
+      
     }
   });
 }

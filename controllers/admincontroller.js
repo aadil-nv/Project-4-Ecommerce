@@ -744,7 +744,7 @@ const selectOfferType = async (req, res) => {
 
 const totalSalesReport = async (req, res) => {
   try {
-    const salesReport= await order.find().populate("orderedItem.productId").populate("deliveryAddress").populate("userId");
+    const salesReport= await order.find().populate("orderedItem.productId").populate("deliveryAddress").populate("userId").sort({_id:1})
     let totalSalesAmount = 0;
     let totalSalesAmount2 = 0;
     

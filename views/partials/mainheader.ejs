@@ -56,6 +56,8 @@
     <link rel="stylesheet" type="text/css" href="path/to/sweetalert.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
 
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script> 
 
@@ -135,32 +137,37 @@
                                 </div> -->
 
                                 <% if(locals.customer){ %>
-                                    <div class="header-action-style" style="padding-top: 12px">
-                                        <a title="Login Register" href="/userprofile"><i
-                                                class="fa-solid fa-user fa-sm"></i></a>
+                                    <div class="header-action-style" >
+                                        <a title="Login Register" href="/userprofile"><i class="material-icons" id="userprofile">account_circle</i></a>
                                     </div>
                                     <% }else{ %>
-                                        <div class="header-action-style">
-                                            <a title="Login Register" href="/login"><i class="pe-7s-user"></i></a>
+                                        <div class="header-action-style" >
+                                            <a title="Login Register" href="/login"><i class="pe-7s-user" id="userprofile2"></i></a>
                                         </div>
                                         <%}%>
 
+                                        <% if(locals.customer){ %>
                                             <div class="header-action-style">
-                                                <a title="Wishlist" href="user/wishlist"><i class="pe-7s-like"></i></a>
+                                                <a title="Wishlist" href="/user/wishlist"><i class="pe-7s-like" id="userwishlist1"></i></a>
                                             </div>
+                                            <% }else{ %>
+                                                <div class="header-action-style">
+                                                    <a title="Wishlist" href="/login"><i class="pe-7s-like" id="userwishlist2"></i></a>
+                                                </div>
+                                                <%}%>
 
                                             <% if(locals.customer){ %>
                                                 <div class="header-action-style header-action-cart">
                                                     <a class="cart-active" href="/viewcart"><i
-                                                            class="pe-7s-shopbag"></i>
+                                                            class="pe-7s-shopbag" id="usercart1"></i>
                                                         <span class="product-count bg-black">01</span>
                                                     </a>
                                                 </div>
                                                 <% }else{ %>
                                                     <div class="header-action-style header-action-cart">
                                                         <a class="cart-active" href="/login"><i
-                                                                class="pe-7s-shopbag"></i>
-                                                            <span class="product-count bg-black">01</span>
+                                                                class="pe-7s-shopbag" id="usercart2"></i>
+                                                            <span class="product-count bg-black" >01</span>
                                                         </a>
                                                     </div>
                                                     <%}%>
@@ -183,4 +190,30 @@
     </div>
 </body>
 
+<style>
+    #userprofile{
+       color:  #fb641b;
+       font-size: 30px;
+    }
+    #userprofile2{
+       color:  #000000;
+       font-size: 30px;
+    }
+    #userwishlist1{
+        color: red;
+        font-size: 30px
+    }
+    #userwishlist2{
+        color: red;
+        font-size: 28px
+    }
+    #usercart1{
+        color: red;
+        font-size: 30px
+    }
+    #usercart2{
+        color: red;
+        font-size: 30px
+    }
+</style>
 

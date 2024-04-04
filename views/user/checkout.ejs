@@ -34,7 +34,7 @@
             height: 53px;
         }
     </style>
-    <p id="totalAmount"></p>
+    
     <div class="checkout-main-area pb-100 pt-70">
         <div class="container">
             <div class="customer-zone mb-20">
@@ -87,7 +87,7 @@
 
                         <input type="text" id="couponCodeInput" placeholder="Coupon code" />
                         <input type="submit" value="Apply Coupon" onclick="applyCoupon()" />
-                        <p id="couponMessage"></p>
+                        <p id="couponMessage" style="color: red;"></p>
 
                     </form>
                 </div>
@@ -296,10 +296,15 @@
 
                                                     <div class="your-order-info order-total">
                                                         <ul>
+                                                            <li>Discount <span  id="totalvalue2">00
+                                                                    
+                                                                </span></li>
+                                                        </ul>
+                                                        <ul>
                                                             <li>SubTotal <span  id="totalvalue1">
                                                                     <%= total%>
                                                                 </span></li>
-                                                        </ul>
+                                                        </ul><br>
                                                         <input type="hidden" id="totalvalue" value=" <%= total%>" />
                                                     </div>
                                 </div>
@@ -853,17 +858,18 @@
                         return response.json();
                     })
                     .then((data) => {
+                        console.log("444444444444444444444444",data)
+                        document.getElementById('totalvalue2').innerHTML= data.couponDiscount;
                         if (data.total) {
                             document.getElementById('totalvalue1').innerHTML= data.total;
-                            document.getElementById('totalAmount').innerHTML=data.total
+                            // document.getElementById('totalAmount').innerHTML=data.total
                             
-                        
-                            
-                        } else {
+                        } else  {
                             console.log("888888888888888888888888888888888",data)
                             couponMessage.innerHTML = data.message
                         }
                     })
+                    
                     .catch(error => {
                         console.error("Error:", error);
                     });

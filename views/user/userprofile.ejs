@@ -5,7 +5,7 @@
             color: red;
             font-weight: 700;
         }
-        .card{
+        .card1{
             border: 3px solid black;
         }
         .coupontext{
@@ -15,7 +15,70 @@
             padding-left: 10px;
             font-weight: 700;
         }
-
+        #profile{
+            position: relative;
+            top: 5px;
+        }
+        #order{
+            position: relative;
+            top: 7px;
+        }
+        #wallet{
+            position: relative;
+            top: 7px;
+        }
+        #coupon{
+            position: relative;
+            top: 7px;
+        }
+        #address{
+            position: relative;
+            top: 7px;
+            font-size: 21px;
+        }
+        #password2{
+            position: relative;
+            top: 7px;
+            font-size: 20px;
+            
+        }
+        #exit{
+            position: relative;
+            top: 7px;
+            font-size: 20px;
+        }
+        #persolainformation{
+            font-weight: 700;
+            font-size: 20px;
+        }
+        #w{
+            background-color: #ffffff;
+            border-radius: 3px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            padding-bottom: 100px;
+        }
+        .container1 {
+            display: flex; /* Keep it as flex to make it a column */
+            flex-direction: column; /* Set the flex direction to column */
+            gap: 10px;
+            width: 100%; /* Adjust width as needed */
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        #viewbutton{
+            border: none;
+            background-color: #fb641b;
+            color: white;
+        }
+        #orderstatus2{
+            font-weight: 700;
+        }
+        .textorderstatus{
+            font-weight: 700;
+        }
+       
+       
+       
       
         
        
@@ -45,25 +108,22 @@
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4">
                                         <div class="myaccount-tab-menu nav" role="tablist">
-                                            <a href="#dashboad" class="active" data-bs-toggle="tab">Profile</a>
-                                            <a href="#orders" data-bs-toggle="tab">Orders</a>
-                                            <a href="#download" data-bs-toggle="tab">Wallet</a>
-                                            <a href="#Coupons" data-bs-toggle="tab">Coupons</a>
-                                            <a href="#address-edit" data-bs-toggle="tab">Address</a>
-                                            <a href="#account-info" data-bs-toggle="tab" id="detiles">Change
-                                                Password</a>
-                                            <a href="/logout" onclick="confirmLogout(event)" id="logout">Logout</a>
+                                            <a href="#dashboad" class="active" data-bs-toggle="tab"><i class="material-icons" id="profile">person</i>&nbsp;&nbsp;Profile</a>
+                                            <a href="#orders" data-bs-toggle="tab"><i class="material-icons" id="order">shopping_cart</i>&nbsp;&nbsp;Orders</a>
+                                            <a href="#download" data-bs-toggle="tab"><i class="material-icons" id="wallet">account_balance_wallet</i>&nbsp;&nbsp;Wallet</a>
+                                            <a href="#Coupons" data-bs-toggle="tab"><i class="material-icons" id="coupon" >payments</i>&nbsp;&nbsp;Coupons</a>
+                                            <a href="#address-edit" data-bs-toggle="tab"><i class="material-icons" id="address">contact_mail</i>&nbsp;&nbsp;Address</a>
+                                            <a href="#account-info" data-bs-toggle="tab" id="detiles"><i class="material-icons" id="password2">phonelink_lock</i>&nbsp;&nbsp;Change Password</a>
+                                            <a href="/logout" onclick="confirmLogout(event)" id="logout"><i class="material-icons" id="exit">logout</i>&nbsp;&nbsp;Logout</a>
                                         </div>
                                     </div>
-                                    <!-- My Account Tab Menu End -->
-
-                                    <!-- My Account Tab Content Start -->
-                                    <div class="col-lg-9 col-md-8">
+                                   
+                                    <div class="col-lg-9 col-md-8" id="w">
                                         <div class="tab-content" id="myaccountContent">
-                                            <!-- Single Tab Content Start -->
+                                           
                                             <div class="tab-pane fade show active" id="dashboad" role="tabpanel">
                                                 <div class="myaccount-content">
-                                                    <h3>Dashboard</h3>
+                                                    <h3 id="persolainformation">Personal Information</h3>
                                                     <div class="welcome">
 
                                                         <h6>Name : <%= userData.name %>
@@ -76,8 +136,8 @@
 
                                                     <div class="single-input-item btn-hover" style="padding-top: 50PX;">
                                                         <button class="check-btn sqr-btn"
-                                                            style="background-color: #e97730; width: 130PX; height: 40PX; border: none; color: aliceblue; "><a
-                                                                href="/edituserdetiles">Edit detiles</a></a></button>
+                                                            style="background-color: #e97730; width: 130PX; height: 40PX; border: none; "><a
+                                                                href="/edituserdetiles" style="color: white;">Edit detiles</a></a></button>
                                                     </div>
                                                     
 
@@ -97,55 +157,60 @@
                                             <div class="tab-pane fade" id="orders" role="tabpanel">
                                                 <div class="myaccount-content">
                                                     <h3>Orders History</h3>
-                                                    <div class="myaccount-table table-responsive text-center">
-
-                                                        <table class="table table-bordered">
-                                                            <thead class="thead-light">
-
-                                                                <tr>
-                                                                    <th>Product</th>
-                                                                    <th>Product Name</th>
-                                                                    <th>Quantity</th>
-                                                                    <th>Price</th>
-                                                                    <th>Current Status</th>
-                                                                    <th>Action</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <% if(orderData.length> 0){ %>
-                                                                <% orderData.forEach((item)=> { %>
-                                                                    <% item.orderedItem.forEach((product)=> { %>
-                                                                        <tbody>
-                                                                            <tr>
-                                                                                <td><img src="/uploads/<%=product.productId.productimage[0] %>"
-                                                                                        width="50px"
-                                                                                        class="rounded-3 " /></td>
-                                                                                <td>
-                                                                                    <%=product.productId.productname %>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <%=product.quantity %>
-                                                                                </td>
-                                                                                <td>₹<%=product.totalProductAmount %>
-                                                                                </td>
-                                                                                <td>
-                                                                                    <%=product.productStatus %>
-                                                                                </td>
-
-                                                                                <td><a href="/orders/<%=item._id %>"
-                                                                                        class="check-btn sqr-btn ">View</a>
-                                                                                </td>
-
-                                                                            </tr>
-
-                                                                        </tbody>
-                                                                        <% }); %>
-                                                                            <% }); %>
-                                                                                <% }%>
-                                                        </table>
+                                                    <% if(orderData.length> 0){ %>
+                                                        <% orderData.forEach((item)=> { %>
+                                                            <% item.orderedItem.forEach((product)=> { %>
+                                                                <div class="container" >
+                                                                    <div class="row">
+                                                                        <div class="col-12" >
+                                                                            <div class="card mb-2" style="border-radius: 0;" >
+                                                                                <div class="row g-0"  >
+                                                                                    <div class="col-md-2" >
+                                                                                        <img src="/uploads/<%=product.productId.productimage[0] %>"
+                                                                                        width="60px"
+                                                                                         style="margin-left: 5px; margin-top: 5px;"/>
+                                                                                    </div>
+                                                                                    <div class="col-md-4">
+                                                                                        <div class="card-body">
+                                                                                            <h6 class="card-title"><%=product.productId.productname %></h6>
+                                                                                            
+                                                                                            <p class="card-text"><small class="text-muted">Qty.<%=product.quantity %></small></p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-2">
+                                                                                        <div class="card-body">
+                                                                                            <p class="card-title">₹<%=product.totalProductAmount %></p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-4">
+                                                                                        <div class="card-body">
+                                                                                            <% if(product.productStatus ==="Returned") {%>
+                                                                                            <p class="card-title" style="color: rgb(148, 116, 11);" class="textorderstatus"> <%=product.productStatus %></p>
+                                                                                            <% }else if (product.productStatus ==="Order Cancelled"){ %>
+                                                                                             <p class="card-title" style="color: red;"  class="textorderstatus"> <%=product.productStatus %></p>
+                                                                                            <% }else if (product.productStatus ==="Delivered"){ %>
+                                                                                             <p class="card-title" style="color: rgb(11, 128, 50);"  class="textorderstatus"> <%=product.productStatus %></p>
+                                                                                            <% }else if (product.productStatus ==="pending"){ %>
+                                                                                             <p class="card-title" style="color: rgb(21, 6, 151);"  class="textorderstatus"> <%=product.productStatus %></p>
+                                                                                            <% }else{ %>
+                                                                                             <p class="card-title" style="color: rgb(2, 2, 2);" class="textorderstatus"> <%=product.productStatus %></p>
+                                                                                             <% } %>
+                                                                                             
 
 
-
-                                                    </div>
+                                                                                            <p class="card-text" id="orderstatus2"><a href="/orders/<%=item._id %>"
+                                                                                                class="check-btn sqr-btn " ><button id="viewbutton">Detiles</button></a></p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <% }); %>
+                                                                <% }); %>
+                                                                    <% }%>
+                                                   
                                                 </div>
                                             </div>
                                             <!-- Single Tab Content End -->
@@ -195,43 +260,60 @@
                                             <div class="tab-pane fade" id="Coupons" role="tabpanel">
                                                 <div class="myaccount-content">
                                                     <h3 >Available Coupons</h3>
-
-                                                    <div class="row">
-                                                        <% if(couponData.length) {%>
-                                                            <% couponData.forEach(item=> {%>
-                                                        <div class="col-xl-6 col-lg-4 col-md-6 ">
-                                                            <div class="card pt-10">
-                                                                <h5  class="coupontext1"><%= item.couponName %></h5>
-                                                                <div >
-                                                                    <div class="dropdown float-end">
-                                                                        <h4  class="offerprice">Rs.<%= item.discountAmount %>/-</h4>
-                                                                     
+                                                    <% if(couponData.length) {%>
+                                                        <% couponData.forEach(item=> {%>
+                                                    <div class="container" >
+                                                        <div class="row">
+                                                            <div class="col-12">
+                                                                <div class="card " style="border-radius: 0;">
+                                                                    <div class="row g-0">
+                                                                        <div class="col-md-2">
+                                                                            <p style="justify-content: center; align-items: center; display: flex; padding-top: 30px;"><%= item.couponCode %></p>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <div class="card-body">
+                                                                                <h6 class="card-title"><%= item.couponName %></h6>
+                                                                                
+                                                                                <p class="card-text"><small class="text-muted"><%= item.couponDescription %></small></p>
+                                                                                
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-3">
+                                                                            <div class="card-body">
+                                                                                
+                                                                                
+                                                                                <p class="card-text"><small class="text-muted">Min Amount :<%= item.minAmount %></small></p>
+                                                                                <p class="card-text"><small class="text-muted">Expiry Date:<%= item.expiryDate.toDateString() %></small></p>
+                                                                                
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-2">
+                                                                            <div class="card-body">
+                                                                                <h5 class="card-title"  style="justify-content: center; align-items: center; display: flex; padding-top: 20px;">status</h5>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-2">
+                                                                            <div class="card-body">
+                                                                                <h5 class="card-title"  style="justify-content: center; align-items: center; display: flex; padding-top: 20px;">Rs.<%= item.discountAmount %>/-</h5>
+                                                                                
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
-                                                                    <p  class="coupontext"><%= item.couponDescription %></p>
-                                                                        <p  class="coupontext">Minimum Amount purchase :Rs.<%= item.minAmount %>/-</p>
-                                                                    <div class="coupontext">
-                                                                        <p>Expiry Date  ::  <%= item.expiryDate.toDateString() %></p>
-                                                                        <% if(item.used === false) {%>
-                                                                        <p style="color: green;">Coupon status :: Active </p>
-                                                                        <% }else{ %>
-                                                                        <p style="color: red;">Coupon status :: Already used</p>
-                                                                        <% } %>
-                                                                        <p>coupon code  :: <%= item.couponCode %></p>
-                                                                    </div>
-                                                                    <!-- price-wrap.// -->
                                                                 </div>
                                                             </div>
-                                                            <!-- card-product  end// -->
                                                         </div>
-                                                        <% }) %>
-                                                        <% } %>
                                                     </div>
+                                                    <% }) %>
+                                                        <% } %>
+
+                                                    
                                                 </div>
+                                                
                                             </div>
                                             <!-- Single Tab Content End -->
                                             <!-- Single Tab Content Start -->
                                             <div class="tab-pane fade" id="address-edit" role="tabpanel"
-                                                style=" height: 300px;  overflow: scroll; ">
+                                                >
 
                                                 <div class="myaccount-content">
                                                     <% if (addressData.length < 6 ){%>
@@ -251,55 +333,43 @@
                                                                 <% if(addressData.length> 0){ %>
                                                                     <% addressData.forEach(data=>{%>
                                                                         <table
-                                                                            style="width:70% ;  border: 1px dashed rgb(161, 156, 156); background-color: rgb(237, 239, 241);  ">
+                                                                            style="width:70% ;  border: 1px solid rgb(161, 156, 156); background-color: rgb(237, 239, 241);  ">
                                                                             <tr>
-                                                                                <th>Name :</th>
-                                                                                <td>
-                                                                                    <%= data.name %>
-                                                                                </td>
+                                                                                <th>Name :&nbsp;&nbsp;<%= data.name %></th>
+                                                                                
+                                                                                    
+                                                                                
                                                                             </tr>
 
                                                                             <tr>
-                                                                                <th>Mobile No:</th>
+                                                                                <th>Mobile No:&nbsp;&nbsp;<%= data.mobile %></th>
+                                                                                
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th>Address:&nbsp;&nbsp;<%= data.address %></th>
                                                                                 <td>
-                                                                                    <%= data.mobile %>
+                                                                                    
                                                                                 </td>
                                                                             </tr>
                                                                             <tr>
-                                                                                <th>Address:</th>
-                                                                                <td>
-                                                                                    <%= data.address %>
-                                                                                </td>
+                                                                                <th>StreetAddress:&nbsp;&nbsp;<%= data.streetaddress %></th>
+
                                                                             </tr>
                                                                             <tr>
-                                                                                <th>StreetAddress:</th>
-                                                                                <td>
-                                                                                    <%= data.streetaddress %>
-                                                                                </td>
+                                                                                <th>City:&nbsp;&nbsp;<%= data.city %></th>
+
                                                                             </tr>
                                                                             <tr>
-                                                                                <th>City:</th>
-                                                                                <td>
-                                                                                    <%= data.city %>
-                                                                                </td>
+                                                                                <th>State:&nbsp;&nbsp;<%= data.state %></th>
+
                                                                             </tr>
                                                                             <tr>
-                                                                                <th>State:</th>
-                                                                                <td>
-                                                                                    <%= data.state %>
-                                                                                </td>
-                                                                            </tr>
-                                                                            <tr>
-                                                                                <th>Pincode:</th>
-                                                                                <td>
-                                                                                    <%= data.pincode %>
-                                                                                </td>
+                                                                                <th>Pincode:&nbsp;&nbsp;<%= data.pincode %></th>
+
                                                                             </tr><br>
                                                                             <tr>
-                                                                                <th>Landmark:</th>
-                                                                                <td>
-                                                                                    <%= data.landmark %>
-                                                                                </td>
+                                                                                <th>Landmark:&nbsp;&nbsp;<%= data.landmark %></th>
+
                                                                             </tr>
 
                                                                             <td style="padding-top: 25px; "><a
@@ -324,10 +394,6 @@
                                                                         </table>
                                                                         <%})%>
                                                                             <%}%>
-
-
-
-
 
                                                 </div>
                                             </div>
@@ -478,6 +544,11 @@
      </div>
  </div>
 </div>
+<br>
+<br>
+<br>
+<br>
+<br>
  
  <!--todo------------------------------------------------------------------------------------------------------------------------------------ klge -->
 

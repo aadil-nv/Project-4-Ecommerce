@@ -134,7 +134,9 @@
                                                         <img  src="/uploads/<%= data.productimage[0] %>" alt="">
                                                     </a>
                                                     <div class="product-badge badge-top badge-right badge-pink">
-                                                        <p id="offer">40%</p>
+                                                        <% if (data.offerId !== undefined) { %>
+                                                        <p id="offer"><%= data.offerId.percentage %>%</p>
+                                                        <% } %>
                                                     </div>
                                                     <div class="product-action-wrap">
                                                         <button class="product-action-btn-1" title="Wishlist"  onclick="wishlstProductId('<%= data._id %>')" ><i class="pe-7s-like"></i></button>
@@ -150,15 +152,18 @@
                                                     <h3 id="productname"><a href=/producttab/<%= data._id %> ><%= data.productname %></a></h3>
 <!-- todo------------------------------------------------------------- produvt price ------------------------------------------------------------------------------->
 
-                                            <div class="product-price">
-                                            <span class="new-price" id="productprice"><%= data.productprice %></span>
-                                                </div>
 
-           <!-- <% if(data.offerId !== undefined){ %>
-            <span class="new-price" id="productprice"><%= data.offerId.offerName %></span>
-            <% }else{ %>
-            <% } %> -->
-
+<div class="product-price">
+    <% if (data.offerId !== undefined) { %>
+        <% 
+            var discountedPrice = data.productprice - (data.productprice * data.offerId.percentage / 100);
+        %>
+         <span class="text-muted" ><del><%= data.productprice %></del></span>
+        <span class="new-price" id="productprice">Rs.<%= discountedPrice.toFixed(0) %>/-</span>
+    <% } else { %>
+        <span class="new-price" id="productprice"><%= data.productprice %></span>
+    <% } %>
+</div>
         
 <!-- todo------------------------------------------------------------- produvt price ------------------------------------------------------------------------------->
                                                     <% if (data.productquadity > 100) { %>
@@ -171,7 +176,7 @@
                                                         </div>
                                                     <% } else if (data.productquadity < 50 && data.productquadity >= 10) { %>
                                                         <div class="product-price">
-                                                            <span class="new-price"><p  id="stock3">Hurry few left</p></span>
+                                                            <span class="new-price"><p  id="stock3">Hurry few left </p></span>
                                                         </div>
                                                     <% } else if (data.productquadity <10 && data.productquadity >= 1) { %>
                                                         <div class="product-price">

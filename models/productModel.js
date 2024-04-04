@@ -1,4 +1,5 @@
 const mongoose=require('mongoose')
+const { ObjectId } = require('mongodb');
 const productSchema = new mongoose.Schema({
     productname: {
         type:String
@@ -25,7 +26,7 @@ const productSchema = new mongoose.Schema({
         default:true
     },
     offerId :{
-        type:mongoose.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref:"offer", 
     }
 })

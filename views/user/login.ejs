@@ -1,4 +1,14 @@
 <%- include('../partials/mainheader.ejs')%>
+
+<style>
+    #logicontainer{
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+        
+       
+       
+        margin-bottom: 150px;
+    }
+</style>
         
         <div class="login-register-area " style="padding-top: 20px;">
             <div class="container">
@@ -13,7 +23,7 @@
                             </div>
                             <div class="tab-content">
                                 <div id="lg1" class="tab-pane active">
-                                    <div class="login-form-container">
+                                    <div class="login-form-container" id="logicontainer">
                                         <div class="login-register-form">
                                             <form action="/userhome" method="post"  onsubmit="return handleSubmit()">
 
@@ -50,6 +60,8 @@
                 </div>
             </div>
         </div>
+        <br>
+        <br>
 
         <script>
 
