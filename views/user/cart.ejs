@@ -95,13 +95,13 @@
                                                     </td>
 
                                                     <td class="product-cart-price">
-                                                        <% if(data.productId.offerId !== undefined){%>
+                                                        <% if(!data.productId.offerId){%>
+                                                            <span class="amount"><%= data.productId.productprice %></span>
                                                             
-                                                            <% const discountedPrice = data.productId.productprice - ( data.productId.productprice  * data.productId.offerId?.percentage / 100);%>
-                                                            <span class="amount"><%= discountedPrice %></span>
-                                                              
+                                                            
                                                             <%}else{%>
-                                                                <span class="amount"><%= data.productId.productprice %></span>
+                                                                <% const discountedPrice = data.productId.productprice - ( data.productId.productprice  * data.productId.offerId?.percentage / 100);%>
+                                                                <span class="amount"><%= discountedPrice %></span>
                                                                 <%}%>
                                                            
                                                     </td>
@@ -175,10 +175,11 @@
                 <div class="col-4">
                     <div class="grand-total-wrap">
                         <div class="grand-total-content">
-                            <h3>Subtotal <span id="total">
-                                ₹<%= total.toFixed(0)%>
-                                </span></h3>
-                            <br />
+                            <h3>Subtotal 
+                               
+                                     
+                                            <span id="total">₹<%= total.toFixed(0)%></span></h3>
+                             <br />
                             <h6>Discout <span>₹900</span></h6>
                             <h6>Coupons for you <span>₹1,100</span></h6>
                             <h6>Product GST <span>₹1,191</span></h6>

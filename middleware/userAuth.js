@@ -5,8 +5,10 @@ const Products = require("../models/productModel");
 
 const isLogin = async (req, res, next) => {
     try {
+        
          if (req.session.user) {
             res.locals.customer=true
+            
            next()
         }
         else {         

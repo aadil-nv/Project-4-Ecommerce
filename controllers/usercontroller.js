@@ -477,13 +477,17 @@ const loadViewCart = async (req, res) => {
     const cartDetiles = await Cart.find({ userId: user }).populate("products.productId").populate({path:'products.productId',populate:{path:"offerId",model:"offer"}})
 
     let offerId = null;
+  
     cartDetiles.forEach((item) => {
       item.products.forEach((product) => {
         if (product.productId && product.productId.offerId) {
           offerId = product.productId.offerId;
+        
         }
       });
     });
+
+
 
     let offerPercentage = 0;
     if (offerId) {
@@ -491,6 +495,8 @@ const loadViewCart = async (req, res) => {
         const offerData = await Offer.findById(offerId);
         if (offerData) {
           offerPercentage = offerData.percentage;
+          
+          console.log("=========offerPercentage=============="+offerPercentage)
         } else {
           console.log("Offer not found with ID:", offerId);
         }
@@ -499,9 +505,6 @@ const loadViewCart = async (req, res) => {
       }
     }
     
-    
-    console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<,,,,,,,<<<<<<<")
-
     let total = 0;
     cartDetiles .forEach((item) => {
       item.products.forEach((product) => {
@@ -509,12 +512,13 @@ const loadViewCart = async (req, res) => {
       });
     });
 
-    let discountedTotal = total;
-    if (offerPercentage > 0) {
-      discountedTotal *= (100 - offerPercentage) / 100;
+    let discountedTotal = total
+    if (offerPercentage) {
+
+      discountedTotal *= (100 - offerPercentage) / 100
     }
 
-    res.render("user/cart", { cartDetiles, total: discountedTotal});
+    res.render("user/cart", { cartDetiles, total :discountedTotal});
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal Server Error");
@@ -700,33 +704,34 @@ const addProductInCart = async (req, res) => {
 
     const existingProduct = await Cart.findOne({
       userId: userId,
-      "products.productId": productId,
-    });
+      "products.productId": productId,});
 
     if (existingProduct) {
       return res.status(400).json({ message: "Product already in cart" });
     }
 
-    const productData = await Products.findById(productId);
-
+    const productData = await Products.findById(productId).populate("offerId")
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    let totalPrice = productData.productprice;
+    if (productData.offerId) {
+      const offerPercentage = productData.offerId.percentage;
+      totalPrice = totalPrice * (100 - offerPercentage) / 100;
+    }
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    
     const add = await Cart.findOneAndUpdate(
       { userId: req.session.user },
-      {
-        $addToSet: {
-          products: {
-            productId: productId,
-            quantity: 1,
-            totalPrice: productData.productprice,
-          },
-        },
+      {$addToSet: {products: {productId: productId,quantity: 1,totalPrice: totalPrice,},},
+      $inc: { total: totalPrice },
       },
-      { new: true, upsert: true }
-    );
-    await Cart.findOneAndUpdate(
-      { userId: userId },
-      { $set: { total: productData.productprice } },
-      { new: true }
-    );
+      { new: true, upsert: true });
+
+    // await Cart.findOneAndUpdate(
+    //   { userId: userId },
+    //   { $set: { total: productData.productprice } },
+    //   { new: true });
+    
+
     res.status(200).json({ message: "Product added to cart successfully" });
   } catch (error) {
     console.error(error.message);
@@ -738,34 +743,52 @@ const addProductInCart = async (req, res) => {
 
 // ---------------------------------------------- Increasing decresing quantity -------------------------------------------
 
+
+
+
 const quantityControll = async (req, res) => {
   try {
     const { change, qty } = req.body;
     const user = req.session.user;
-    const product = await Products.findOne({ _id: change });
+    const product = await Products.findOne({ _id: change }).populate('offerId');
     const productQuantity = product.productquadity;
-    const total = qty * product.productprice;
 
-    if (qty > productQuantity) {
-      return res.json({ messages: "Out of Stock" });
+    let total = qty * product.productprice;
+
+   
+    if (product.offerId) {
+      const productOffer = product.offerId.percentage;
+      total = total * (100 - productOffer) / 100;
     }
 
-    const update = await Cart.findOneAndUpdate(
+
+    if (qty > productQuantity) {
+      return res.json({ message: "Out of Stock" });
+    }
+
+ 
+    await Cart.findOneAndUpdate(
       { userId: req.session.user, "products.productId": change },
       { $set: { "products.$.quantity": qty, "products.$.totalPrice": total } },
       { new: true }
     );
 
-    const cartDetiles = await Cart.find({ userId: user }).populate(
-      "products.productId"
-    );
+    
+    const cartDetiles = await Cart.find({ userId: user }).populate("products.productId").populate({path:'products.productId',populate:{path:"offerId",model:"offer"}})
+    
     let totalAmount = 0;
-
     cartDetiles.forEach((item) => {
       item.products.forEach((product) => {
-        totalAmount += product.totalPrice;
+        let productTotal = product.quantity * product.productId.productprice;
+       
+        if (product.productId.offerId) {
+          const productOffer = product.productId.offerId.percentage;
+          productTotal = productTotal * (100 - productOffer) / 100;
+        }
+        totalAmount += productTotal;
       });
     });
+
     await Cart.findOneAndUpdate(
       { userId: user },
       { $set: { total: totalAmount } },
@@ -774,9 +797,12 @@ const quantityControll = async (req, res) => {
 
     res.json({ totalAmount, productQuantity });
   } catch (error) {
-    console.log(error.message);
+    console.error(error.message);
+    res.status(500).send("Internal Server Error");
   }
 };
+
+
 
 // ---------------------------------------------- End Increasing decresing quantity -------------------------------------------
 
@@ -786,10 +812,26 @@ const deleteCartProduct = async (req, res) => {
   try {
     const deleteId = req.params.id;
     const userId = req.session.user;
+    const cart = await Cart.findOne({ userId: userId });
+
+    if (!cart) {
+      return res.status(404).json({ error: "Cart not found" });
+    }
+
+    let totalPriceToRemove = 0;
+
+    for (const product of cart.products) {
+      if (product.productId.toString() === deleteId) {
+        totalPriceToRemove = product.totalPrice;
+        break;
+      }
+    }
 
     const updatedCart = await Cart.findOneAndUpdate(
       { userId: userId },
-      { $pull: { products: { productId: deleteId } } },
+      { $pull: { products: { productId: deleteId } },
+        $inc: { total: -totalPriceToRemove }
+     },
       { new: true }
     );
 
@@ -805,18 +847,42 @@ const deleteCartProduct = async (req, res) => {
 
 // ---------------------------------------------- Load Checkout Page -------------------------------------------
 
+// const loadtCheckoutPage = async (req, res) => {
+//   try {
+//     const userId = req.session.user;
+//     const addressData = await Address.find({ userId: userId });
+//     const cartDetiles = await Cart.find({ userId: userId }).populate("products.productId").populate({path:'products.productId',populate:{path:"offerId",model:"offer"}})
+
+//     let total = 0;
+
+//     cartDetiles.forEach((item) => {
+//       item.products.forEach((product) => {
+//         total += product.quantity * product.productId.productprice;
+//       });
+//     });
+
+//     res.render("user/checkout", { addressData, cartDetiles, total });
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// };
 const loadtCheckoutPage = async (req, res) => {
   try {
     const userId = req.session.user;
-
     const addressData = await Address.find({ userId: userId });
-    const cartDetiles = await Cart.find({ userId: userId }).populate("products.productId");
+    const cartDetiles = await Cart.find({ userId: userId }).populate("products.productId").populate({path:'products.productId',populate:{path:"offerId",model:"offer"}});
 
     let total = 0;
 
     cartDetiles.forEach((item) => {
       item.products.forEach((product) => {
-        total += product.quantity * product.productId.productprice;
+        let productTotal = product.quantity * product.productId.productprice;
+        // Apply offer percentage if it exists for the current product
+        if (product.productId.offerId) {
+          const productOffer = product.productId.offerId.percentage;
+          productTotal = productTotal * (100 - productOffer) / 100;
+        }
+        total += productTotal;
       });
     });
 
@@ -825,6 +891,7 @@ const loadtCheckoutPage = async (req, res) => {
     console.log(error.message);
   }
 };
+
 
 // ---------------------------------------------- End Load checkoot Page -------------------------------------------
 
@@ -920,15 +987,12 @@ const placeOrder = async (req, res) => {
 
     const userId = req.session.user;
    
-    const cartData = await Cart.findOne({ userId }).populate(
-      "products.productId"
-    );
+    const cartData = await Cart.findOne({ userId }).populate("products.productId");
 
     const currentAddress = await Address.findById(activeAddressId);
 
     const orderedItems = cartData.products.map((product) => {
-      const totalProductAmount =
-        product.quantity * (product.productId?.price || 0);
+      const totalProductAmount =product.quantity * (product.productId?.price || 0);
       return {
         productId: product.productId,
         quantity: product.quantity,
@@ -1012,11 +1076,6 @@ const placeOrder = async (req, res) => {
 
       }
 
-      
-      console.log("88888888888888888888888888888888888888888888888")
-      console.log(newOrder)
-      
-      console.log("88888888888888888888888888888888888888888888888")
 
       await Cart.deleteOne({ userId: req.session.user });
       res.json({ newOrder, paymentmethod });
@@ -1481,6 +1540,25 @@ const userReturnProduct = async  (req,res)=>{
     console.log(error.message)
   }
 }
+
+const userSearch= async (req,res)=>{
+  try {
+  const productData= await Products.find()
+  const{search}=req.body
+
+  console.log("***********productData****************"+productData)
+  console.log("***********search****************"+search)
+  console.log("***********productData.name****************"+productData.productname)
+  const matchingProducts = productData.filter(product =>
+    product.productname.toLowerCase().includes(search.toLowerCase())
+);
+
+console.log("***********matchingProducts****************"+matchingProducts)
+   res.json({result :matchingProducts})
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 //--------------------------------------------------------End load OrderPAge -------------------------------------------
 
 // -------------------Exporting Controllers-----------------------
@@ -1531,7 +1609,9 @@ module.exports = {
   removeWishlistProduct,
   verifyOrder,
   verifyCoupon,
-  userReturnProduct
+  userReturnProduct,
+  userSearch
+
 };
 
 // ------------------------------End------------------------------------

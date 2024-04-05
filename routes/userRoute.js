@@ -96,6 +96,11 @@ user_route.post("/verifycoupon",userAuth.isLogin,userAuth.isUserBlock,usercontro
 user_route.post("/user/productreturn",userAuth.isLogin,userAuth.isUserBlock,usercontroller.userReturnProduct)
 
 
+user_route.post("/user/search",userAuth.isLogin,userAuth.isUserBlock,usercontroller.userSearch)
+
+
+
+
 
 
 
