@@ -139,11 +139,11 @@
                             window.location.href='/admin/couponlist';
                         }, 1500);
 
-                    } else {
+                    } else  {
 
-                        swal({
+                        swal.fire({
                             title: "Error",
-                            text: "Failed to add coupon",
+                            text: `${data.message}`,
                             icon: "error",
                         });
                     }

@@ -33,6 +33,7 @@
     "razorpay": "^2.9.2",
     "save": "^2.9.0",
     "sharp": "^0.33.2",
-    "sweetalert2": "^11.10.6"
+    "sweetalert2": "^11.10.6",
+    "toastr": "^2.1.4"
   }
 }

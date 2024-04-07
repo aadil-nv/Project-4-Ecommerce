@@ -33,11 +33,25 @@
             border: none;
             height: 53px;
         }
+
+        #couponCodeInput {
+            width: 330px;
+            height: 40px;
+        }
+
+        #ApplyCoupon {
+            width: 100px;
+            height: 40px;
+            background-color: black;
+            color: white;
+        }
+
+      
     </style>
-    
-    <div class="checkout-main-area pb-100 pt-70">
+
+    <div class="checkout-main-area  pt-70">
         <div class="container">
-            <div class="customer-zone mb-20">
+            <div class="customer-zone mb-20" id="returningcustomer">
                 <p class="cart-page-title">
                     Returning customer?
                     <a class="checkout-click1" href="#">Click here to login</a>
@@ -76,40 +90,34 @@
                     </form>
                 </div>
             </div>
-            <div class="customer-zone mb-20">
+            <!-- <div class="customer-zone mb-20" id="coupondiv">
                 <p class="cart-page-title">
                     Have a coupon?
                     <a class="checkout-click3" href="#">Click here to enter your code</a>
                 </p>
-                <!-- todo---------------------------------------------------- Apply coupon- ------------------------------------------------------>
                 <div class="checkout-login-info3">
-                    <form action="#">
-
-                        <input type="text" id="couponCodeInput" placeholder="Coupon code" />
-                        <input type="submit" value="Apply Coupon" onclick="applyCoupon()" />
-                        <p id="couponMessage" style="color: red;"></p>
-
-                    </form>
+                    <input type="text" id="couponCodeInput" placeholder="Coupon code" />
+                    <input id="ApplyCoupon" value="Apply Coupon" onclick="applyCoupon()" />
+                    <p id="couponMessage" style="color: red;"></p>
+                    <p id="couponMessages" style="color: rgb(16, 151, 34);"></p>
                 </div>
-                <!-- todo---------------------------------------------------- Apply coupon- ------------------------------------------------------>
-            </div>
+            </div> -->
 
             <div class="checkout-wrap pt-50">
                 <div class="row">
-                    <div class="col-lg-7">
+                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
                         <div class="billing-info-wrap">
                             <h3>Billing Details</h3>
 
-                            <div class="checkout-account" style="
-                background-color: #eeeff2;
-                width: 100%;
-                height: 50px;
-                padding-top: 15px;
-                padding-left: 10px;
-              ">
-                                <input class="checkout-toggle" type="checkbox" />
-                                <span>Ship to a different address?</span>
-                            </div>
+                                  <div class="checkout-account" style="
+                                       background-color: #eeeff2;
+                                       width: 100%;
+                                       height: 50px;
+                                       padding-top: 15px;
+                                       padding-left: 10px;">
+                                      <input class="checkout-toggle" type="checkbox" />
+                                      <span>Ship to a different address?</span>
+                                 </div>
                             <form action="/checkoutpageone" method="post" onsubmit="return validateForm()">
                                 <div class="different-address open-toggle mt-30">
                                     <div class="row">
@@ -263,7 +271,7 @@
                                         <%}%>
                         </div>
                     </div>
-                    <div class="col-lg-5" style="padding-top: 150px">
+                    <div class="col-12 col-md-6 col-lg-6 col-xl-6">
                         <div class="your-order-area">
                             <h3>Your order</h3>
                             <div class="your-order-wrap gray-bg-4">
@@ -289,30 +297,30 @@
                                                     <div class="your-order-info order-subtotal">
                                                         <ul>
                                                             <li>Total <span>
-                                                                    <%= total%>
+                                                                    <%= total.toFixed(0)%>
                                                                 </span></li>
                                                         </ul>
                                                     </div>
 
                                                     <div class="your-order-info order-total">
                                                         <ul>
-                                                            <li>Discount <span  id="totalvalue2">00
-                                                                    
+                                                            <li>Discount <span id="totalvalue2" style="color: green;">00
+
                                                                 </span></li>
                                                         </ul>
                                                         <ul>
-                                                            <li>SubTotal <span  id="totalvalue1">
-                                                                    <%= total%>
+                                                            <li>Total Payble <span id="totalvalue1">
+                                                                    <%= total.toFixed(0) %>
                                                                 </span></li>
                                                         </ul><br>
-                                                        <input type="hidden" id="totalvalue" value=" <%= total%>" />
+                                                        <input type="hidden" id="totalvalue" value=" <%= total.toFixed(0)%>" />
                                                     </div>
                                 </div>
                                 <div class="payment-method">
-                                   
+
                                     <div class="pay-top sin-payment">
-                                        <input id="payment-method-2" class="input-radio" type="radio"
-                                            value="Wallet" name="payment_method" />
+                                        <input id="payment-method-2" class="input-radio" type="radio" value="Wallet"
+                                            name="payment_method" />
                                         <label for="payment-method-2">Wallet</label>
                                     </div>
                                     <div class="pay-top sin-payment">
@@ -324,6 +332,24 @@
                                         <input id="payment-method-4" class="input-radio" type="radio" value="RazorPay"
                                             name="payment_method" />
                                         <label for="payment-method-4">RazorPay</label>
+                                    </div>
+                                    <div class="customer-zone mb-20" id="coupondiv">
+                                        <p class="cart-page-title">
+                                            Have a coupon?
+                                            <a class="checkout-click3" href="#">Click here to enter your code</a>
+                                        </p>
+                                        <!-- todo---------------------------------------------------- Apply coupon- ------------------------------------------------------>
+                                        <div class="checkout-login-info3">
+                        
+                        
+                                            <input type="text" id="couponCodeInput" placeholder="Coupon code" />
+                                            <button id="ApplyCoupon" onclick="applyCoupon()">Apply Coupon</button>
+                                            <p id="couponMessage" style="color: red;"></p>
+                                            <p id="couponMessages" style="color: rgb(16, 151, 34);"></p>
+                        
+                        
+                                        </div>
+                                        <!-- todo---------------------------------------------------- Apply coupon- ------------------------------------------------------>
                                     </div>
                                 </div>
                             </div>
@@ -706,7 +732,7 @@
                 });
 
                 const totalDiscount = document.getElementById("totalvalue1").innerText;
-                         console.log("=======totalValue==========", totalDiscount);
+                console.log("=======totalValue==========", totalDiscount);
                 const couponCode = document.getElementById("couponCodeInput").value;
 
 
@@ -714,7 +740,7 @@
                 fetch('/orderpage', {
                     method: "post",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ activeAddressId, paymentmethod,totalDiscount,couponCode }),
+                    body: JSON.stringify({ activeAddressId, paymentmethod, totalDiscount, couponCode }),
                 })
 
 
@@ -725,7 +751,14 @@
                         return response.json();
                     })
                     .then(data => {
-                        console.log(data)
+                        if (data.message === "failed") {
+                            Swal.fire({
+                                title: 'Payment Failed',
+                                text: 'above Rs-1000/- Cash on delivery not available',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
 
                         if (data.paymentMethod === "RazorPay") {
 
@@ -750,14 +783,14 @@
                                             paymentId: response.razorpay_payment_id,
                                             order_id: response.razorpay_order_id,
                                             razorpay_signature: response.razorpay_signature,
-                                            couponCode:couponCode
+                                            couponCode: couponCode
 
 
                                         })
                                     })
                                         .then(response => response.json())
                                         .then(data => {
-                    
+
                                             if (data.success === true) {
                                                 Swal.fire({
                                                     icon: 'success',
@@ -798,12 +831,17 @@
                             console.log("=================options====================", options)
 
                             razorpayObject.on('payment.failed', function (response) {
-                                console.log("==================response======================", response);
-                                alert("This step of Payment Failed");
+                                Swal.fire({
+                                    title: 'Payment Failed',
+                                    text: 'Sorry, the payment failed. Please try again or choose a different payment method.',
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
                             });
 
-                        }else if (data.paymentmethod === "Cash On Delivery") {
-                            console.log("data.paymentMethod  :::::",data.paymentMethod)
+                        } else if (data.paymentmethod === "Cash On Delivery") {
+
+                            console.log("data.paymentMethod  :::::", data.paymentMethod)
                             Swal.fire({
                                 title: 'Order Placed Successfully',
                                 icon: 'success',
@@ -813,7 +851,8 @@
                                 window.location.href = `/orders/${data.newOrder._id}`
                             }, 1500)
 
-                        }else if (data.paymentmethod === "Wallet"){
+
+                        } else if (data.paymentmethod === "Wallet") {
                             Swal.fire({
                                 title: 'Order Placed Successfully',
                                 icon: 'success',
@@ -842,34 +881,44 @@
                 const couponCode = document.getElementById("couponCodeInput").value;
                 console.log("=======couponCode==========", couponCode)
                 const totalDiscount = document.getElementById("totalvalue1").innerText;
-                    console.log("=======totalValue2==========", totalDiscount);
+                console.log("=======totalValue2==========", totalDiscount);
 
                 fetch('/verifycoupon', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ couponCode ,totalDiscount })
+                    body: JSON.stringify({ couponCode, totalDiscount })
                 })
                     .then((response) => {
+                        
                         if (!response.ok) {
                             throw new Error("Network response was not ok");
+                            
                         }
+                     
                         return response.json();
                     })
                     .then((data) => {
-                        console.log("444444444444444444444444",data)
-                        document.getElementById('totalvalue2').innerHTML= data.couponDiscount;
+                        console.log("444444444444444444444444", data)
+                        if(data.couponDiscount=== undefined){
+
+                            document.getElementById('totalvalue2').innerHTML = "00"
+                        }else{
+                            document.getElementById('totalvalue2').innerHTML = data.couponDiscount;
+
+                        }
                         if (data.total) {
-                            document.getElementById('totalvalue1').innerHTML= data.total;
+                            document.getElementById('totalvalue1').innerHTML = data.total;
+                            couponMessages.innerHTML = data.message
                             // document.getElementById('totalAmount').innerHTML=data.total
-                            
-                        } else  {
-                            console.log("888888888888888888888888888888888",data)
+
+                        } else {
+                            console.log("888888888888888888888888888888888", data)
                             couponMessage.innerHTML = data.message
                         }
                     })
-                    
+
                     .catch(error => {
                         console.error("Error:", error);
                     });

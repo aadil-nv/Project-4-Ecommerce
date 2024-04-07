@@ -14,7 +14,7 @@ const isLogin = async (req, res, next) => {
         else {         
                res.locals.customer=false
 
-               const ProductData = await Products.find();
+               const ProductData = await Products.find().populate('offerId')
                res.render("user/index", { ProductData });
         }
 

@@ -4905,11 +4905,11 @@ textarea {
   -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   display: inline-block;
-  font-size: 23px;
-  height: 45px;
+  font-size: 18px;
+  height: 35px;
   margin: 0 3px;
   text-align: center;
-  width: 45px;
+  width: 35px;
   border: none;
   border-radius: 6px;
   -webkit-transition: all 0.4s ease 0s;
@@ -4918,7 +4918,7 @@ textarea {
 }
 
 .product-wrap .product-img .product-action-wrap .product-action-btn-1 i {
-  line-height: 45px;
+  line-height: 30px;
 }
 
 .product-wrap .product-img .product-action-wrap .product-action-btn-1:first-child {
@@ -4935,7 +4935,7 @@ textarea {
 
 .product-wrap .product-img .product-action-wrap .product-action-btn-1:hover {
   color: #ffffff;
-  background-color: #e97730;
+  background-color: #e93030;
 }
 
 .product-wrap .product-img .product-action-2-wrap {

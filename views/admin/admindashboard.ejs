@@ -1,5 +1,94 @@
 <%- include('../partials/asidenav.ejs')%>
-            <section class="content-main"  style="background-color: rgb(211, 218, 218);">
+<style>
+    #totalsalesamount{
+        font-size: 10px;
+    }
+    #totalsalesamount2{
+        font-size: 20px;
+    }
+    #monthlyEarning{
+        font-size: 15px;
+    }
+    #card1{
+       height: 150px;
+    }
+    #card2{
+       height: 150px;
+    }
+    #card3{
+       height: 150px;
+    }
+    #card4{
+       height: 150px;
+    }
+    #card5{
+       height: 150px;
+    }
+    #card6{
+       height: 150px;
+    }
+    #card7{
+       height: 150px;
+    }
+    #card8{
+       height: 150px;
+    }
+    .chart {
+        position: relative;
+        width: 400px;
+        height: 300px;
+        perspective: 1000px;
+        perspective-origin: 50% 50%;
+    }
+
+    .axis {
+        position: absolute;
+        background-color: #ccc;
+        border: 1px solid #999;
+    }
+
+    .x-axis {
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+    }
+
+    .y-axis {
+        top: 0;
+        left: 0;
+        width: 2px;
+        height: 100%;
+    }
+
+    .bar-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+    }
+
+    .bar {
+        width: 50px;
+        background-color: steelblue;
+        position: relative;
+        transform-style: preserve-3d;
+    }
+
+    .bar div {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: inherit;
+        transition: height 0.5s;
+    }
+
+    .bar:hover div {
+        height: 100%;
+    }
+</style>
+            <section class="content-main"  >
                 <div class="content-header">
                     <div>
                         <h2 class="content-title card-title">Dashboard Overview</h2>
@@ -11,48 +100,48 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-3">
-                        <div class="card card-body mb-4">
+                        <div class="card card-body mb-4" id="card1">
                             <article class="icontext">
                                 <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
                                 <div class="text">
                                     <h6 class="mb-1 card-title">Revenue</h6>
-                                    <span>$13,456.5</span>
-                                    <span class="text-sm"> Shipping fees are not included </span>
+                                    <span id="totalsalesamount2">Rs.<%=totalSalesAmount  %>/-</span>
+                                    <p id="totalsalesamount"> Shipping fees are not included </p>
                                 </div>
                             </article>
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <div class="card card-body mb-4">
+                        <div class="card card-body mb-4" id="card2">
                             <article class="icontext">
                                 <span class="icon icon-sm rounded-circle bg-success-light"><i class="text-success material-icons md-local_shipping"></i></span>
                                 <div class="text">
                                     <h6 class="mb-1 card-title">Orders</h6>
-                                    <span>53.668</span>
+                                    <span><%= salesCount%></span>
                                     <span class="text-sm"> Excluding orders in transit </span>
                                 </div>
                             </article>
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <div class="card card-body mb-4">
+                        <div class="card card-body mb-4" id="card3">
                             <article class="icontext">
                                 <span class="icon icon-sm rounded-circle bg-warning-light"><i class="text-warning material-icons md-qr_code"></i></span>
                                 <div class="text">
                                     <h6 class="mb-1 card-title">Products</h6>
-                                    <span>9.856</span>
-                                    <span class="text-sm"> In 19 Categories </span>
+                                    <span><%= productCount  %></span>
+                                    <span class="text-sm"> In <%= categoryCount %> Categories </span>
                                 </div>
                             </article>
                         </div>
                     </div>
                     <div class="col-lg-3">
-                        <div class="card card-body mb-4">
+                        <div class="card card-body mb-4" id="card4">
                             <article class="icontext">
                                 <span class="icon icon-sm rounded-circle bg-info-light"><i class="text-info material-icons md-shopping_basket"></i></span>
                                 <div class="text">
                                     <h6 class="mb-1 card-title">Monthly Earning</h6>
-                                    <span>$6,982</span>
+                                    <span id="monthlyEarning">Rs.<%= monthlyEarning.toFixed(0) %>/-</span>
                                     <span class="text-sm"> Based in your local time. </span>
                                 </div>
                             </article>
@@ -60,129 +149,65 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xl-8 col-lg-12">
+                    <div class="col-lg-3">
+                        <div class="card card-body mb-4" id="card5">
+                            <article class="icontext">
+                                <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
+                                <div class="text">
+                                    <h6 class="mb-1 card-title">Revenue</h6>
+                                    <span id="totalsalesamount2">Rs.<%=totalSalesAmount  %>/-</span>
+                                    <p id="totalsalesamount"> Shipping fees are not included </p>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card card-body mb-4" id="card6">
+                            <article class="icontext">
+                                <span class="icon icon-sm rounded-circle bg-success-light"><i class="text-success material-icons md-local_shipping"></i></span>
+                                <div class="text">
+                                    <h6 class="mb-1 card-title">Orders</h6>
+                                    <span><%= salesCount%></span>
+                                    <span class="text-sm"> Excluding orders in transit </span>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card card-body mb-4" id="card7">
+                            <article class="icontext">
+                                <span class="icon icon-sm rounded-circle bg-warning-light"><i class="text-warning material-icons md-qr_code"></i></span>
+                                <div class="text">
+                                    <h6 class="mb-1 card-title">Products</h6>
+                                    <span><%= productCount  %></span>
+                                    <span class="text-sm"> In <%= categoryCount %> Categories </span>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card card-body mb-4" id="card8">
+                            <article class="icontext">
+                                <span class="icon icon-sm rounded-circle bg-info-light"><i class="text-info material-icons md-shopping_basket"></i></span>
+                                <div class="text">
+                                    <h6 class="mb-1 card-title">Monthly Earning</h6>
+                                    <span id="monthlyEarning">Rs.<%= monthlyEarning.toFixed(0) %>/-</span>
+                                    <span class="text-sm"> Based in your local time. </span>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- <div class="col-xl-8 col-lg-12">
                         <div class="card mb-4">
                             <article class="card-body">
                                 <h5 class="card-title">Sale statistics</h5>
                                 <canvas id="myChart" height="120px"></canvas>
                             </article>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-5">
-                                <div class="card mb-4">
-                                    <article class="card-body">
-                                        <h5 class="card-title">New Members</h5>
-                                        <div class="new-member-list">
-                                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                                <div class="d-flex align-items-center">
-                                                    <img src="/adminpublic/adminlogin/imgs/people/avatar-4.png" alt="" class="avatar" />
-                                                    <div>
-                                                        <h6>Patric Adams</h6>
-                                                        <p class="text-muted font-xs">Sanfrancisco</p>
-                                                    </div>
-                                                </div>
-                                                <a href="#" class="btn btn-xs"><i class="material-icons md-add"></i> Add</a>
-                                            </div>
-                                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                                <div class="d-flex align-items-center">
-                                                    <img src="/adminpublic/adminlogin/imgs/people/avatar-2.png" alt="" class="avatar" />
-                                                    <div>
-                                                        <h6>Dilan Specter</h6>
-                                                        <p class="text-muted font-xs">Sanfrancisco</p>
-                                                    </div>
-                                                </div>
-                                                <a href="#" class="btn btn-xs"><i class="material-icons md-add"></i> Add</a>
-                                            </div>
-                                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                                <div class="d-flex align-items-center">
-                                                    <img src="/adminpublic/adminlogin/imgs/people/avatar-3.png" alt="" class="avatar" />
-                                                    <div>
-                                                        <h6>Tomas Baker</h6>
-                                                        <p class="text-muted font-xs">Sanfrancisco</p>
-                                                    </div>
-                                                </div>
-                                                <a href="#" class="btn btn-xs"><i class="material-icons md-add"></i> Add</a>
-                                            </div>
-                                        </div>
-                                    </article>
-                                </div>
-                            </div>
-                            <div class="col-lg-7">
-                                <div class="card mb-4">
-                                    <article class="card-body">
-                                        <h5 class="card-title">Recent activities</h5>
-                                        <ul class="verti-timeline list-unstyled font-sm">
-                                            <li class="event-list">
-                                                <div class="event-timeline-dot">
-                                                    <i class="material-icons md-play_circle_outline font-xxl"></i>
-                                                </div>
-                                                <div class="media">
-                                                    <div class="me-3">
-                                                        <h6><span>Today</span> <i class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i></h6>
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <div>Lorem ipsum dolor sit amet consectetur</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="event-list active">
-                                                <div class="event-timeline-dot">
-                                                    <i class="material-icons md-play_circle_outline font-xxl animation-fade-right"></i>
-                                                </div>
-                                                <div class="media">
-                                                    <div class="me-3">
-                                                        <h6><span>17 May</span> <i class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i></h6>
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <div>Debitis nesciunt voluptatum dicta reprehenderit</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="event-list">
-                                                <div class="event-timeline-dot">
-                                                    <i class="material-icons md-play_circle_outline font-xxl"></i>
-                                                </div>
-                                                <div class="media">
-                                                    <div class="me-3">
-                                                        <h6><span>13 May</span> <i class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i></h6>
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <div>Accusamus voluptatibus voluptas.</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="event-list">
-                                                <div class="event-timeline-dot">
-                                                    <i class="material-icons md-play_circle_outline font-xxl"></i>
-                                                </div>
-                                                <div class="media">
-                                                    <div class="me-3">
-                                                        <h6><span>05 April</span> <i class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i></h6>
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <div>At vero eos et accusamus et iusto odio dignissi</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="event-list">
-                                                <div class="event-timeline-dot">
-                                                    <i class="material-icons md-play_circle_outline font-xxl"></i>
-                                                </div>
-                                                <div class="media">
-                                                    <div class="me-3">
-                                                        <h6><span>26 Mar</span> <i class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i></h6>
-                                                    </div>
-                                                    <div class="media-body">
-                                                        <div>Responded to need “Volunteer Activities</div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </article>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        
+                    </div> -->
                     <div class="col-xl-4 col-lg-12">
                         <div class="card mb-4">
                             <article class="card-body">
@@ -190,32 +215,11 @@
                                 <canvas id="myChart2" height="217"></canvas>
                             </article>
                         </div>
-                        <div class="card mb-4">
-                            <article class="card-body">
-                                <h5 class="card-title">Marketing Chanel</h5>
-                                <span class="text-muted font-xs">Facebook</span>
-                                <div class="progress mb-3">
-                                    <div class="progress-bar" role="progressbar" style="width: 15%">15%</div>
-                                </div>
-                                <span class="text-muted font-xs">Instagram</span>
-                                <div class="progress mb-3">
-                                    <div class="progress-bar" role="progressbar" style="width: 65%">65%</div>
-                                </div>
-                                <span class="text-muted font-xs">Google</span>
-                                <div class="progress mb-3">
-                                    <div class="progress-bar" role="progressbar" style="width: 51%">51%</div>
-                                </div>
-                                <span class="text-muted font-xs">Twitter</span>
-                                <div class="progress mb-3">
-                                    <div class="progress-bar" role="progressbar" style="width: 80%">80%</div>
-                                </div>
-                                <span class="text-muted font-xs">Other</span>
-                                <div class="progress mb-3">
-                                    <div class="progress-bar" role="progressbar" style="width: 80%">80%</div>
-                                </div>
-                            </article>
-                        </div>
+                        
+                       
                     </div>
+                  
+                    
                 </div>
                 <div class="card mb-4">
                     <header class="card-header">

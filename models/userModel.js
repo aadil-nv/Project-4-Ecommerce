@@ -44,6 +44,10 @@ const userSchema = new mongoose.Schema({
         date:{type:Date},
         status:{type:String}
     }],
+    referdId:{
+        type:String,
+        default:0
+    }
 
 })
 

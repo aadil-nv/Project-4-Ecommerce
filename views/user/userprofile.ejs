@@ -76,7 +76,11 @@
         .textorderstatus{
             font-weight: 700;
         }
-       
+       #referalInput{
+        width: 300px;
+        height: 40px;
+        border: 1px solid #e97730;
+       }
        
        
       
@@ -139,14 +143,20 @@
                                                             style="background-color: #e97730; width: 130PX; height: 40PX; border: none; "><a
                                                                 href="/edituserdetiles" style="color: white;">Edit detiles</a></a></button>
                                                     </div>
-                                                    
-
-
-
-
+                                                   
                                                 </div>
+                                                <div class="myaccount-content">
+                                                    <h3 id="persolainformation">Your Referal Id</h3>
+                                                    <div class="welcome">
+                                                        <input type="text" id="referalInput" value="<%= userData.referalId  %>" readonly>
+                                                        <button class="check-btn sqr-btn" onclick="copyReferalId()"
+                                                            style="background-color: #e97730; width: 130PX; height: 40PX; border: none; "><a
+                                                                style="color: white;">COPY ID</a></a></button>
+                                                        
+                                                    </div>
 
-
+                                                  
+                                                </div>
                                             </div>
 
 
@@ -163,7 +173,7 @@
                                                                 <div class="container" >
                                                                     <div class="row">
                                                                         <div class="col-12" >
-                                                                            <div class="card mb-2" style="border-radius: 0;" >
+                                                                            <div class="card " style="border-radius: 0;" >
                                                                                 <div class="row g-0"  >
                                                                                     <div class="col-md-2" >
                                                                                         <img src="/uploads/<%=product.productId.productimage[0] %>"
@@ -555,6 +565,7 @@
 
 
     <script>
+        
         function confirmdelete(id) {
             Swal.fire({
                 title: "Are you sure?",
@@ -691,6 +702,16 @@
                 }
             });
         }
+
+
+        function copyReferalId() {
+            var referalInput = document.getElementById("referalInput");
+            referalInput.select();
+            document.execCommand("copy");
+            toastr.warning("Referral ID copied successfully!");
+
+}
+
     </script>
 
 

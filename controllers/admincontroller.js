@@ -12,6 +12,7 @@ const sharp = require("sharp");
 const order = require("../models/orderModal");
 const Coupon = require("../models/couponModal");
 const Offer = require("../models/offerModal");
+const Category = require("../models/categoryModel");
 
 
 
@@ -67,7 +68,62 @@ const adminLogin = async (req, res) => {
 
 const adminDashboard = async (req, res) => {
   try {
-    res.render("admin/admindashboard");
+    const salesReport= await order.find().populate("orderedItem.productId").populate("deliveryAddress").populate("userId").sort({_id:1})
+    const productCount= await Products.countDocuments()
+    const categoryCount= await Category.countDocuments()
+    let totalSalesAmount = 0;
+    let totalSalesAmount2 = 0;
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1;
+    const currentYear = currentDate.getFullYear();
+    
+
+    salesReport.forEach(order => {
+      order.orderedItem.forEach(item => {
+        if (item.productStatus === "Delivered") {
+          console.log("order.couponDeduction ::::",order.couponDeduction)
+          if(order.couponDeduction == 0){
+          totalSalesAmount += item.totalProductAmount;
+        }else{
+          totalSalesAmount2 += item.totalProductAmount
+          totalSalesAmount=totalSalesAmount2-order.couponDeduction
+        }
+      }
+      });
+    });
+
+    let totalCouponDeduction=0
+    salesReport.forEach(item=>{
+      totalCouponDeduction += item.couponDeduction
+    })
+    let salesCount=0
+    salesReport.forEach(item=>{
+      salesCount++
+    })
+    let overAllOrderAmount=0
+    salesReport.forEach(item=>{
+      overAllOrderAmount+= item.orderAmount
+    })
+    //!-----------------------------------------------------------------
+    
+    const salesReport2 = await order.find({
+      paymentStatus: "Payment Successfull",
+      $expr: {
+          $eq: [{ $month: "$shippingDate" }, currentMonth],
+          $eq: [{ $year: "$shippingDate" }, currentYear]
+      }
+  }).populate("orderedItem.productId").populate("deliveryAddress").populate("userId").sort({ _id: 1 });
+
+  let monthlyEarning = 0;
+ 
+  salesReport2.forEach(order => {
+    monthlyEarning+= order.orderAmount
+  });
+
+  console.log("salesReport2",monthlyEarning)
+  
+    res.render("admin/admindashboard",{salesReport,totalSalesAmount,totalCouponDeduction,
+      salesCount,overAllOrderAmount,productCount,categoryCount,monthlyEarning});
   } catch (error) {
     console.log(error.message);
   }
@@ -591,6 +647,24 @@ const addNewCoupon = async (req, res) => {
       res.json({ message: "failed" })
 
     } else {
+      const couponname = data.couponName
+      const couponcode = data.couponCode
+      console.log(":::::::::::::::::::::::::::::::::::::::")
+      console.log(couponcode)
+      console.log(":::::::::::::::::::::::::::::::::::::::")
+
+      const existingCouponName = await Coupon.findOne({ couponName:couponname });
+      console.log("existingCouponName::",existingCouponName)
+      const existingCouponCode = await Coupon.findOne({ couponCode:couponcode });
+      console.log("existingCouponCode >>",existingCouponCode)
+
+      if (existingCouponName ) {
+        return res.json({ message: "Coupon name already exists" });
+      }
+       if (existingCouponCode) {
+        return res.json({ message: "Coupon code already exists" });
+      } 
+
       const couponData = new Coupon({
 
         couponName: data.couponName,
@@ -602,10 +676,10 @@ const addNewCoupon = async (req, res) => {
         status: true,
 
 
-
       })
       await couponData.save()
       res.json({ message: "Success" })
+    
     }
   } catch (error) {
     console.log(error.message)
@@ -793,22 +867,27 @@ const filterSalesReport= async (req,res)=>{
 
     let filteredReport = [];
 
-        if (selectedOption === "yearly") {
-            const currentYear = new Date().getFullYear();
-            filteredReport = salesReport.filter(item => new Date(item.shippingDate).getFullYear() === currentYear);
-        } else if (selectedOption === "monthly") {
-            const currentMonth = new Date().getMonth() + 1;
-            filteredReport = salesReport.filter(item => new Date(item.shippingDate).getMonth() + 1 === currentMonth);
-        } else if (selectedOption === "weekly") {
-            const today = new Date();
-            const currentWeek = getWeek(today);
-            filteredReport = salesReport.filter(item => getWeek(new Date(item.shippingDate)) === currentWeek);
-        } else if (selectedOption === "daily") {
-            const today = new Date().toISOString().slice(0, 10);
-            filteredReport = salesReport.filter(item => item.shippingDate.toISOString().slice(0, 10) === today);
-        } else if (selectedOption === "all") {
-            filteredReport = salesReport; // Send all data
-        }
+    if (selectedOption === "yearly") {
+      const currentYear = new Date().getFullYear();
+      filteredReport = salesReport.filter(item => new Date(item.shippingDate).getFullYear() === currentYear);
+  }  else if (selectedOption === "monthly") {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth() + 1;
+    filteredReport = salesReport.filter(item => {
+        const shippingDate = new Date(item.shippingDate);
+        return shippingDate.getFullYear() === currentYear && shippingDate.getMonth() + 1 === currentMonth;
+    });
+  } else if (selectedOption === "weekly") {
+      const today = new Date();
+      const currentWeek = getWeek(today);
+      filteredReport = salesReport.filter(item => getWeek(new Date(item.shippingDate)) === currentWeek);
+  } else if (selectedOption === "daily") {
+      const today = new Date().toISOString().slice(0, 10);
+      filteredReport = salesReport.filter(item => item.shippingDate.toISOString().slice(0, 10) === today);
+  } else if (selectedOption === "all") {
+      filteredReport = salesReport; // Send all data
+  }
 
        
 

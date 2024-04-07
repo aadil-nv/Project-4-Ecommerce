@@ -19,7 +19,7 @@
                             <option value="all">All</option>
                             <option value="daily">Daily</option>
                             <option value="weekly">Weekly</option>
-                            <option value="m  onthly">Monthly</option>
+                            <option value="monthly">Monthly</option>
                             <option value="yearly">Yearly</option>
                         </select>
                     </div>
@@ -38,8 +38,8 @@
             <!-- card-header end// -->
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover" id="tablebody">
-                        <thead>
+                    <table class="table table-hover"  id="tablebody"  >
+                        <thead id="thead">
                             <tr>
                                 <th>Date</th>
                                 <th scope="col">Order ID</th>
@@ -53,7 +53,7 @@
 
                         <% if(salesReport.length> 0) {%>
                             <% salesReport.forEach(item=>{ %>
-                                <tbody>
+                                <tbody  >
                                     <tr>
                                         <td>
                                             <%= item.shippingDate.toDateString() %>
@@ -243,7 +243,7 @@
         }
 
     </script>
-
+<!--!------------------------------------------------------------ next ------------------------------------------------------------------------------>
     <script>
         function fetchReport2() {
             const startDate = document.getElementById('startdate').value;
@@ -289,11 +289,13 @@
             console.log(":::::::customData::::::::::>>", customData.filteredSalesReport)
 
             const tableBody = document.getElementById('tablebody');
+        
 
             // Remove all existing table rows
             while (tableBody.firstChild) {
                 tableBody.removeChild(tableBody.firstChild);
             }
+ 
 
             if (customData.length > 0) {
                 customData.forEach(item => {

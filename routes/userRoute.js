@@ -98,6 +98,8 @@ user_route.post("/user/productreturn",userAuth.isLogin,userAuth.isUserBlock,user
 
 user_route.post("/user/search",userAuth.isLogin,userAuth.isUserBlock,usercontroller.userSearch)
 
+user_route.post("/user/sendcategoryname",userAuth.isLogin,userAuth.isUserBlock,usercontroller.searchCategoryName)
+
 
 
 

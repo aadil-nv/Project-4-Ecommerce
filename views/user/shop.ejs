@@ -117,9 +117,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="shop-bottom-area">
+                        <div class="shop-bottom-area"  >
                             
-                            <div class="tab-content jump">
+                            <div class="tab-content jump" id="productContainer">
                                 <div id="shop-1" class="tab-pane active">
                                     <div class="row"   >
 
@@ -411,15 +411,12 @@
                                     <h3>Product Categories</h3>
                                 </div>
                                 <div class="sidebar-list-style">
-                                    <ul>
-                                        <li><a href="shop.html">Accessories <span>4</span></a></li>
-                                        <li><a href="shop.html">Book <span>9</span></a></li>
-                                        <li><a href="shop.html">Clothing <span>5</span></a></li>
-                                        <li><a href="shop.html">Homelife <span>3</span></a></li>
-                                        <li><a href="shop.html">Kids & Baby <span>4</span></a></li>
-                                        <li><a href="shop.html">Stationery <span>8</span></a></li>
-                                        <li><a href="shop.html">Health & Beauty <span>3</span></a></li>
-                                        <li><a href="shop.html">Home Appliances <span>4</span></a></li>
+                                    <ul id="categoryList">
+                                        <% if(categoryData.length > 0) { %>
+                                            <% categoryData.forEach(item => { %>
+                                                <li ><a class="categoryItem"><%= item.categoryname %></a></li>
+                                            <% }) %>
+                                        <% } %>
                                     </ul>
                                 </div>
                             </div>
@@ -525,6 +522,109 @@
 }
 
 
+// document.addEventListener("DOMContentLoaded", function() {
+//     const searchForm = document.getElementById("searchForm");
+
+//     searchForm.addEventListener("submit", function(event) {
+//         event.preventDefault();
+
+//         const searchInput = document.getElementById("searchInput").value;
+        
+//         fetch("/user/search", {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json"
+//             },
+//             body: JSON.stringify({ search: searchInput })
+//         })
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error("Network response was not ok");
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+           
+//             console.log(data);
+//         })
+//         .catch(error => {
+//             console.error("Error:", error);
+//         });
+//     });
+// });
+// document.addEventListener("DOMContentLoaded", function() {
+//     const searchForm = document.getElementById("searchForm");
+
+//     searchForm.addEventListener("submit", function(event) {
+//         event.preventDefault();
+
+//         const searchInput = document.getElementById("searchInput").value;
+        
+//         fetch("/user/search", {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json"
+//             },
+//             body: JSON.stringify({ search: searchInput })
+//         })
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error("Network response was not ok");
+//             }
+//             return response.json();
+//         })
+//         .then(data => {
+//             console.log(data)
+//             const productContainer = document.getElementById("productContainer");
+//             productContainer.innerHTML = "" // Clear previous content
+
+//             data.result.forEach(product => {
+//                 const productHTML = `
+       
+//          <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200" id="container1">
+//                 <div class="row">
+//                     <div class="col-12">
+//                         <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200" id="container1">
+//                             <div class="product-img img-zoom mb-25">
+//                                 <a href="/producttab/${product._id}">
+//                                     <img src="/uploads/${product.productimage[0]}" alt="">
+//                                 </a>
+//                                 <div class="product-badge badge-top badge-right badge-pink">
+//                                     ${product.offerId ? `<p id="offer">${product.offerId.percentage}%</p>` : `<p id="offer" style="display: none;"></p>`}
+//                                 </div>
+//                                 <div class="product-action-wrap">
+//                                     <button class="product-action-btn-1" title="Wishlist" onclick="wishlstProductId('${product._id}')"><i class="pe-7s-like"></i></button>
+//                                     <button class="product-action-btn-1" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="pe-7s-look"></i></button>
+//                                 </div>
+//                                 <div class="product-action-2-wrap">
+//                                     <button class="product-action-btn-2" title="Add To Cart" onclick="addItemInCart('${product._id}')"><i class="pe-7s-cart"></i> Add to cart</button>
+//                                 </div>
+//                             </div>
+//                             <div class="product-content">
+//                                 <h3 id="productname"><a href="/producttab/${product._id}">${product.productname}</a></h3>
+//                                 <div class="product-price">
+//                                     ${!product.offerId ? `<span class="new-price" id="productprice">${product.productprice}</span>` : `<span class="text-muted"><del>${product.productprice}</del></span><span class="new-price" id="productprice">Rs.${(product.productprice - (product.productprice * product.offerId.percentage / 100)).toFixed(0)}/-</span>`}
+//                                 </div>
+//                                 <div class="product-price">
+//                                     ${product.productquadity > 100 ? `<span class="new-price"><p id="stock5">Stock Available</p></span>` : (product.productquadity < 100 && product.productquadity >= 50 ? `<span class="new-price"><p id="stock4">Limited Stock Only</p></span>` : (product.productquadity < 50 && product.productquadity >= 10 ? `<span class="new-price"><p id="stock3">Hurry few left</p></span>` : (product.productquadity < 10 && product.productquadity >= 1 ? `<span class="new-price"><p id="stock2">Only (${product.productquadity}) Available</p></span>` : `<span class="new-price"><p id="stock1">Out of Stock</p></span>`)))}
+//                                 </div>
+//                             </div>
+//                         </div>
+//                         </div>
+//                         </dv>
+                   
+//                     </div>`;
+                    
+                
+//                 // Append product HTML to the container
+//                 productContainer.insertAdjacentHTML('beforeend', productHTML);
+//             });
+//         })
+//         .catch(error => {
+//             console.error("Error:", error);
+//         });
+//     });
+// });
 document.addEventListener("DOMContentLoaded", function() {
     const searchForm = document.getElementById("searchForm");
 
@@ -532,7 +632,7 @@ document.addEventListener("DOMContentLoaded", function() {
         event.preventDefault();
 
         const searchInput = document.getElementById("searchInput").value;
-        
+
         fetch("/user/search", {
             method: "POST",
             headers: {
@@ -547,13 +647,167 @@ document.addEventListener("DOMContentLoaded", function() {
             return response.json();
         })
         .then(data => {
-           
-            console.log(data);
+            const productContainer = document.getElementById("productContainer");
+            productContainer.innerHTML = ""; // Clear previous content
+
+            const row = document.createElement("div");
+            row.classList.add("row");
+
+            data.result.forEach(product => {
+                const productCol = document.createElement("div");
+                productCol.classList.add("col-3");
+
+                const productHTML = `
+                    <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200" id="container1">
+                        <div class="product-img img-zoom mb-25">
+                            <a href="/producttab/${product._id}">
+                                <img src="/uploads/${product.productimage[0]}" alt="">
+                            </a>
+                            <div class="product-badge badge-top badge-right badge-pink">
+                                ${product.offerId ? `<p id="offer">${product.offerId.percentage}%</p>` : `<p id="offer" style="display: none;"></p>`}
+                            </div>
+                            <div class="product-action-wrap">
+                                <button class="product-action-btn-1" title="Wishlist" onclick="wishlstProductId('${product._id}')"><i class="pe-7s-like"></i></button>
+                                <button class="product-action-btn-1" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="pe-7s-look"></i></button>
+                            </div>
+                            <div class="product-action-2-wrap">
+                                <button class="product-action-btn-2" title="Add To Cart" onclick="addItemInCart('${product._id}')"><i class="pe-7s-cart"></i> Add to cart</button>
+                            </div>
+                        </div>
+                        <div class="product-content">
+                            <h3 id="productname"><a href="/producttab/${product._id}">${product.productname}</a></h3>
+                            <div class="product-price">
+
+                                ${!product.offerId ? `<span class="new-price" id="productprice">${product.productprice}</span>` : `<span class="text-muted"><del>${product.productprice}</del></span><span class="new-price" id="productprice">Rs.${(product.productprice - (product.productprice * product.offerId.percentage / 100)).toFixed(0)}/-</span>`}
+                            </div>
+                            <div class="product-price">
+                                ${product.productquadity > 100 ? `<span class="new-price"><p id="stock5">Stock Available</p></span>` : (product.productquadity < 100 && product.productquadity >= 50 ? `<span class="new-price"><p id="stock4">Limited Stock Only</p></span>` : (product.productquadity < 50 && product.productquadity >= 10 ? `<span class="new-price"><p id="stock3">Hurry few left</p></span>` : (product.productquadity < 10 && product.productquadity >= 1 ? `<span class="new-price"><p id="stock2">Only (${product.productquadity}) Available</p></span>` : `<span class="new-price"><p id="stock1">Out of Stock</p></span>`)))}
+                            </div>
+                        </div>
+                    </div>`;
+
+                productCol.innerHTML = productHTML;
+                row.appendChild(productCol);
+            });
+
+            productContainer.appendChild(row);
         })
         .catch(error => {
             console.error("Error:", error);
         });
     });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const categoryList = document.getElementById("categoryList");
+
+    categoryList.addEventListener("click", function(event) {
+        const clickedListItem = event.target;
+        if (clickedListItem.classList.contains("categoryItem")) {
+            const categoryName = clickedListItem.textContent.trim();
+            sendDataToController(categoryName);
+        }
+    });
+
+    const sendDataToController = (categoryName) => {
+        fetch("/user/sendcategoryname", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ category: categoryName })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to send category name to the controller.");
+            }
+            return response.json();
+        })
+        .then(data => {
+            const productContainer = document.getElementById("productContainer");
+            productContainer.innerHTML = ""; // Clear previous content
+
+            const row = document.createElement("div");
+            row.classList.add("row");
+
+            data.result.forEach(product => {
+                const productCol = document.createElement("div");
+                productCol.classList.add("col-3");
+
+                const productHTML = `
+                    <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200" id="container1">
+                        <div class="product-img img-zoom mb-25">
+                            <a href="/producttab/${product._id}">
+                                <img src="/uploads/${product.productimage[0]}" alt="">
+                            </a>
+                            <div class="product-badge badge-top badge-right badge-pink">
+                                ${product.offerId ? `<p id="offer">${product.offerId.percentage}%</p>` : `<p id="offer" style="display: none;"></p>`}
+                            </div>
+                            <div class="product-action-wrap">
+                                <button class="product-action-btn-1" title="Wishlist" onclick="wishlstProductId('${product._id}')"><i class="pe-7s-like"></i></button>
+                                <button class="product-action-btn-1" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="pe-7s-look"></i></button>
+                            </div>
+                            <div class="product-action-2-wrap">
+                                <button class="product-action-btn-2" title="Add To Cart" onclick="addItemInCart('${product._id}')"><i class="pe-7s-cart"></i> Add to cart</button>
+                            </div>
+                        </div>
+                        <div class="product-content">
+                            <h3 id="productname"><a href="/producttab/${product._id}">${product.productname}</a></h3>
+                            <div class="product-price">
+
+                                ${!product.offerId ? `<span class="new-price" id="productprice">${product.productprice}</span>` : `<span class="text-muted"><del>${product.productprice}</del></span><span class="new-price" id="productprice">Rs.${(product.productprice - (product.productprice * product.offerId.percentage / 100)).toFixed(0)}/-</span>`}
+                            </div>
+                            <div class="product-price">
+                                ${product.productquadity > 100 ? `<span class="new-price"><p id="stock5">Stock Available</p></span>` : (product.productquadity < 100 && product.productquadity >= 50 ? `<span class="new-price"><p id="stock4">Limited Stock Only</p></span>` : (product.productquadity < 50 && product.productquadity >= 10 ? `<span class="new-price"><p id="stock3">Hurry few left</p></span>` : (product.productquadity < 10 && product.productquadity >= 1 ? `<span class="new-price"><p id="stock2">Only (${product.productquadity}) Available</p></span>` : `<span class="new-price"><p id="stock1">Out of Stock</p></span>`)))}
+                            </div>
+                        </div>
+                    </div>`;
+
+                productCol.innerHTML = productHTML;
+                row.appendChild(productCol);
+            });
+
+            productContainer.appendChild(row);
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+    };
+});
+document.addEventListener("DOMContentLoaded", function() {
+    const categoryList = document.getElementById("categoryList");
+
+    categoryList.addEventListener("click", function(event) {
+        const clickedListItem = event.target;
+        if (clickedListItem.classList.contains("categoryItem")) {
+            const categoryName = clickedListItem.textContent.trim();
+            console.log("first :::::"+categoryName);
+            sendDataToController(categoryName);
+        }
+    });
+
+    const sendDataToController = (categoryName) => {
+        fetch("/user/sendcategoryname", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ category: categoryName })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to send category name to the controller.");
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Product Data:", data.productData);
+        })
+        .catch(error => {
+            console.error("Error:", error);
+        });
+    };
 });
 
 

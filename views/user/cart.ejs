@@ -101,7 +101,7 @@
                                                             
                                                             <%}else{%>
                                                                 <% const discountedPrice = data.productId.productprice - ( data.productId.productprice  * data.productId.offerId?.percentage / 100);%>
-                                                                <span class="amount"><%= discountedPrice %></span>
+                                                                <span class="amount"><%= discountedPrice.toFixed(0) %></span>
                                                                 <%}%>
                                                            
                                                     </td>
@@ -150,7 +150,6 @@
                                             </tbody>
                                 </table>
 
-                                <!--------------------------------------------------------------------- end CART TAB ------------------------------------------------------------------------------>
                             </div>
                         </div>
 
@@ -188,11 +187,19 @@
                             <hr />
                                
                         </div>
+                        <% cartDetiles.forEach(item=>{%> 
                        
-                        <div class="grand-total-btn btn-hover">
-                            <a class="btn theme-color" href="/checkoutpage">Proceed to checkout</a>
+                        <%if(item.products.length>=1) {%> 
+                            <div class="grand-total-btn btn-hover">
+                            <a class="btn theme-color"  href="/checkoutpage"  >Proceed to Checkout</a>
                         </div>
-                        
+
+                       <%}else{%>
+                        <div class="grand-total-btn btn-hover">
+                        <a class="btn theme-color"  href="shoppage"  >add Product</a>
+                        </div>
+                        <%}%>
+                        <%})%>
                     </div>
                 </div>
             </div>

@@ -5,6 +5,37 @@
         height: 160px; 
         font-size: 9px;
     }
+    #productname{
+        color: black;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-weight: 400;
+    }
+    #productname2{
+        color: rgb(170, 160, 160);
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-weight: 400;
+        font-size: 15px;
+    }
+    #offer2{
+        
+        color: white;
+        font-size: 14px;
+        height: 45px; 
+    }
+    #offerdiv{
+        background-color: green;
+        color: white;
+        font-size: 14px;
+        height: 22px;
+        border-radius: 100px;
+        width: 40px;
+        text-align: center;
+    }
+    #productname7{
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-weight: 700;
+    }
+   
 </style>
 
 
@@ -33,7 +64,7 @@
                         </div>
                     </div>
                     <div class="swiper-slide">
-                        <div class="intro-section slider-height-1 slider-content-center bg-img single-animation-wrap slider-bg-color-2" style="background-image:url(/userpublic/indexassets/assets/images/slider/slider-bg-2-2.jpg)">
+                        <div class="intro-section slider-height-1 slider-content-center bg-img single-animation-wrap slider-bg-color-2" style="background-image:url(/userpublic/indexassets/assets/images/slider/slider-bg-3-2.jpg)">
                             <div class="container">
                                 <div class="row">
                                     <div class="col-12 hm2-slider-animation">
@@ -171,7 +202,7 @@
                     <div id="pro-1" class="tab-pane active">
                         <div class="row">
                             <%  ProductData.forEach(data=>{%>
-                            <div class="col-lg-3 col-md-4 col-sm-6 col-12 ">
+                            <div class="col-lg-2 col-md-4 col-sm-6 col-6 ">
                                 <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200">
                                     <div class="product-img img-zoom mb-25">
                                    
@@ -180,12 +211,20 @@
                                         </a>
                                        
 
-                                        <div class="product-badge badge-top badge-right badge-success">
-                                            <span>-20%</span>
+                                        
+                                        <% if (!data.offerId ) { %>
+                                        <div class="product-badge badge-top badge-right badge-success" id="offerdiv" style="display: none;">
+                                        <p id="offer2" ></p>
                                         </div>
+                                        <% }else{ %>
+                                        <div class="product-badge badge-top badge-right badge-success" id="offerdiv">
+                                        <p id="offer2" ><%= data.offerId?.percentage %>%</p>
+                                        </div>
+                                        <% } %>
+                                   
                                         
                                         <div class="product-action-wrap">
-                                            <button class="product-action-btn-1" title="Wishlist"  onclick="wishlstProductId('<%= data._id %>')"><i class="pe-7s-like"></i></button>
+                                            <button class="product-action-btn-1" id="wishlistlike" title="Wishlist"  onclick="wishlstProductId('<%= data._id %>')"><i class="pe-7s-like"></i></button>
                                             <button class="product-action-btn-1" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                 <i class="pe-7s-look"></i>
                                             </button>
@@ -196,10 +235,15 @@
                                     </div>
                                     <div class="product-content">
 
-                                        <h3><a href="/producttab?id=<%= data._id %>"><%= data.productname %></a></h3>
+                                        <h3><a href="/producttab?id=<%= data._id %>" id="productname7"><%= data.productname %></a></h3>
                                         <div class="product-price">
-                                            <span class="new-price">₹.<%= data.productprice %> /-</span>
-                                          
+                                            <% if (!data.offerId) { %>
+                                            <span id="productname">₹<%= data.productprice %></span>
+                                            <% } else { %>
+                                                <% var discountedPrice = data.productprice - (data.productprice * data.offerId?.percentage / 100);%>    
+                                            <span id="productname">₹<%= discountedPrice.toFixed(0)%></span>
+                                            <span id="productname2"><del>₹<%= data.productprice %></del></span>
+                                            <% } %>    
                                         </div>
                                     </div>
                                 </div>
@@ -208,8 +252,6 @@
                         
                         </div>
                     </div>
-                   
-                  
                 </div>
             </div>
         </div>
