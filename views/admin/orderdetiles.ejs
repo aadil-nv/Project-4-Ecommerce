@@ -1,16 +1,16 @@
 <%- include('../partials/asidenav.ejs')%>
 
 
-<style>
-    #detilesSave{
-        background-color: blue;
-        border: none;
-        color: white;
+    <style>
+        #detilesSave {
+            background-color: blue;
+            border: none;
+            color: white;
 
-        
-    }
-</style>
-    <section class="content-main"  style="background-color: rgb(211, 218, 218);">
+
+        }
+    </style>
+    <section class="content-main" style="background-color: rgb(211, 218, 218);">
         <div class="content-header">
             <div>
                 <h2 class="content-title card-title">Order Detailes</h2>
@@ -22,16 +22,18 @@
             <header class="card-header">
                 <div class="row align-items-center">
                     <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
-                        <p> <i class="material-icons md-calendar_today"></i> <b><%= orderData.deliveryDate %></b> </p>
+                        <p> <i class="material-icons md-calendar_today"></i> <b>
+                                <%= orderData.deliveryDate %>
+                            </b> </p>
 
                         <br />
-                        <small >Order ID:- <%= orderData.orderId %></small>
+                        <small>Order ID:- <%= orderData.orderId %></small>
                     </div>
                     <div class="col-lg-6 col-md-6 ms-auto text-md-end">
 
-                       
+
                         <input type="hidden" value="<%= orderData._id %>" id="orderId">
-                       
+
                     </div>
                 </div>
             </header>
@@ -108,12 +110,14 @@
                                         <th width="30%">Product</th>
                                         <th width="10%">Unit Price</th>
                                         <th width="10%">Quantity</th>
-                                        <th width="10%" >Total</th>
-                                        <th width="10%" >Status</th>
-                                        <th width="18%" >Change Status</th>
-                                        <th width="10%" >Save</th>
+                                        <th width="10%">Total</th>
+                                        <th width="10%">Status</th>
+                                        <th width="18%">Change Status</th>
+                                        <th width="10%">Save</th>
                                     </tr>
                                 </thead>
+                                <input type="hidden" value="<%=orderData._id  %>" id="orderid">
+                                <input type="hidden" value="<%=orderData.userId._id  %>" id="userid">
                                 <% orderData.orderedItem.forEach(item=>{ %>
 
                                     <tbody>
@@ -133,25 +137,43 @@
                                             </td>
                                             <td>
                                                 <%=item.quantity%>
+                                                <input type="hidden" value="<%=item.quantity%>" id="quantity">
                                             </td>
-                                            <td >
+                                            <td>
                                                 ₹<%=item.totalProductAmount%>
-                                            </td>
-                                            <td >
+                                                <input type="hidden" value="<%=item.totalProductAmount%>" id="totalProductAmount">
+                                                </td>
+                                            <td>
                                                 <%=item.productStatus%>
                                             </td>
-                                            <td>
-                                                <select id="statusSelect_<%= item.productId._id %>"
-                                                    class="form-select d-inline-block mb-lg-0 mr-5 mw-200">
-                                                    <option value="null">Change status</option>
-                                                    <option value="Order Cancelled">Order Cancelled</option>
-                                                    <option value="Shipped">Shipped</option>
-                                                    <option value="Delivered">Delivered</option>
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <button id="detilesSave" onclick="saveStatus('<%= item.productId._id %>')">Save</button>
-                                            </td>
+                                            <% if(item.returnRequest===false ) {%>
+                                                <td>
+                                                    <select id="statusSelect_<%= item.productId._id %>"
+                                                        class="form-select d-inline-block mb-lg-0 mr-5 mw-200">
+                                                        <option value="null">Change status</option>
+                                                        <option value="Order Cancelled">Order Cancelled</option>
+                                                        <option value="Shipped">Shipped</option>
+                                                        <option value="Delivered">Delivered</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <button id="detilesSave"
+                                                        onclick="saveStatus('<%= item.productId._id %>')">Save</button>
+                                                </td>
+                                                <% }else{ %>
+                                                    <td>
+                                                        <p>return requested</p>
+                                                    </td>
+                                                    <td>
+                                                        <button class="detilesSaveBtn">View</button>
+                                                        <input type="hidden" value="<%=item.returnReason  %>"
+                                                            id="damagereason">
+                                                        <input type="hidden" value="<%=item.productId._id  %>"
+                                                            id="productid">
+
+                                                    </td>
+                                                    <% } %>
+
                                         </tr>
 
                                         <% }) %>
@@ -171,19 +193,19 @@
                                                         <dl class="dlist">
                                                             <dt>Grand total:</dt>
                                                             <dd><b class="h5">
-                                                                ₹<%= orderData.orderAmount %>
+                                                                    ₹<%= orderData.orderAmount %>
                                                                 </b></dd>
                                                         </dl>
                                                         <dl class="dlist">
 
                                                             <dt class="text-muted">Status: </dt>
                                                             <dd>
-                                                                
+
                                                                 <span
                                                                     class="badge rounded-pill alert-success text-success">
                                                                     <%= orderData.orderStatus%>
                                                                 </span>
-                                                                
+
                                                             </dd>
                                                         </dl>
                                                     </article>
@@ -232,7 +254,7 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="path/to/sweetalert.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script src="/adminpublic/adminlogin/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/adminpublic/adminlogin/js/vendors/bootstrap.bundle.min.js"></script>
@@ -258,7 +280,7 @@
                     const statusSelect = document.getElementById(`statusSelect_${productId}`);
                     const selectedStatus = statusSelect.value;
                     const orderId = document.getElementById('orderId').value;
-    
+
                     fetch(`/orderdetiles/${productId}`, {
                         method: 'POST',
                         headers: {
@@ -266,37 +288,119 @@
                         },
                         body: JSON.stringify({ selectedStatus, productId, orderId })
                     })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log('Status updated successfully:', data);
-                        Swal.fire(
-                            'Success!',
-                            'Status has been updated successfully.',
-                            'success'
-                        ).then(() => {
-                           setTimeout(()=>{
-                            window.location.reload()
-                           },100)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Status updated successfully:', data);
+                            Swal.fire(
+                                'Success!',
+                                'Status has been updated successfully.',
+                                'success'
+                            ).then(() => {
+                                setTimeout(() => {
+                                    window.location.reload()
+                                }, 100)
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error updating status:', error);
+                            Swal.fire(
+                                'Error!',
+                                'An error occurred while updating status.',
+                                'error'
+                            );
                         });
-                    })
-                    .catch(error => {
-                        console.error('Error updating status:', error);
-                        Swal.fire(
-                            'Error!',
-                            'An error occurred while updating status.',
-                            'error'
-                        );
-                    });
                 }
             });
         }
+
+
+
+        const damagereason = document.getElementById('damagereason').value;
+        const detilesSaveBtns = document.querySelectorAll('.detilesSaveBtn');
+        const productId = document.getElementById('productid').value;
+        console.log("productId", productId);
+        const orderId = document.getElementById('orderid').value;
+        const userId = document.getElementById('userid').value;
+        const totalProductAmount = document.getElementById('totalProductAmount').value;
+        const quantity = document.getElementById('quantity').value;
+
+        // Add event listener to each button
+        detilesSaveBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Show SweetAlert popup
+                Swal.fire({
+                    title: 'Enter Text',
+                    input: 'text',
+                    inputValue: damagereason, // Set the initial value from the damagereason variable
+                    showCancelButton: true,
+                    confirmButtonText: 'Approve',
+                    cancelButtonText: 'Reject',
+                    showCloseButton: true,
+                    preConfirm: (text) => {
+                        // You can handle the text here
+                        // For example, send it to the controller via fetch
+                        // Replace the URL with your controller endpoint
+                        return fetch('/admin/approvereturnrequest', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ text, decision: 'approve', productId, orderId,userId ,totalProductAmount,quantity})
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                // Handle response data if needed
+                                console.log(data);
+                                window.location.reload()
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    },
+                    showClass: {
+                        popup: 'swal2-noanimation',
+                        backdrop: 'swal2-noanimation'
+                    },
+                    hideClass: {
+                        popup: '',
+                        backdrop: ''
+                    }
+                }).then((result) => {
+                    if (result.dismiss === Swal.DismissReason.cancel) {
+                        fetch('/admin/approvereturnrequest', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ text: '', decision: 'reject', productId, orderId,userId,totalProductAmount,quantity })
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                // Handle response data if needed
+                                console.log(data);
+                                window.location.reload()
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                            });
+                    }
+                });
+            });
+        });
+
     </script>
-    
-     
-   
-   

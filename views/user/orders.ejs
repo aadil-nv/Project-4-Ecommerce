@@ -1,212 +1,372 @@
 <%- include('../partials/mainheader.ejs')%>
     <style>
-        #orderid {
-            color: black;
-            font-weight: 600;
-            align-items: start;
-            display: block;
-            padding-left: 50px;
-            padding-top: 30px;
+        
+        body {
+            min-height: 100vh;
+            background-size: cover;
+            font-family: 'Lato', sans-serif;
+            color: rgba(116, 116, 116, 0.667);
+            background: linear-gradient(140deg , #fff );    
+
+        }
+        .container-fluid {
+            margin-top: 200px ;
         }
 
-        #table-main {
-            padding-bottom: 300px;
+        p {
+            font-size: 14px;
+            margin-bottom: 7px;
+
         }
 
-        #button-user1 {
-            background-color: rgb(37, 0, 122);
-           
-            color: white;
-            width: 120px;
-            height: 35px;
-            border: none;
-            border-radius: 30px;
-        }
-        #button-user {
-            background-color: red;
-            color: white;
-            width: 90px;
-            height: 35px;
-            border: none;
-            border-radius: 30px;
+        .small {
+            letter-spacing: 0.5px !important;
         }
 
-        #table {
-            border-radius: 30px;
+        .card-1 {
+            box-shadow: 2px 2px 10px 0px rgb(190, 108, 170);
         }
-        #save {
-            background-color: rgb(10, 129, 40);
-            border: none;
-            height: 53px;
-            color: white;
+
+        hr {
+            background-color: rgba(248, 248, 248, 0.667);
         }
+
+
+        .bold {
+            font-weight: 500;
+        }
+
+        .change-color {
+            color: #AB47BC !important;
+        }
+
+        .card-2 {
+            box-shadow: 1px 1px 3px 0px rgb(112, 115, 139);
+
+        }
+
+        .fa-circle.active {
+            font-size: 8px;
+            color: #AB47BC;
+        }
+
+        .fa-circle {
+            font-size: 8px;
+            color: #aaa;
+        }
+
+        .rounded {
+            border-radius: 2.25rem !important;
+        }
+
+
+        .progress-bar {
+            background-color: #6a47bc !important;
+        }
+
+
+        .progress {
+            height: 5px !important;
+            margin-bottom: 0;
+        }
+
+        .invoice {
+            position: relative;
+            top: -70px;
+        }
+
+        .Glasses {
+            position: relative;
+            top: -12px !important;
+        }
+
+        .card-footer {
+            background-color: #AB47BC;
+            color: #fff;
+        }
+
+        h2 {
+            color: rgb(78, 0, 92);
+            letter-spacing: 2px !important;
+        }
+
+        .display-3 {
+            font-weight: 500 !important;
+        }
+
+        @media (max-width: 479px) {
+            .invoice {
+                position: relative;
+                top: 7px;
+            }
+
+            .border-line {
+                border-right: 0px solid rgb(226, 206, 226) !important;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            h2 {
+                color: rgb(78, 0, 92);
+                font-size: 17px;
+            }
+
+            .display-3 {
+                font-size: 28px;
+                font-weight: 500 !important;
+            }
+        }
+
+        .card-footer small {
+            letter-spacing: 7px !important;
+            font-size: 12px;
+        }
+
+        .border-line {
+            border-right: 1px solid rgb(226, 206, 226)
+        }
+        .progress-bar {
+    height: 10px;
+    border-radius: 5px;
+}
+
+.fa-circle {
+    color: #6c757d;
+}
+
+.fa-circle.active {
+    color: #28a745;
+}
+
     </style>
 
-    <div class="breadcrumb-area bg-gray-4 breadcrumb-padding-1" style="background-color: rgb(198, 198, 228)">
-        <% orderData.forEach((item)=> { %>
-        <h3 id="orderid">Thankyou for your Purchase <%= item.userId.name %></h3>
-            <% }) %>
-        <div class="banner-area pb-70 pt-80">
-            <div class="container" style="height: 600px">
-                <div class="row">
-                    <div class="col-lg-12 col-md-6 col-12">
-                        <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
-                            <span>
-                                <i class="material-icons md-calendar_today"></i>
-                                <b>Wed, Aug 13, 2020, 4:34PM</b>
-                            </span>
-                            <br />
-                            <small class="text-muted">Order ID: 3453012</small>
+
+
+    <!-- !-----------------------------------------------------------------------------------------------------------------------------------------------neworder -->
+    
+    
+    
+
+    <body>
+    
+        <div class="container-fluid my-5  d-flex  justify-content-center">
+            <div class="card card-1">
+                <div class="card-header bg-white">
+                    <div class="row">
+                        <div class="col">
+                            <% orderData.forEach((item)=> { %>
+                            <div class="my-auto">
+                                <h4 class="mb-0">Thanks for your Order,<span class="change-color"><%= item.userId.name %></span> !</h4>
+                            </div>
+                            <% }) %>
                         </div>
-
-                        <table class="table table-bordered">
-                            <thead class="thead-light" id="table">
-                                <tr>
-                                    <th>Product Image</th>
-                                    <th>Product Name</th>
-                                    <th>Quantity</th>
-                                    <th>Total Price</th>
-
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            
+                        <% orderData.forEach((item)=> { %>
+                        <div class="col-auto text-start my-auto pl-0 pt-sm-4" style="font-size: 12px;">
                            
+                          
+                        Mobile :<%= item.deliveryAddress.mobile %><br />
+                         Pincode:<%= item.deliveryAddress.pincode %><br />
+                        Address :<%= item.deliveryAddress.address %><br />
+                       StreetAddress<%= item.deliveryAddress.streetaddress%><br />
+                        City :<%= item.deliveryAddress.city %><br />
+                        State:<%= item.deliveryAddress.state %>
+                       <br />
+                        Landmark :<%=
+                          item.deliveryAddress.landmark %>
+                           
+                        </div>
+                        <% }) %>
+                    </div>
+                    <!-- Address -->
+                    
+                </div>
+                
+                
+                
+                <div class="card-body">
+                  
+                    <div class="row">
+                        <div class="col">
                             <% if(orderData.length> 0){ %>
                                 <% orderData.forEach((item)=> { %>
-                                    
-                                        <input type="hidden" value="<%= item._id%>" id="orderId" name="orderId">
-                                        
-                                        <%item.orderedItem.forEach((product)=> { %>
+                                    <input type="hidden" value="<%= item._id%>" id="orderId" name="orderId">
+                                    <%item.orderedItem.forEach((product)=> { %>
+                            <div class="card card-2">
+                                            <div class="card-body">
+                                                <div class="row align-items-center">
+                                                    <div class="col-auto">
+                                                        <img class="img-fluid" src="/uploads/<%=product.productId.productimage[0] %>" width="135" height="135" /> 
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="row">
+                                                            <div class="col-auto"><h6> <%=product.productId.productname %></h6></div>
+                                                            <div class="col-auto"><small><%=product.productId.categoryId %></small></div>
+                                                            
+                                                            <div class="col-auto"><small>Qty:<%=product.quantity %></small></div>
+                                                            <div class="col-auto"><h6>&#8377; <%=product.totalProductAmount %></h6></div>
+                                                        </div>
+                                                        <hr class="my-3">
 
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <img src="/uploads/<%=product.productId.productimage[0] %>"
-                                                        width="100px" class="rounded-3" />
-                                                </td>
-                                                <td id="pooo">
-                                                    <%=product.productId.productname %>
 
-                                                </td>
-                                                <td>
-                                                    <%=product.quantity %>
-                                                </td>
-                                                <td>
-                                                    <%=product.totalProductAmount %>
-                                                </td>
+                                                        <div class="row align-items-center">
+                                                            
+                                                            <div class="col-8">
+                                                               
 
-                                                <td>
-                                                    <%=product.productStatus %>
-                                                </td>
-                                                <% if(product.productStatus==="Order Cancelled") {%>
-                                               
-                                                    <td>
-                                                        <p>Order canceld you ? Need Help</p>
-                                                       
-                                                    </td>
-                                                    <%}else if(product.productStatus==="Delivered"){%>
-                                                        <td>
-                                                       
-                                                       <!-- <button
-                                                              id="button-user1" class="check-btn sqr-btn"
-                                                        data-bs-toggle="modal" id="sendId" data-whatever="@mdo"
-                                                        data-bs-target="#exampleModal"> Retrun Product </button>
+                                                                <% if(product.productStatus==="pending") {%>
+                                                                <div class="progress my-auto" >
+                                                                    <div style="width: 33.33%; background-color: #d8b516; " role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" s></div>
+                                                                </div>
+                                                                <% }else if(product.productStatus==="Shipped"){%>
+                                                                <div class="progress my-auto" >
+                                                                    <div style="width: 67%; background-color: #2008a5; " role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" s></div>
+                                                                </div>
+                                                                <% }else if(product.productStatus==="Delivered"){%>
+                                                                <div class="progress my-auto" >
+                                                                    <div style="width: 100%; background-color: #28a745; " role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" s></div>
+                                                                </div>
+                                                                <% }else if(product.productStatus==="Order Cancelled"){%>
+                                                                <div class="progress my-auto" >
+                                                                    <div style="width: 100%; background-color: #cf1818; " role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" s></div>
+                                                                </div>
+                                                                <%} else if(product.productStatus==="Returned"){%>
+                                                                <div class="progress my-auto" >
+                                                                    <div style="width: 100%; background-color: #d6511c; " role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" s></div>
+                                                                </div>
+                                                                <% } %>
+
+                                                                
+                                                                <div class="media row justify-content-between">
+                                                                    <div class="col-auto text-center">
+                                                                        <span><small class="text-muted">Pending</small><br><i class="fa fa-circle text-warning"></i></span>
+                                                                    </div>
+                                                                    
+                                                                    <div class="col-auto text-center">
+                                                                        <span><small class="text-muted">Shipped</small><br><i class="fa fa-circle text-primary"></i></span>
+                                                                    </div>
+                                                                    <div class="col-auto text-center">
+                                                                        <span><small class="text-muted">Delivered</small><br><i class="fa fa-circle text-success"></i></span>
+                                                                    </div>
+
+                                                                    
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <div class="col-4">
+                                                              
+
+                                                               
+
+                                                                <% if(product.productStatus==="pending") {%>
+                                                                    <div class="col-auto text-center">
+                                                                        <button class="btn btn-sm btn-danger" 
+                                                                         data-product-id="<%= product.productId._id %>" 
+                                                                         onclick="cancelOrder(this)"><i class="fa fa-undo"
+                                                                          aria-hidden="true"></i>Cancel</button>
+                                                                    </div>
+                                                                <% }else if(product.productStatus==="Shipped"){%>
+                                                                    <div class="col-auto text-center">
+                                                                        <button class="btn btn-sm btn-danger" 
+                                                                        data-product-id="<%= product.productId._id %>"  
+                                                                        onclick="cancelOrder(this)"><i class="fa fa-undo"
+                                                                         aria-hidden="true"></i>Cancel</button>
+                                                                    </div>
+                                                                <% }else if(product.productStatus==="Delivered"){%>
+                                                                    <div class="col-auto text-center">
+                                                                        <button class="btn btn-sm btn-danger"  
+                                                                         onclick="requestReturn('<%= product.productId._id %>',
+                                                                         '<%= item._id %>','<%= item.paymentMethod %>',
+                                                                         '<%=  product.quantity %>','<%=  product.totalProductAmount %>'  )">
+                                                                         <i class="fa fa-undo" aria-hidden="true"></i> Return</button>
+                                                                    </div>
+                                                                <% }else if(product.productStatus==="Order Cancelled"){%>
+                                                                    <h5><b>Product Returned</b></h5>
+                                                                <%} else if(product.productStatus==="Returned"){%>
+                                                                    <h5><b>Money will Debited in your account</b></h5>
+                                                                <%} else if(product.productStatus==="Return request rejected"){%>
+                                                                    <h5><b>Sorry , Return request has been declined</b></h5>
+                                                                <%} else if(product.productStatus==="Return Requested"){%>
+                                                                    <h5><b>will update shortly</b></h5>
+                                                                <% } %>
+
+                                                                
+                                                               
+                                                            </div>
+                                                        </div>
+
                                                         
-                                                        </td> -->
-                                                        <button id="button-user1"    onclick="requestReturn('<%= product.productId._id %>','<%= item._id %>','<%= item.paymentMethod %>','<%=  product.quantity %>','<%=  product.totalProductAmount %>'  )">return Product</button>
-                                                       
-                                                        <%}else if (product.productStatus==="pending"){%>
-                                                       <td>
-                                                        <button id="button-user"
-                                                            data-product-id="<%= product.productId._id %>"
-                                                            onclick="cancelOrder(this)"  >
-                                                            Cancel
-                                                        </button>
-                                                    </td>
-                                                    <%}else if (product.productStatus==="Returned "){%>
-                                                        <td><p>Money will Debited In your wallet</p></td>
-                                                       
-                                                    <%}%>
-                                            </tr>
-                                        </tbody>
-                                        <% }); %>
-                                            <% }); %>
-                                                <% }%>
-                        </table>
-                        <div class="row">
-                            <div class="col-6">
-                                <table class="table table-bordered">
-                                    <thead class="thead-light" id="table">
-                                        <tr>
-                                            <th>Delivery Address</th>
-                                        </tr>
-                                    </thead>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% }) %>
+                                    <% }) %>
+                                <% } %>
+                        </div>
+                    </div>
+                    
 
-                                    <tbody>
-                                        <% orderData.forEach((item)=> { %>
-                                            <tr>
-                                                <td>
-                                                    Name :<%= item.deliveryAddress.name %> <br />
-                                                        Mobile :<%= item.deliveryAddress.mobile %><br />
-                                                            Pincode:<%= item.deliveryAddress.pincode %><br />
-                                                                Address :<%= item.deliveryAddress.address %><br />
-                                                                    StreetAddress<%= item.deliveryAddress.streetaddress
-                                                                        %><br />
-                                                                        City :<%= item.deliveryAddress.city %><br />
-                                                                            State:<%= item.deliveryAddress.state %>
-                                                                                <br />
-                                                                                Landmark :<%=
-                                                                                    item.deliveryAddress.landmark %>
-                                                </td>
-                                            </tr>
-                                            <% }); %>
-                                    </tbody>
-                                </table>
+                    <div class="row mt-4">
+                        <% orderData.forEach((item)=> { %>
+                        <div class="col">
+                            <div class="row justify-content-between">
+                                <div class="col-auto"><p class="mb-1 text-dark"><b>Order Details</b></p></div>
                             </div>
-                            <div class="col-6">
-                                <table class="table table-bordered">
-                                    <thead class="thead-light" id="table">
-                                        <tr>
-                                            <th>Payment Detiles</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <% orderData.forEach((item)=> { %>
-                                            <tr>
-                                                <td>
-                                                    <%= item.paymentMethod %>
-                                                </td>
-                                            </tr>
-                                            <% }); %>
-                                    </tbody>
-                                </table>
-                                <table class="table table-bordered">
-                                    <thead class="thead-light" id="table">
-                                        <tr>
-                                            <th>Total Paid</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <% orderData.forEach((item)=> { %>
-                                            <tr>
-                                                <td>
-                                                    <%= item.orderAmount %>
-                                                </td>
-                                            </tr>
-                                            <% }); %>
-                                    </tbody>
-                                </table>
+                            <div class="row justify-content-between">
+                                <div class="flex-sm-col text-right col"><p class="mb-1" style="text-align: end;"> <b>Discount</b></p> </div>
+                                <div class="flex-sm-col col-auto"><p class="mb-1">&#8377;<%= item.couponDeduction %></p></div>
                             </div>
+                            <div class="row justify-content-between">
+                                <div class="flex-sm-col text-right col"><p class="mb-1"  style="text-align: end;"><b>GST 18%</b></p></div>
+                                <div class="flex-sm-col col-auto"><p class="mb-1">Free</p></div>
+                            </div>
+                            <div class="row justify-content-between">
+                                <div class="flex-sm-col text-right col"><p class="mb-1"  style="text-align: end;"><b>Delivery Charges</b></p></div>
+                                <div class="flex-sm-col col-auto"><p class="mb-1">Free</p></div>
+                            </div>
+                        </div>
+                        <% }) %>
+                    </div>
+                    <div class="row invoice ">
+                        <% orderData.forEach((item)=> { %>
+                        <div class="col">
+                            <p class="mb-1"> Invoice Number : <%= item.orderId %></p>
+                            <p class="mb-1">Invoice Date : <%= item.shippingDate.toDateString() %></p>
+                            <p class="mb-1">Paymnet Detiles: <%= item.paymentMethod %></p>
+                            <p class="mb-1">Paymnet Status: <%= item.paymentStatus %></p>
+                        </div>
+                        <% }) %>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="jumbotron-fluid">
+                        <div class="row justify-content-between ">
+                            <div class="col-sm-auto col-auto my-auto"><img class="img-fluid my-auto align-self-center " src="https://i.imgur.com/7q7gIzR.png" width="115" height="115"></div>
+                            <div class="col-auto my-auto "><h2 class="mb-0 font-weight-bold" >TOTAL PAYABLE</h2></div>
+                            <% orderData.forEach((item)=> { %>
+                            <div class="col-auto my-auto ml-auto"><h1 class="display-3 " style="color: white;">&#8377; <%= item.orderAmount %></h1></div>
+                            <% }) %>
+                        </div>
+                        <div class="row mb-3 mt-3 mt-md-0">
+                            <div class="col-auto border-line"> <small class="text-white">PAN:AA02hDW7E</small></div>
+                            <div class="col-auto border-line"> <small class="text-white">CIN:UMMC20PTC </small></div>
+                            <div class="col-auto "><small class="text-white">GSTN:268FD07EXX </small> </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </body>
+
+
+
+
+
+    <!-- !-----------------------------------------------------------------------------------------------------------------------------------------------neworder -->
+
+
 
     <div class="related-product-area pb-95 pt-100">
         <div class="container">
@@ -426,68 +586,6 @@
     </script>
 
 
-
-
-
-<!-- <script>
- 
-    function returnProduct(id) {
-        
-        const orderId = document.getElementById('orderId').value
-
-        
-        
-        
-        
-        
-        console.log("==============================" , orderId)
-        
-        event.preventDefault();
-
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'Do you want to return this product?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, return it!',
-            cancelButtonText: 'No, cancel',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Call fetch method to send the ID of the product to the controller
-                // const productId = document.getElementById('productID').value
-                fetch('/user/productreturn', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ productId: productId }) // Pass the product ID here
-                })
-                .then(response => {
-                    // Handle response from the server
-                    if (response.ok) {
-                        // Product returned successfully
-                        Swal.fire('Returned!', 'Your product has been returned.', 'success');
-                    } else {
-                        // Product return failed
-                        Swal.fire('Error!', 'Failed to return product. Please try again.', 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Swal.fire('Error!', 'An error occurred while returning the product.', 'error');
-                });
-            } else {
-                // User clicked the cancel button or closed the dialog
-                Swal.fire('Cancelled', 'Return action cancelled.', 'info');
-            }
-        });
-    }
-
-
-   
-
-</script> -->
 <script>
     function requestReturn(productId, order_id,paymentMethod,quantity,totalProductAmount){
         console.log("=========productId========",productId)
@@ -535,14 +633,15 @@
         })
         .then(response => response.json())
         .then(data=>{
-          var statusChange = document.getElementById('status');
-          statusChange.innerHTML = data.status;
-          document.querySelector('.returnBtn').remove();
+         
+          if(data.message){
+            window.location.reload()
+          }
+
+          
         })
         },
-        customClass: {
-          confirmButton: 'btn btn-primary'
-        }
+        
       });
       
     }

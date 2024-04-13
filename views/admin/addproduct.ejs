@@ -1,44 +1,37 @@
 <%- include('../partials/asidenav.ejs')%>
+    <style>
+        .preview-container {
+            display: inline-block;
+        }
+    </style>
 
-
-    <section class="content-main"  style="background-color: rgb(211, 218, 218);">
+    <section class="content-main">
         <div class="row">
             <div class="col-9">
                 <div class="content-header">
                     <h2 class="content-title">Add New Product</h2>
                 </div>
             </div>
-            <form action="/addproduct" method="post" 
-                onsubmit="return validateForm() " enctype="multipart/form-data">
-                <div class="col-lg-6">
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <div class="mb-2">
-                                <label for="product_title" class="form-label">Product Name</label>
-                                <input type="text" placeholder="Type here" class="form-control" name="productName"
-                                    id="productName"  />
-                                <p id="errorName" style="color: red"></p>
-                            </div>
-                            <div class="row gx-3">
-                                <div class="mb-3">
-                                    <label for="product_sku" class="form-label">Quantity</label>
-                                    <input type="text" placeholder="Type here" class="form-control"
-                                        name="productQuantity" id="productQuantity"
-                                        />
-                                    <p id="errorQuantity" style="color: red"></p>
+            <form action="/addproduct" method="post" onsubmit="return validateForm() " enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div class="mb-2">
+                                    <label for="product_title" class="form-label">Product Name</label>
+                                    <input type="text" placeholder="Type here" class="form-control" name="productName"
+                                        id="productName" />
+                                    <p id="errorName" style="color: red"></p>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="mb-3">
-                                    <label for="product_sku" class="form-label">Category</label>
-                                    <select type="text" placeholder="Type here" class="form-control"
-                                        name="productCategory" id="productCategory"
-                                       >
-                                        <p id="errorCategory" style="color: red"></p>
-                                        <%category.forEach(category=>{%>
+                                    <label for="product_sku" class="form-label">Brand</label>
+                                    <select type="text" placeholder="Type here" class="form-control" name="productBrand"
+                                        id="productBrand">
+                                        <p id="errorBrand" style="color: red"></p>
+                                        <%brandsData.forEach(item=>{%>
 
-                                            <option value="<%=category.categoryname%>">
-                                                <%=category.categoryname%>
+                                            <option value="<%=item.brandname%>">
+                                                <%=item.brandname%>
                                             </option>
                                             <% })%>
 
@@ -46,55 +39,71 @@
 
                                     </select>
                                 </div>
-                            </div>
-                            <div class="row ">
-                                <div class="mb-3">
-                                    <label for="product_sku" class="form-label">Price</label>
-                                    <input placeholder="Type here" type="number" class="form-control"
-                                        name="productPrice" id="productPrice"
-                                         />
-                                    <p id="errorPrice" style="color: red"></p>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <label for="product_sku" class="form-label">Quantity</label>
+                                        <input type="text" placeholder="Type here" class="form-control"
+                                            name="productQuantity" id="productQuantity" />
+                                        <p id="errorQuantity" style="color: red"></p>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <label for="product_sku" class="form-label">Category</label>
+                                        <select type="text" placeholder="Type here" class="form-control"
+                                            name="productCategory" id="productCategory">
+                                            <p id="errorCategory" style="color: red"></p>
+                                            <%category.forEach(category=>{%>
+
+                                                <option value="<%=category.categoryname%>">
+                                                    <%=category.categoryname%>
+                                                </option>
+                                                <% })%>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <label for="product_sku" class="form-label">Price</label>
+                                        <input placeholder="Type here" type="number" class="form-control"
+                                            name="productPrice" id="productPrice" />
+                                        <p id="errorPrice" style="color: red"></p>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- card end -->
-                    <div class="card ">
-                        <div class="card-body">
-                            <div>
-                                <label class="form-label">Description</label>
-                                <input placeholder="Type here" class="form-control" rows="4" name="productDescription"
-                                    id="productDescription"  />
-                                <p id="errorDescription" style="color: red"></p>
+                    <div class="col-lg-6">
+                        <div class="card ">
+                            <div class="card-body" style="height: 150px;">
+                                <div>
+                                    <label class="form-label">Description</label>
+                                    <input type="text" placeholder="Type here" class="form-control" rows="4"
+                                        name="productDescription" id="productDescription" />
+                                    <p id="errorDescription" style="color: red"></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- card end// -->
-                    <div class="card ">
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label class="form-label">Images</label>
-                                <input type="file" id="imageInput" name="images" accept=".png, .jpg, .jpeg" multiple>
 
-                                <!-- <input  name="productImages" class="form-control"    multiple  style="border: 1px solid black ; padding: 8px;"  /> -->
-                                <p id="errorImage" style="color: red"></p>
+
+                        <div class="card ">
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <label class="form-label">Images</label>
+                                    <input type="file" id="imageInput" name="images" accept=".png, .jpg, .jpeg"
+                                        multiple>
+                                    <p id="errorImage" style="color: red"></p>
+                                </div>
+
                             </div>
-                            <img class="rounded-2 " style="width: 150px;" id="preview-1" alt=""
-                                >
-                            <img class="rounded-2 " style="width: 150px;" id="preview-2" alt=""
-                                >
-                            <img class="rounded-2 " style="width: 150px;" id="preview-3" alt=""
-                                >
-                            <img class="rounded-2 " style="width: 150px;" id="preview-4" alt=""
-                                >
                         </div>
+
 
                     </div>
 
-                </div>
-                <div>
-                    <!-- <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button> -->
-                    <button type="submit" class="btn btn-md rounded font-sm hover-up">Add Products</button>
+                    <div id="imagePreviews" class="mt-3"></div>
+                    <div style="justify-content: center; align-items: center; display: flex;">
+
+                        <button type="submit" class="btn btn-md rounded font-sm hover-up">Add Products</button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -177,6 +186,9 @@
             if (imageInput.files.length === 0) {
                 errorImage.innerHTML = "Please select at least one image";
                 return false;
+            } else if (imageInput.files.length < 4) {
+                errorImage.innerHTML = "Please select at least 4 images";
+                return false;
             } else if (imageInput.files.length > 4) {
                 errorImage.innerHTML = "You can only upload up to 4 images";
                 return false;
@@ -195,10 +207,74 @@
             if (extFile == "jpg" || extFile == "jpeg" || extFile == "png") {
                 return true;
             } else {
-                errorImage.innerHTML ="Only jpg/jpeg and png files are allowed!"
+                errorImage.innerHTML = "Only jpg/jpeg and png files are allowed!"
                 return false;
             }
         }
+
+
+
+        document.getElementById('imageInput').addEventListener('change', function (event) {
+            const imagePreviews = document.getElementById('imagePreviews');
+            imagePreviews.innerHTML = ''; // Clear previous previews
+
+            const files = event.target.files; // Get selected files
+
+            // Check if more than 4 images are selected
+            if (files.length > 4) {
+                // Display a SweetAlert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Please select only 4 images',
+                });
+
+                // Slice the array to keep only the first 4 images
+                const selectedFiles = Array.from(files).slice(0, 4);
+                event.target.files = selectedFiles;
+            }
+
+            // Loop through each selected file
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    // Create preview container
+                    const previewContainer = document.createElement('div');
+                    previewContainer.classList.add('preview-container'); // Add CSS class for styling
+
+                    // Create image element
+                    const imageElement = document.createElement('img');
+                    imageElement.classList.add('rounded-2', 'mr-2'); // Add CSS class for styling
+                    imageElement.style.width = '150px';
+                    imageElement.src = e.target.result; // Set image source
+
+                    // Append image to preview container
+                    previewContainer.appendChild(imageElement);
+
+                    // Create remove button
+                    const removeButton = document.createElement('button');
+                    removeButton.classList.add('btn', 'btn-sm', 'btn-danger', 'mt-1');
+
+
+                    removeButton.innerText = 'Remove';
+                    removeButton.addEventListener('click', function () {
+                        previewContainer.remove(); // Remove preview container when remove button is clicked
+                    });
+
+                    // Append remove button to preview container
+                    previewContainer.appendChild(removeButton);
+
+                    // Append preview container to image previews container
+                    imagePreviews.appendChild(previewContainer);
+                };
+
+                reader.readAsDataURL(file); // Read file as data URL
+            }
+        });
+
+
     </script>
 
     </script>

@@ -10,7 +10,6 @@ const multer=require('multer')
 admin_route.use(bodyParser.json());
 admin_route.use(bodyParser.urlencoded({ extended: true }));
 
-// Multer configuration
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'public/uploads'); 
@@ -70,6 +69,16 @@ admin_route.get('/admin/salesreports',admincontroller.totalSalesReport)
 admin_route.post('/admin/filtersalesreport',admincontroller.filterSalesReport)
 admin_route.post('/admin/filtercustomdate',admincontroller.filterCustomDate)
 
+
+admin_route.get('/admin/brandsmanagement',admincontroller.brandManagement)
+admin_route.post('/admin/brandsmanagement',admincontroller.addNewBrand)
+
+
+admin_route.post('/generate-pdf',admincontroller.downloadSalesReport)
+
+admin_route.post('/admin/graphdata',admincontroller.graphData)
+
+admin_route.post('/admin/approvereturnrequest',admincontroller.approveRetrunRequest)
 
 
 

@@ -28,7 +28,11 @@ const productSchema = new mongoose.Schema({
     offerId :{
         type:mongoose.Schema.Types.ObjectId,
         ref:"offer", 
+    },
+    brand:{
+        type:String
     }
+
 })
 
 module.exports=mongoose.model('products',productSchema)

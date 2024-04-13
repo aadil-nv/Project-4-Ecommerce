@@ -13,6 +13,7 @@
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
+    "chart.js": "^4.4.2",
     "cookie-session": "^2.1.0",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
@@ -30,6 +31,7 @@
     "passport-google-oauth20": "^2.0.0",
     "passport-oauth2": "^1.8.0",
     "path": "^0.12.7",
+    "puppeteer": "^22.6.3",
     "razorpay": "^2.9.2",
     "save": "^2.9.0",
     "sharp": "^0.33.2",

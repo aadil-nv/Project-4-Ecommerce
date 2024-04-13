@@ -466,8 +466,6 @@ const loadViewCart = async (req, res) => {
       });
     });
 
-
-
     let offerPercentage = 0;
     if (offerId) {
       try {
@@ -728,9 +726,14 @@ const addProductInCart = async (req, res) => {
 const quantityControll = async (req, res) => {
   try {
     const { change, qty } = req.body;
+    console.log("qty",+qty)
+    console.log("change",
+    change)
     const user = req.session.user;
     const product = await Products.findOne({ _id: change }).populate('offerId');
+    console.log("product",+product)
     const productQuantity = product.productquadity;
+    console.log("productQuantity",+qty)
 
     let total = qty * product.productprice;
 
@@ -826,25 +829,7 @@ const deleteCartProduct = async (req, res) => {
 
 // ---------------------------------------------- Load Checkout Page -------------------------------------------
 
-// const loadtCheckoutPage = async (req, res) => {
-//   try {
-//     const userId = req.session.user;
-//     const addressData = await Address.find({ userId: userId });
-//     const cartDetiles = await Cart.find({ userId: userId }).populate("products.productId").populate({path:'products.productId',populate:{path:"offerId",model:"offer"}})
 
-//     let total = 0;
-
-//     cartDetiles.forEach((item) => {
-//       item.products.forEach((product) => {
-//         total += product.quantity * product.productId.productprice;
-//       });
-//     });
-
-//     res.render("user/checkout", { addressData, cartDetiles, total });
-//   } catch (error) {
-//     console.log(error.message);
-//   }
-// };
 const loadtCheckoutPage = async (req, res) => {
   try {
     const userId = req.session.user;
@@ -1019,7 +1004,7 @@ const placeOrder = async (req, res) => {
           } else {
             res.json({
               order: order,
-              success: true,
+              success: true,  
               order_id: order.id,
               key_id: "rzp_test_nexg64Tm176iuH",
               paymentMethod: paymentmethod,
@@ -1215,6 +1200,7 @@ const sortByAtoZ = async (req, res) => {
     console.log(error.message);
   }
 };
+
 const sortByZtoA = async (req, res) => {
   try {
     const productData = await Products.find().populate("offerId").sort({ productname: -1 });
@@ -1424,7 +1410,7 @@ const verifyCoupon = async (req, res) => {
       return res.json({ message: "Coupon already used" });
     } else {
       let sumTotal = total - couponData.discountAmount;
-      return res.status(200).json({ total: sumTotal,couponDiscount:couponDiscount });
+      return res.status(200).json({message:"coupon added Successfully", total: sumTotal,couponDiscount:couponDiscount });
 
     }
   } catch (error) {
@@ -1445,28 +1431,11 @@ const userReturnProduct = async  (req,res)=>{
 
     const updatedOrder = await order.findOneAndUpdate(
       { _id: order_id, 'orderedItem.productId': productId },
-      { $set: { 'orderedItem.$.productStatus': 'Returned ' } },
+      { $set: { 'orderedItem.$.productStatus': 'Return Requested','orderedItem.$.returnRequest': true } },
       { new: true });
 
 
-      const updatedUser = await User.findByIdAndUpdate(userId, {
-        $inc: { wallet: totalProductAmount }, 
-        $push: {
-            walletHistory: {
-                amount: totalProductAmount,
-                description: `Refund of ORDERID:${order_id}`,
-                date: new Date(),
-                status: "credit"
-            }
-        }
-        }, { new: true });
-
-     
-
-        await Products.findOneAndUpdate(
-          { _id: productId },
-          { $inc: { productquadity: +quantity } }
-        );
+    
       
 
 
@@ -1474,53 +1443,26 @@ const userReturnProduct = async  (req,res)=>{
 
       const updatedOrder = await order.findOneAndUpdate(
       { _id: order_id, 'orderedItem.productId': productId },
-      { $set: { 'orderedItem.$.productStatus': 'Returned' } },
+      { $set: { 'orderedItem.$.productStatus': 'Return Requested',
+      'orderedItem.$.returnRequest': true,
+      'orderedItem.$.returnReason': `${reason}`} },
       { new: true });
 
-      const updatedUser = await User.findByIdAndUpdate(userId, {
-        $inc: { wallet: totalProductAmount },
-        $push: {
-            walletHistory: {
-                amount: totalProductAmount,
-                description: `Refund of ORDERID:${order_id}`,
-                date: new Date(),
-                status: "credit"
-            }
-        }
-        }, { new: true });
-
-        await Products.findOneAndUpdate(
-          { _id: productId },
-          { $inc: { productquadity: +quantity } }
-        );
-
+      
 
 
     }else if(paymentMethod==="Wallet"){
 
       const updatedOrder = await order.findOneAndUpdate(
       { _id: order_id, 'orderedItem.productId': productId },
-      { $set: { 'orderedItem.$.productStatus': 'Returned' } },
+      { $set: { 'orderedItem.$.productStatus': 'Return Requested','orderedItem.$.returnRequest': true } },
       { new: true });
 
-      const updatedUser = await User.findByIdAndUpdate(userId, {
-        $inc: { wallet: totalProductAmount }, 
-        $push: {
-            walletHistory: {
-                amount: totalProductAmount,
-                description: `Refund of ORDERID:${order_id}`,
-                date: new Date(),
-                status: "credit"
-            }
-        }
-        }, { new: true });
-
-        await Products.findOneAndUpdate(
-          { _id: productId },
-          { $inc: { productquadity: +quantity } }
-        );
+      
 
     }
+
+    res.json({message :"Return requested Successfully"})
     
   } catch (error) {
     console.log(error.message)
@@ -1545,13 +1487,35 @@ const userSearch= async (req,res)=>{
 const searchCategoryName= async (req,res)=>{
   try {
     const {category}= req.body
-    const productData= await Products.find({categoryId:category}).sort({_id:-1})
+    const productData= await Products.find({categoryId:category}).populate("offerId").sort({_id:-1})
    
     res.json({result :productData})
   } catch (error) {
     console.log(error.message)
   }
 }
+const removeCoupon= async (req,res)=>{
+  try {
+    const {couponCode}= req.body
+    const userId= req.session.user
+
+    console.log("couponCode[[[[[[[[",couponCode)
+    const couponData= await Coupon.findOne({couponCode:couponCode})
+
+    if (!couponData) {
+      // If the coupon does not exist, send an error response
+      return res.status(404).json({ message: "Coupon not found" });
+    }
+
+   
+   
+    res.json({message:"founded"})
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+
 //--------------------------------------------------------End load OrderPAge -------------------------------------------
 
 // -------------------Exporting Controllers-----------------------
@@ -1604,7 +1568,8 @@ module.exports = {
   verifyCoupon,
   userReturnProduct,
   userSearch,
-  searchCategoryName
+  searchCategoryName,
+  removeCoupon
 
 };
 

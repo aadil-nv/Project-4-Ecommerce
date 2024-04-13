@@ -1,9 +1,63 @@
 <%- include('../partials/asidenav.ejs')%>
+<style>
+     table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    /* Colorful and clean styling */
+    .primary-color {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .success-color {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .warning-color {
+        background-color: #ffc107;
+        color: #000;
+    }
+
+    .info-color {
+        background-color: #17a2b8;
+        color: #fff;
+    }
+
+    .danger-color {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    /* Add more colors as needed */
+
+    /* Clean border radius */
+    .rounded {
+        border-radius: 0;
+    }
+</style>
 
     <section class="content-main">
         <div class="content-header">
             <div>
                 <h2 class="content-title card-title">OverAll SalesReport</h2>
+
+            </div>
+            <div>
+              
+                <a href="#" class="btn btn-primary btn-sm rounded" id="downloadBtn">Download Report</a>
 
             </div>
 
@@ -38,7 +92,8 @@
             <!-- card-header end// -->
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover"  id="tablebody"  >
+                    <div id="noDataMessage" style="display: none;">No data available</div>
+                    <table class="table table-hover" >
                         <thead id="thead">
                             <tr>
                                 <th>Date</th>
@@ -53,7 +108,7 @@
 
                         <% if(salesReport.length> 0) {%>
                             <% salesReport.forEach(item=>{ %>
-                                <tbody  >
+                                <tbody id="tablebody">
                                     <tr>
                                         <td>
                                             <%= item.shippingDate.toDateString() %>
@@ -148,22 +203,27 @@
         </div>
 
         </div>
-        <div class="pagination-area mt-15 mb-50">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-start">
-                    <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                    <li class="page-item"><a class="page-link" href="#">02</a></li>
-                    <li class="page-item"><a class="page-link" href="#">03</a></li>
-                    <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                    <li class="page-item"><a class="page-link" href="#">16</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+       
+            <div class="pagination-area mt-15 mb-50">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-start">
+                        <% if (totalPages > 1) { %>
+                            <% for (let i = 1; i <= totalPages; i++) { %>
+                                <li class="page-item <%= page == i ? 'active' : '' %>">
+                                    <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                                </li>
+                            <% } %>
+                        <% } %>
+                    </ul>
+                </nav>
+            </div>
     </section>
+  
 
+   
+    
+    
+ 
     <script src="/adminpublic/adminlogin/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/adminpublic/adminlogin/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/adminpublic/adminlogin/js/vendors/select2.min.js"></script>
@@ -173,49 +233,82 @@
     <script src="/adminpublic/adminlogin/js/main.js?v=1.1" type="text/javascript"></script>
 
     <script>
-        function fetchData() {
-            const selectedOption = document.querySelector('.form-select').value;
-            console.log("selectedOption  :::::", selectedOption)
+    function fetchData() {
+    const selectedOption = document.querySelector('.form-select').value;
+    console.log("selectedOption  :::::", selectedOption)
 
-            fetch('/admin/filtersalesreport', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ selectedOption })
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log(data);
-                    updateTable(data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+    fetch('/admin/filtersalesreport', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ selectedOption })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+        updateTable(data);
+        updatePagination(data.totalPages); // Update pagination
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 
+    // Prevent the default form submission
+    event.preventDefault();
+}
 
+function updatePagination(totalPages) {
+    console.log("totalPages",totalPages)
+    const pagination = document.querySelector('.pagination-area');
+    if (totalPages > 1) {
+        pagination.style.display = 'block';
+        const paginationList = pagination.querySelector('ul');
+        paginationList.innerHTML = '';
+        for (let i = 1; i <= totalPages; i++) {
+            const listItem = document.createElement('li');
+            listItem.classList.add('page-item');
+            listItem.innerHTML = `<a class="page-link" href="?page=${i}">${i}</a>`;
+            paginationList.appendChild(listItem);
+        }
+    } else {
+        pagination.style.display = 'none';
+    }
+}
+function updateTable(salesReport) {
+    console.log(":::::::salesReport::::::::::>>", salesReport.filteredReport)
 
-        function updateTable(salesReport) {
-            console.log(":::::::salesReport::::::::::>>", salesReport.filteredReport)
+    const tableBody = document.getElementById('tablebody');
+    console.log("tableBody", tableBody)
 
-            const tableBody = document.getElementById('tablebody');
+    // Hide the table initially
+    const table = document.querySelector('.table');
+    const noDataMessage = document.getElementById('noDataMessage');
 
-            // Remove all existing table rows
-            while (tableBody.firstChild) {
-                tableBody.removeChild(tableBody.firstChild);
-            }
+    if (salesReport.filteredReport.length === 0) {
+        // Hide the table
+        table.style.display = 'none';
+        // Show the "No data available" message
+        noDataMessage.style.display = 'block';
+    } else {
+        // Show the table
+        table.style.display = 'table';
+        // Hide the "No data available" message
+        noDataMessage.style.display = 'none';
 
-            if (salesReport.filteredReport.length > 0) {
-                salesReport.filteredReport.forEach(item => {
-                    console.log(":::::::item::::::::::>>", item)
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
+        // Clear existing table rows
+        tableBody.innerHTML = '';
+
+        // Populate the table with new data
+        salesReport.filteredReport.forEach(item => {
+            console.log(":::::::item::::::::::>>", item)
+            const row = document.createElement('tr');
+            row.innerHTML = `
                 <td>${item.shippingDate ? new Date(item.shippingDate).toDateString() : ''}</td>
                 <td><b>${item.orderId}</b></td>
                 <td>${item.deliveryAddress ? item.deliveryAddress.name : ''}</td>
@@ -225,26 +318,32 @@
                 <td class="text-end">
                     Rs.${calculateTotalAmount(item.orderedItem)}/-
                 </td>`;
-                    tableBody.appendChild(row);
-                });
-            } else {
-                const row = document.createElement('tr');
-                row.innerHTML = `<td colspan="7" class="text-center">No data available</td>`;
-                tableBody.appendChild(row);
-            }
-        }
+            tableBody.appendChild(row);
+        });
+    }
+}
 
-        function calculateTotalAmount(orderedItems) {
-            let totalAmount = 0;
-            orderedItems.forEach(product => {
-                totalAmount += product.totalProductAmount || 0;
-            });
-            return totalAmount;
-        }
+function calculateTotalAmount(orderedItems) {
+    let totalAmount = 0;
+    orderedItems.forEach(product => {
+        totalAmount += product.totalProductAmount || 0;
+    });
+    return totalAmount;
+}
+
 
     </script>
 <!--!------------------------------------------------------------ next ------------------------------------------------------------------------------>
-    <script>
+
+
+
+
+
+
+
+
+
+<script>
         function fetchReport2() {
             const startDate = document.getElementById('startdate').value;
             console.log(startDate)
@@ -286,38 +385,62 @@
 
 
         function filterTable(customData) {
-            console.log(":::::::customData::::::::::>>", customData.filteredSalesReport)
+    console.log(":::::::customData::::::::::>>", customData.filteredSalesReport)
 
-            const tableBody = document.getElementById('tablebody');
-        
+    
 
-            // Remove all existing table rows
-            while (tableBody.firstChild) {
-                tableBody.removeChild(tableBody.firstChild);
-            }
- 
+    const table = document.querySelector('.table');
+    const noDataMessage = document.getElementById('noDataMessage');
+    const tableBody = document.getElementById('tablebody');
 
-            if (customData.length > 0) {
-                customData.forEach(item => {
-                    console.log(":::::::item::::::::::>>", item)
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
+    if (customData.filteredSalesReport.length === 0) {
+   
+        table.style.display = 'none';
+    
+        noDataMessage.style.display = 'block';
+    } else {
+        // Show the table
+        table.style.display = 'table';
+    
+        noDataMessage.style.display = 'none';
+
+        // Clear existing table rows
+        tableBody.innerHTML = '';
+
+    // Add table headers
+    const headerRow = document.createElement('tr');
+    headerRow.innerHTML = `
+        <th>Date</th>
+        <th scope="col">Order ID</th>
+        <th scope="col">Billing Name</th>
+        <th scope="col">Offer Applied</th>
+        <th scope="col">Coupon Applied</th>
+        <th scope="col">Payment Method</th>
+        <th scope="col" class="text-end">Total</th>
+    `;
+    tableHead.appendChild(headerRow);
+
+    // Populate table with data
+    if (customData.filteredSalesReport.length > 0) {
+        customData.filteredSalesReport.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
                 <td>${item.shippingDate ? new Date(item.shippingDate).toDateString() : ''}</td>
                 <td><b>${item.orderId}</b></td>
                 <td>${item.deliveryAddress ? item.deliveryAddress.name : ''}</td>
                 <td>0.00</td>
                 <td>${item.couponDeduction}</td>
                 <td><span class="badge rounded-pill alert-warning">${item.paymentMethod}</span></td>
-                <td class="text-end">
-                    Rs.${calculateTotalAmount(item.orderedItem)}/-
-                </td>`;
-                    tableBody.appendChild(row);
-                });
-            } else {
-                const row = document.createElement('tr');
-                row.innerHTML = `<td colspan="7" class="text-center">No data available</td>`;
-                tableBody.appendChild(row);
-            }
+                <td class="text-end">Rs.${calculateTotalAmount(item.orderedItem)}/-</td>`;
+            tableBody.appendChild(row);
+        });
+    } else {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td colspan="7" class="text-center">No data available</td>`;
+        tableBody.appendChild(row);
+    }
+}
+
         }
 
         function calculateTotalAmount(orderedItems) {
@@ -327,4 +450,39 @@
             });
             return totalAmount;
         }
+
+
+
+document.getElementById('downloadBtn').addEventListener('click', async () => {
+    const tableHtml = document.getElementById('tablebody').outerHTML;
+
+    try {
+        const response = await fetch('/generate-pdf', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ html: tableHtml }), // Pass the HTML content in the request body
+        });
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'report.pdf';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error('Error downloading PDF:', error);
+    }
+});
+
+
+
+
+
     </script>>
+     

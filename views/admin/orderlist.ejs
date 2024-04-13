@@ -1,10 +1,13 @@
 <%- include('../partials/asidenav.ejs')%>
 
-<section class="content-main"  style="background-color: rgb(211, 218, 218);">
+<section class="content-main"  >
     <div class="content-header">
         <div>
             <h2 class="content-title card-title">Order List</h2>
           
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Large modal</button>
         </div>
        
     </div>
@@ -90,6 +93,53 @@
         </nav>
     </div>
 </section>
+
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Order ID</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Reason</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            
+                <% let UID=1 %>
+                <%   orderData.forEach((item) => { %>
+                    <%   item.orderedItem.forEach((data) => { %>
+                        <% if(data.returnRequest===true) {%>
+            <tbody>
+              <tr>
+                <th scope="row"><%= UID++ %></th>
+                <td><%= item.orderId %></td>
+                <td><%= data.productId.productname %></td>
+                <td><%= data.returnReason %></td>
+                <% if(data.returnRequest===true) {%>
+                <td>Pending</td>
+                <% }else{ %>
+                <td>Aprooved</td>
+                <% } %>
+              </tr>
+              
+              
+            </tbody>
+            <% }%>
+            <% }); %>
+                    <% }); %>
+          </table>
+          
+      </div>
+    </div>
+  </div>
+  
+ 
+
+
 <!-- content-main end// -->
 <footer class="main-footer font-xs">
     <div class="row pb-30 pt-15">

@@ -100,6 +100,8 @@ user_route.post("/user/search",userAuth.isLogin,userAuth.isUserBlock,usercontrol
 
 user_route.post("/user/sendcategoryname",userAuth.isLogin,userAuth.isUserBlock,usercontroller.searchCategoryName)
 
+user_route.post("/user/removecoupon",userAuth.isLogin,userAuth.isUserBlock,usercontroller.removeCoupon)
+
 
 
 

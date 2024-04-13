@@ -13,7 +13,9 @@ const order = require("../models/orderModal");
 const Coupon = require("../models/couponModal");
 const Offer = require("../models/offerModal");
 const Category = require("../models/categoryModel");
-
+const Brands = require("../models/brandsModel");
+const puppeteer= require("puppeteer")
+const fs = require('fs');
 
 
 function getWeek(date) {
@@ -81,7 +83,7 @@ const adminDashboard = async (req, res) => {
     salesReport.forEach(order => {
       order.orderedItem.forEach(item => {
         if (item.productStatus === "Delivered") {
-          console.log("order.couponDeduction ::::",order.couponDeduction)
+          
           if(order.couponDeduction == 0){
           totalSalesAmount += item.totalProductAmount;
         }else{
@@ -121,9 +123,86 @@ const adminDashboard = async (req, res) => {
   });
 
   console.log("salesReport2",monthlyEarning)
+
+
+//?------------------------------------------------------------------------------
+const mostBoughtProducts = await order.aggregate([
+  { $unwind: "$orderedItem" },
+  {
+    $group: {
+      _id: "$orderedItem.productId",
+      totalQuantity: { $sum: "$orderedItem.quantity" },
+    },
+  },
+  { $sort: { totalQuantity: -1 } },
+  { $limit: 10 },
+  {
+    $lookup: {
+      from: "products",
+      localField: "_id",
+      foreignField: "_id",
+      as: "productDetails",
+    },
+  },
+  { $unwind: "$productDetails" },
+  {
+    $project: {
+      _id: "$productDetails._id",
+      productName: "$productDetails.productname",
+      totalQuantity: 1,
+    },
+  },
+]);
+
+
+const mostBoughtCategories = await order.aggregate([
+  { $unwind: "$orderedItem" },
+  {
+    $lookup: {
+      from: "products",
+      localField: "orderedItem.productId",
+      foreignField: "_id",
+      as: "productDetails"
+    }
+  },
+  { $unwind: "$productDetails" },
+  {
+    $group: {
+      _id: "$productDetails.categoryId",
+      totalQuantity: { $sum: "$orderedItem.quantity" }
+    }
+  },
+  { $sort: { totalQuantity: -1 } },
+  { $limit: 10 }
+]);
+
+
+const mostBoughtBrands = await order.aggregate([
+  { $unwind: "$orderedItem" },
+  {
+    $lookup: {
+      from: "products",
+      localField: "orderedItem.productId",
+      foreignField: "_id",
+      as: "productDetails"
+    }
+  },
+  { $unwind: "$productDetails" },
+  {
+    $group: {
+      _id: "$productDetails.brand",
+      totalQuantity: { $sum: "$orderedItem.quantity" }
+    }
+  },
+  { $sort: { totalQuantity: -1 } },
+  { $limit: 10 }
+]);
+
+
+
   
     res.render("admin/admindashboard",{salesReport,totalSalesAmount,totalCouponDeduction,
-      salesCount,overAllOrderAmount,productCount,categoryCount,monthlyEarning});
+      salesCount,overAllOrderAmount,productCount,categoryCount,monthlyEarning,mostBoughtProducts,mostBoughtCategories,mostBoughtBrands});
   } catch (error) {
     console.log(error.message);
   }
@@ -148,7 +227,9 @@ const adminUsersList = async (req, res) => {
 const addProduct = async (req, res) => {
   try {
     const category = await Addcategory.find();
-    res.render("admin/addproduct", { category });
+    const brandsData = await Brands.find();
+
+    res.render("admin/addproduct", { category,brandsData });
   } catch (error) {
     console.log(error.message);
   }
@@ -210,11 +291,15 @@ const addDetilesCategory = async (req, res) => {
     const cateName = req.body.category;
     const cateDes = req.body.descategory;
 
+    const lowercaseCateName = cateName.toLowerCase();
+    const lowercaseCateDes = cateDes.toLowerCase();
+
     const existingCategoryName = allCategories.find(
-      (category) => category.categoryname === cateName
+      (category) => category.categoryname.toLowerCase() === lowercaseCateName
     );
+
     const existingCategoryDesc = allCategories.find(
-      (category) => category.categorydescription === cateDes
+      (category) => category.categorydescription.toLowerCase() === lowercaseCateDes
     );
 
     if (existingCategoryName) {
@@ -334,9 +419,10 @@ const editProductDetiles = async (req, res) => {
     const product = await Products.findById(id);
     const productlist = await Products.find();
     const category = await Addcategory.find();
+    const brand = await Brands.find();
     const categoryid = await Addcategory.findById({ _id: id });
 
-    res.render("admin/editproductdetiles", { product, category });
+    res.render("admin/editproductdetiles", { product, category ,brand});
   } catch (error) {
     console.log(error.message);
   }
@@ -385,6 +471,12 @@ const updateProductsFetch = async (req, res) => {
         { categoryId: req.body.category }
       );
     }
+    if (req.body.brand) {
+      await Products.findByIdAndUpdate(
+        { _id: productId },
+        { brand: req.body.brand }
+      );
+    }
 
     const MAX_IMAGES = 4;
     const remainingImages = MAX_IMAGES - imageCount;
@@ -426,8 +518,11 @@ const addNewProduct = async (req, res) => {
         console.log(errorMsg);
         return res.redirect("/addproduct");
       }
+
+     
+
       let imageUrls = [];
-      if (req.files) {
+      if (req.files ) {
         for (i = 0; i < req.files.length; i++) {
           const imageBuffer = await sharp(req.files[i].path)
             .resize({ width: 400, height: 500, fit: sharp.fit.cover })
@@ -441,6 +536,8 @@ const addNewProduct = async (req, res) => {
         }
       }
 
+    
+
       const alreadyProduct = await Products.findOne({
         productname: req.body.productName,
       });
@@ -450,6 +547,7 @@ const addNewProduct = async (req, res) => {
         console.log(errorMsg);
         return res.redirect("/addproduct");
       }
+      i
 
       const product = new Products({
         productname: req.body.productName,
@@ -459,6 +557,7 @@ const addNewProduct = async (req, res) => {
         categoryId: req.body.productCategory,
         productimage: imageUrls,
         isListed: true,
+        brand:req.body.productBrand
       });
 
       await product.save();
@@ -818,9 +917,20 @@ const selectOfferType = async (req, res) => {
 
 const totalSalesReport = async (req, res) => {
   try {
-    const salesReport= await order.find().populate("orderedItem.productId").populate("deliveryAddress").populate("userId").sort({_id:1})
+    const salesReport= await order.find().populate("orderedItem.productId").populate("deliveryAddress").populate("userId").sort({_id:-1})
     let totalSalesAmount = 0;
     let totalSalesAmount2 = 0;
+    const pageSize = 10; 
+        const page = req.query.page || 1;
+
+
+        const startIndex = (page - 1) * pageSize;
+        const endIndex = page * pageSize;
+
+
+        const salesReportPage = salesReport.slice(startIndex, endIndex);
+
+        const totalPages = Math.ceil(salesReport.length / pageSize);
     
 
     salesReport.forEach(order => {
@@ -851,7 +961,8 @@ const totalSalesReport = async (req, res) => {
     })
     
   
-   res.render('admin/salesreport',{salesReport,totalSalesAmount,totalCouponDeduction,salesCount,overAllOrderAmount})
+   res.render('admin/salesreport',{salesReport: salesReportPage,totalSalesAmount,totalCouponDeduction,
+    salesCount,overAllOrderAmount,totalPages,page})
 
   } catch (error) {
     console.log(error.message)
@@ -861,7 +972,7 @@ const totalSalesReport = async (req, res) => {
 const filterSalesReport= async (req,res)=>{
   try {
 
-    const salesReport= await order.find().populate("orderedItem.productId").populate("deliveryAddress").populate("userId");
+    const salesReport= await order.find().populate("orderedItem.productId").populate("deliveryAddress").populate("userId").sort({_id:-1});
     const {selectedOption}= req.body
    
 
@@ -886,15 +997,33 @@ const filterSalesReport= async (req,res)=>{
       const today = new Date().toISOString().slice(0, 10);
       filteredReport = salesReport.filter(item => item.shippingDate.toISOString().slice(0, 10) === today);
   } else if (selectedOption === "all") {
-      filteredReport = salesReport; // Send all data
+      filteredReport = salesReport; 
   }
+ 
 
-       
+  const pageSize = 10; 
+        let page = parseInt(req.query.page) || 1; 
+        let startIndex = (page - 1) * pageSize;
+        let endIndex = page * pageSize;
 
-        res.json({ filteredReport });
+        const filteredReportPage = filteredReport.slice(startIndex, endIndex);
 
-    
-    
+        const totalPages = Math.ceil(filteredReport.length / pageSize);
+
+        if (filteredReportPage.length === 0 && page !== 1) {
+            page = 1;
+            startIndex = 0;
+            endIndex = pageSize;
+        }
+
+        console.log("______________________________________")
+        console.log(filteredReport.length)
+        console.log(totalPages)
+        console.log(page)
+        console.log("______________________________________")
+
+        res.json({  filteredReport: filteredReportPage, totalPages, page });
+
   } catch (error) {
     console.log(error.message)
   }
@@ -904,7 +1033,7 @@ const filterSalesReport= async (req,res)=>{
 const filterCustomDate= async (req,res)=>{
   try {
 
-    const salesReport= await order.find().populate("orderedItem.productId").populate("deliveryAddress").populate("userId");
+    const salesReport= await order.find().populate("orderedItem.productId").populate("deliveryAddress").populate("userId").sort({_id:-1});
 
     const {startDate, endDate}= req.body
     const adjustedEndDate = new Date(endDate);
@@ -915,10 +1044,142 @@ const filterCustomDate= async (req,res)=>{
     return shippingDate >= new Date(startDate) && shippingDate < adjustedEndDate;
 });
 
-  res.json(filteredSalesReport);
+const pageSize = 10;
+const totalPages = Math.ceil(filteredSalesReport.length / pageSize);
+const page = parseInt(req.query.page) || 1; 
+const startIndex = (page - 1) * pageSize;
+const endIndex = page * pageSize;
+
+const filteredSalesReportPage = filteredSalesReport.slice(startIndex, endIndex);
+
+
+res.json({ filteredSalesReport: filteredSalesReportPage, totalPages, page });
 
   } catch (error) {
     console.log(error.message)
+  }
+}
+
+
+const brandManagement= async (req,res)=>{
+  try {
+    const brandsData= await Brands.find()
+ 
+    res.render('admin/brandlist',{brandsData})
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+const addNewBrand= async (req,res)=>{
+  try {
+    const {brandName, brandItems}=req.body
+
+    const newBrand= new Brands({
+      brandname:brandName,
+      brandItems:brandItems,
+    })
+
+    await newBrand.save()
+
+    res.json({message:"New Branded Added Successfully"})
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+const downloadSalesReport = async (req, res) => {
+  try {
+    const { html } = req.body; 
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
+
+    await page.setContent(html);
+    const pdfBuffer = await page.pdf();
+    await browser.close();
+ 
+
+    res.setHeader('Content-Type', 'application/pdf');
+    res.send(pdfBuffer);
+  } catch (error) {
+    console.error('Error generating PDF:', error);
+    res.status(500).send('Error generating PDF');
+  }
+}
+
+
+
+const graphData = async (req, res) => {
+  try {
+     
+    const allData= await order.find().populate("orderedItem.productId").populate("deliveryAddress").populate("userId").sort({_id:-1});
+    const {requestData}= req.body
+
+       console.log("______________________________________")
+        console.log(requestData)
+       
+        console.log("______________________________________")
+
+  } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ error: 'Failed to generate sales report.' });
+  }
+}
+
+const approveRetrunRequest = async (req, res) => {
+  try {
+     
+    let {text, decision,productId,orderId,userId,totalProductAmount,quantity}= req.body
+    console.log("______________________________________")
+    console.log(userId)
+    console.log(totalProductAmount)
+    console.log(quantity)
+   
+   
+    console.log("______________________________________")
+
+    if(decision==="approve"){
+       await order.findOneAndUpdate(
+        { _id: orderId, 'orderedItem.productId': productId },
+        { $set: { 'orderedItem.$.productStatus': 'Returned' ,
+        'orderedItem.$.returnRequest':false} },
+        { new: true });
+
+        await User.findByIdAndUpdate(userId, {
+        $inc: { wallet: totalProductAmount }, 
+        $push: {
+            walletHistory: {
+                amount: totalProductAmount,
+                description: `Refund of ORDERID:${orderId}`,
+                date: new Date(),
+                status: "credit"
+            }
+        }
+        }, { new: true });
+
+           await Products.findOneAndUpdate(
+          { _id: productId },
+          { $inc: { productquadity: +quantity } }
+        );
+  
+  
+    }else if(decision==="reject"){
+      await order.findOneAndUpdate(
+        { _id: orderId, 'orderedItem.productId': productId },
+        { $set: { 'orderedItem.$.productStatus': 'Return request rejected',
+        'orderedItem.$.returnRequest':false} },
+        { new: true });
+
+    }
+  
+
+       res.json({message :"updated successsfully"})
+
+  } catch (error) {
+      console.log(error.message);
+      res.status(500).json({ error: 'Failed to generate sales report.' });
   }
 }
 
@@ -959,5 +1220,11 @@ module.exports = {
   selectOfferType,
   totalSalesReport,
   filterSalesReport,
-  filterCustomDate
+  filterCustomDate,
+  brandManagement,
+  addNewBrand,
+  downloadSalesReport,
+  graphData,
+  approveRetrunRequest
+ 
 };

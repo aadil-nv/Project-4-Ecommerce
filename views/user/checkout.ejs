@@ -35,14 +35,24 @@
         }
 
         #couponCodeInput {
-            width: 330px;
-            height: 40px;
+            width: 255px;
+            height: 41px;
+            border: 1px solid rgb(190, 204, 216);
         }
 
-        #ApplyCoupon {
+        #applyCoupon {
             width: 100px;
             height: 40px;
+            font-size: 11px;
             background-color: black;
+            color: white;
+        }
+        #removeCoupon {
+            width: 100px;
+            height: 40px;
+            font-size: 11px;
+            background-color: rgb(223, 28, 28);
+            border: none;
             color: white;
         }
 
@@ -343,7 +353,8 @@
                         
                         
                                             <input type="text" id="couponCodeInput" placeholder="Coupon code" />
-                                            <button id="ApplyCoupon" onclick="applyCoupon()">Apply Coupon</button>
+                                            <button id="applyCoupon" onclick="applyCoupon()">Apply Coupon</button>
+                                            <button id="removeCoupon" onclick="removeCoupon()">Remove Coupon</button>
                                             <p id="couponMessage" style="color: red;"></p>
                                             <p id="couponMessages" style="color: rgb(16, 151, 34);"></p>
                         
@@ -923,6 +934,40 @@
                         console.error("Error:", error);
                     });
             }
+
+             async function removeCoupon() {
+    const couponCode = document.getElementById("couponCodeInput").value;
+    const couponMessages = document.getElementById("couponMessages").value;
+                console.log(">>>>>>>>><<<<<<<<<<",)
+    try {
+      const response = await fetch("user/removeCoupon", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ couponCode })
+      });
+
+      const data = await response.json();
+
+      if (data.message === "founded") {
+        // Show success notification
+        
+        couponCodeInput.value = "";
+       
+        
+            
+        toastr.success("Coupon removed successfully");
+      } else {
+        // Show error notification
+        toastr.error("Failed to remove coupon");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      // Show error notification
+      toastr.error("An error occurred while removing the coupon");
+    }
+  }
         </script>
 
         <%- include('../partials/mainfooter.ejs')%>

@@ -1,0 +1,158 @@
+<%- include('../partials/asidenav.ejs')%>
+<style>
+    #editbutton{
+        width: 40px;
+        height: 35px;
+        font-size: 12px;
+        border: none;
+        background-color: rgb(37, 177, 37);
+        color: white;
+    }
+    #blockbutton{
+        width: 40px;
+        height: 35px;
+        font-size: 12px;
+        border: none;
+        background-color: rgb(37, 177, 37);
+        color: white;
+    }
+    #unblockbutton{
+        width: 60px;
+        height: 35px;
+        font-size: 12px;
+        border: none;
+        background-color: rgb(190, 69, 21);
+        color: white;
+    }
+</style>
+   
+
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Categories</h2>
+            <p>Add, edit or delete a category</p>
+        </div>
+        <div>
+            <input type="text" placeholder="Search Categories" class="form-control bg-white" />
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <form id="brandForm">
+                        <div class="mb-4">
+                            <label for="product_name" class="form-label">Brand Name</label>
+                            <input type="text" placeholder="Type here" class="form-control" id="brandName" />
+                        </div>
+                        <div class="mb-4">
+                            <label for="product_name" class="form-label">Brand items</label>
+                            <input type="number" placeholder="Type here" class="form-control" id="brandItems" />
+                        </div>
+                      
+                       
+                        <div class="d-grid">
+                            <button class="btn btn-primary" type="submit">Add Barnd</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-9">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    
+                                    <th>ID</th>
+                                    <th>Brand Name</th>
+                                    <th>Barnd Items</th>
+                                    
+                                    <th class="text-end">Edit</th>
+                                    <th class="text-end">Block/unBlock</th>
+                                </tr>
+                            </thead>
+                            <% if(brandsData.length > 0) {%>
+                                <% let id=1 %>
+                                <% brandsData.forEach(item=>{ %>
+                            <tbody>
+                                <tr>
+                                    
+                                    <td><%= id++ %></td>
+                                    <td><b><%= item.brandname %></b></td>
+                                    <td><%= item.brandItems %></td>
+                                   
+                                    <td class="text-end">
+                                         
+                                        <button id="editbutton">Edit</button>
+                                        
+                                    </td>
+                                    <td class="text-end">
+                                        <% if(brandsData===true) {%>
+                                        <buttonid="blockbutton">Block</button>
+                                        <% }else{ %>
+                                            <button  id="unblockbutton">unBlock</button>
+                                            <% } %>
+                                            
+                                    </td>
+                                </tr>
+                              
+                                </tr>
+                            </tbody>
+                            <% }) %>
+                            <% } %>
+                        </table>
+                    </div>
+                </div>
+                <!-- .col// -->
+            </div>
+            <!-- .row // -->
+        </div>
+        <!-- card body .// -->
+    </div>
+    <!-- card .// -->
+</section>
+
+<script>
+    document.getElementById('brandForm').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const brandName = document.getElementById('brandName').value;
+    console.log("brandName",brandName)
+    const brandItems = document.getElementById('brandItems').value;
+    console.log("brandItems",brandItems)
+
+    try {
+        const response = await fetch('/admin/brandsmanagement', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ brandName, brandItems })
+        });
+
+        const data = await response.json();
+        if (data.message) {
+            Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'New brand added successfully.',
+                    showConfirmButton: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        
+                        location.reload();
+                    }
+                });
+        } else {
+          
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Failed to add brand. Please try again later.'
+            });
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+</script>

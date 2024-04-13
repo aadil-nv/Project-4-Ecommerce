@@ -33,6 +33,22 @@
                                             class="form-control" value="<%= product.productname %>" />
                                         <p id="errorName" style="color: red"></p>
                                     </div>
+
+                                    <div class="mb-4">
+                                        <label class="form-label">Brand</label>
+                                        <select class="form-select" name="brand">
+                                            <option >
+                                                <%=product.brand%>
+                                            </option>
+
+                                            <%brand.forEach(data=>{%>
+                                                <option >
+                                                    <%=data.brandname %>
+                                                </option>
+                                                <%})%>
+                                        </select>
+                                    </div>
+                                    
                                     <div class="mb-4">
                                         <label class="form-label">Full description</label>
                                         <input placeholder="Type here" name="des" class="form-control" id="des" rows="4"

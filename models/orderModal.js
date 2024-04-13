@@ -37,6 +37,15 @@ const orderSchema= new mongoose.Schema({
             type:Number,
             required:true
         },
+        returnRequest:{
+            type:Boolean,
+            default:false
+        },
+        returnReason:{
+            type:String,
+            
+        }
+
         
     }],
     couponDeduction :{
