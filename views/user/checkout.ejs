@@ -47,6 +47,7 @@
             background-color: black;
             color: white;
         }
+
         #removeCoupon {
             width: 100px;
             height: 40px;
@@ -55,8 +56,6 @@
             border: none;
             color: white;
         }
-
-      
     </style>
 
     <div class="checkout-main-area  pt-70">
@@ -119,15 +118,15 @@
                         <div class="billing-info-wrap">
                             <h3>Billing Details</h3>
 
-                                  <div class="checkout-account" style="
+                            <div class="checkout-account" style="
                                        background-color: #eeeff2;
                                        width: 100%;
                                        height: 50px;
                                        padding-top: 15px;
                                        padding-left: 10px;">
-                                      <input class="checkout-toggle" type="checkbox" />
-                                      <span>Ship to a different address?</span>
-                                 </div>
+                                <input class="checkout-toggle" type="checkbox" />
+                                <span>Ship to a different address?</span>
+                            </div>
                             <form action="/checkoutpageone" method="post" onsubmit="return validateForm()">
                                 <div class="different-address open-toggle mt-30">
                                     <div class="row">
@@ -323,7 +322,8 @@
                                                                     <%= total.toFixed(0) %>
                                                                 </span></li>
                                                         </ul><br>
-                                                        <input type="hidden" id="totalvalue" value=" <%= total.toFixed(0)%>" />
+                                                        <input type="hidden" id="totalvalue"
+                                                            value=" <%= total.toFixed(0)%>" />
                                                     </div>
                                 </div>
                                 <div class="payment-method">
@@ -350,15 +350,15 @@
                                         </p>
                                         <!-- todo---------------------------------------------------- Apply coupon- ------------------------------------------------------>
                                         <div class="checkout-login-info3">
-                        
-                        
+
+
                                             <input type="text" id="couponCodeInput" placeholder="Coupon code" />
                                             <button id="applyCoupon" onclick="applyCoupon()">Apply Coupon</button>
                                             <button id="removeCoupon" onclick="removeCoupon()">Remove Coupon</button>
                                             <p id="couponMessage" style="color: red;"></p>
                                             <p id="couponMessages" style="color: rgb(16, 151, 34);"></p>
-                        
-                        
+
+
                                         </div>
                                         <!-- todo---------------------------------------------------- Apply coupon- ------------------------------------------------------>
                                     </div>
@@ -902,31 +902,36 @@
                     body: JSON.stringify({ couponCode, totalDiscount })
                 })
                     .then((response) => {
-                        
+
                         if (!response.ok) {
                             throw new Error("Network response was not ok");
-                            
+
                         }
-                     
+
                         return response.json();
                     })
                     .then((data) => {
                         console.log("444444444444444444444444", data)
-                        if(data.couponDiscount=== undefined){
+                        if (data.couponDiscount === undefined) {
 
                             document.getElementById('totalvalue2').innerHTML = "00"
-                        }else{
+                        } else {
                             document.getElementById('totalvalue2').innerHTML = data.couponDiscount;
 
                         }
                         if (data.total) {
-                            document.getElementById('totalvalue1').innerHTML = data.total;
-                            couponMessages.innerHTML = data.message
-                            // document.getElementById('totalAmount').innerHTML=data.total
+                            if (data.total <= 0 || isNaN(data.total)) {
+                                data.total = 1;
+                            }
 
+                            document.getElementById('totalvalue1').innerHTML = data.total;
+                            couponMessage.innerHTML = data.message
+                            document.getElementById('couponMessage').style.color='green'
+                            
                         } else {
                             console.log("888888888888888888888888888888888", data)
                             couponMessage.innerHTML = data.message
+                            document.getElementById('couponMessage').style.color='red'
                         }
                     })
 
@@ -935,39 +940,39 @@
                     });
             }
 
-             async function removeCoupon() {
-    const couponCode = document.getElementById("couponCodeInput").value;
-    const couponMessages = document.getElementById("couponMessages").value;
+            async function removeCoupon() {
+                const couponCode = document.getElementById("couponCodeInput").value;
+                const couponMessages = document.getElementById("couponMessages").value;
                 console.log(">>>>>>>>><<<<<<<<<<",)
-    try {
-      const response = await fetch("user/removeCoupon", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ couponCode })
-      });
+                try {
+                    const response = await fetch("user/removeCoupon", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ couponCode })
+                    });
 
-      const data = await response.json();
+                    const data = await response.json();
 
-      if (data.message === "founded") {
-        // Show success notification
-        
-        couponCodeInput.value = "";
-       
-        
-            
-        toastr.success("Coupon removed successfully");
-      } else {
-        // Show error notification
-        toastr.error("Failed to remove coupon");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      // Show error notification
-      toastr.error("An error occurred while removing the coupon");
-    }
-  }
+                    if (data.message === "founded") {
+                        // Show success notification
+
+                        couponCodeInput.value = "";
+                        window.location.reload()
+
+
+                        toastr.success("Coupon removed successfully");
+                    } else {
+                        // Show error notification
+                        toastr.error("Failed to remove coupon");
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    // Show error notification
+                    toastr.error("An error occurred while removing the coupon");
+                }
+            }
         </script>
 
         <%- include('../partials/mainfooter.ejs')%>

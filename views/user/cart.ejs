@@ -51,7 +51,6 @@
         button:nth-child(1):active {
             box-shadow: inset 4px 5px 10px rgba(0, 0, 0, 0.5);
         }
-        
     </style>
 
     <div class="cart-area pt-100 pb-100">
@@ -73,8 +72,8 @@
                                             <th class="width-remove"></th>
                                         </tr>
                                     </thead>
-                                    <% if(cartDetiles.length> 0){ %> 
-                                    <% cartDetiles[0].products.forEach((data,index)=>{
+                                    <% if(cartDetiles.length> 0){ %>
+                                        <% cartDetiles[0].products.forEach((data,index)=>{
                                             %>
 
                                             <tbody>
@@ -89,21 +88,27 @@
                                                         <h5>
                                                             <a href="product-details.html">
                                                                 <%= data.productId.productname %>
-                                                                
+
                                                             </a>
                                                         </h5>
                                                     </td>
 
                                                     <td class="product-cart-price">
                                                         <% if(!data.productId.offerId){%>
-                                                            <span class="amount"><%= data.productId.productprice %></span>
-                                                            
-                                                            
+                                                            <span class="amount">
+                                                                <%= data.productId.productprice %>
+                                                            </span>
+
+
                                                             <%}else{%>
-                                                                <% const discountedPrice = data.productId.productprice - ( data.productId.productprice  * data.productId.offerId?.percentage / 100);%>
-                                                                <span class="amount"><%= discountedPrice.toFixed(0) %></span>
-                                                                <%}%>
-                                                           
+                                                                <% const discountedPrice=data.productId.productprice - (
+                                                                    data.productId.productprice *
+                                                                    data.productId.offerId?.percentage / 100);%>
+                                                                    <span class="amount">
+                                                                        <%= discountedPrice.toFixed(0) %>
+                                                                    </span>
+                                                                    <%}%>
+
                                                     </td>
 
                                                     <% if(data.productId.productquadity> 0) {%>
@@ -112,7 +117,9 @@
                                                             <div class="product-quality"
                                                                 onclick="qtyControl(this,'<%=data.productId._id %>','<%= index %>')">
                                                                 <input class="cart-plus-minus input-text qty text"
-                                                                    name="quantity" min="1"  value="<%=data.quantity %>" onchange="handleQuantityChange('<%= index %>')" 
+                                                                    name="quantity"  value="<%=data.quantity %>"
+                                                                    
+                                                                    onchange="handleQuantityChange('<%= index %>')"
                                                                     readonly />
                                                             </div>
                                                             <p id="stock<%= index %>" style="color: red"></p>
@@ -126,27 +133,30 @@
                                                                     onclick="qtyControl(this,'<%=data.productId._id %>')"
                                                                     style="display: none">
                                                                     <input class="cart-plus-minus input-text qty text"
-                                                                        name="quantity" value="<%=data.quantity %>" />
+                                                                        name="quantity"  value="<%=data.quantity %>" />
 
-                                                                        
+
                                                                 </div>
                                                                 <p id="stock" style="color: red"></p>
                                                             </td>
                                                             <%}%>
 
                                                                 <td class="product-remove">
-                                                                    <a onclick="removeProduct('<%= data.productId._id %>')"><i class="ti-trash"></i></a>
-                                                                 
+                                                                    <a
+                                                                        onclick="removeProduct('<%= data.productId._id %>')"><i
+                                                                            class="ti-trash"></i></a>
+
                                                                 </td>
                                                 </tr>
                                                 <% })%>
-                                             <%}else{%>
-                                               
-                                                <td colspan="7" class="text-center"><a href="/shoppage" id="nocart">Add Products</a></td>
-                                                    
-                                              
-                                                
-                                                <%}%>
+                                                    <%}else{%>
+
+                                                        <td colspan="7" class="text-center"><a href="/shoppage"
+                                                                id="nocart">Add Products</a></td>
+
+
+
+                                                        <%}%>
                                             </tbody>
                                 </table>
 
@@ -163,7 +173,7 @@
                                         <div class="cart-clear btn-hover">
                                             <button>Update Cart</button>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -174,47 +184,53 @@
                 <div class="col-4">
                     <div class="grand-total-wrap">
                         <div class="grand-total-content">
-                            <h3>Subtotal 
-                               
-                                     
-                                            <span id="total">₹<%= total.toFixed(0)%></span></h3>
-                             <br />
+                            <h3>Subtotal
+
+
+                                <span id="total">₹<%=total.toFixed() %></span>
+                            </h3>
+                            <br />
                             <h6>Discout <span>₹900</span></h6>
                             <h6>Coupons for you <span>₹1,100</span></h6>
                             <h6>Product GST <span>₹1,191</span></h6>
                             <h6>Delivery Charges <span>₹100</span></h6>
 
                             <hr />
-                               
-                        </div>
-                        <% cartDetiles.forEach(item=>{%> 
-                       
-                        <%if(item.products.length>=1) {%> 
-                            <div class="grand-total-btn btn-hover">
-                            <a class="btn theme-color"  href="/checkoutpage"  >Proceed to Checkout</a>
+
                         </div>
 
-                       <%}else{%>
                         <div class="grand-total-btn btn-hover">
-                        <a class="btn theme-color"  href="shoppage"  >add Product</a>
+                            <a class="btn theme-color" href="/checkoutpage">Proceed to Checkout</a>
                         </div>
-                        <%}%>
-                        <%})%>
+
+
+
                     </div>
                 </div>
             </div>
 
-            
+
         </div>
     </div>
 
     <script>
+  
+
         function qtyControl(current, change, index) {
-            console.log("change",change)
+            console.log("change", change)
             const take = current.querySelector("input");
             const sQuantity = current.querySelector("input").value;
+            
 
             let message = document.getElementById(`stock${index}`);
+            if (parseInt(sQuantity) > 5) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Quantity Limit Exceeded',
+                    text: 'You can select a maximum of 5 quantities.'
+                });
+                return;
+            }
 
             fetch("/viewcart", {
                 method: "post",
@@ -234,35 +250,41 @@
                     if (data.message) {
                         message.style.display = "block";
                         message.innerHTML = data.message;
+                        
                     } else {
                         message.style.display = "none";
                         document.getElementById("total").innerHTML = data.totalAmount;
                     }
                 });
-           
+
         }
     </script>
     <script>
-        function removeProduct(id){
+        function removeProduct(id) {
             fetch(`/viewcart/${id}`, {
-                        method: "DELETE",
-                        headers: { "Content-Type": "application/json" },
-                    })
-                        .then((response) => {
-                           
-                            return response.json();
-                        })
-                        .then((data) => {
-                            location.reload();
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                
-        
-                    
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+            })
+                .then((response) => {
+
+                    return response.json();
+                })
+                .then((data) => {
+                    location.reload();
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+
+
+
         }
-        </script>
+
+
+
+
+
+    </script>
 
 
     <%- include('../partials/mainfooter.ejs')%>

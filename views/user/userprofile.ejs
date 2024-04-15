@@ -245,16 +245,13 @@
                                                         </table>
                                                         <table style="border: 1px solid black; width: 200px;">
                                                             <thead class="thead-light"  style="border: 1px solid black; ">
-                                                                <tr>
-                                                                    <th>Wallet History</th>
-                                                                   
-                                                                </tr>
+                                                                
                                                             </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td> <a class="check-btn sqr-btn" data-bs-toggle="modal" id="sendId"
-                                                                        
-                                                                        data-bs-target="#exampleModal"><i class="fa fa-edit"></i>Wallet History</a></td>
+                                                                   
+                                                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Wallet History</button>
+
                                                                    
                                                                 </tr>
                                                             </tbody>
@@ -427,7 +424,7 @@
                                                                             Password
                                                                         </label>
                                                                         <input type="password" id="Old-Password"
-                                                                            name="oldpassword" />
+                                                                               name="oldpassword" />
                                                                         <div class="error-message"
                                                                             id="oldPasswordError"></div>
                                                                     </div>
@@ -467,93 +464,57 @@
         </div>
     </div>
 
-    <!--todo------------------------------------------------------------------------------------------------------------------------------------ klge -->
 
-    <!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+   
+
+
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content" >
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Wallet History</h5>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"
+                style="border: none">
                 <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form>
-                <div class="form-group">
-                  <label for="recipient-name" class="col-form-label">Recipient:</label>
-                  <input type="text" class="form-control" id="recipient-name">
-                </div>
-                <div class="form-group">
-                  <label for="message-text" class="col-form-label">Message:</label>
-                  <textarea class="form-control" id="message-text"></textarea>
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Send message</button>
-            </div>
-          </div>
+            </button>
         </div>
-      </div> -->
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Reason</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+          
+                <% userData.walletHistory.forEach(item=>{ %>
+            <tbody>
+              
+                <td><%= item.date.toDateString()  %> </td>
+                <td><%= item.description  %> </td>
+                <td><%= item.amount  %> </td>
+                <td><%= item.status  %> </td>
+              </tr>
+            
+            </tbody>
+            <% }) %>
+          
+          </table>
+          <div class="pagination-area mt-15 mb-50">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-start">
+                    <li class="page-item active"><a class="page-link" href="#">01</a></li>
+               
+                    
+                </ul>
+            </nav>
+        </div>
 
-    <!--todo------------------------------------------------------------------------------------------------------------------------------------ klge -->
-
- <!--todo------------------------------------------------------------------------------------------------------------------------------------ klge -->
- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
- aria-hidden="true">
- <div class="modal-dialog" role="document">
-     <div class="modal-content">
-         <div class="modal-header">
-             <h5 class="modal-title" id="exampleModalLabel">Transaction History</h5>
-             <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"
-                 style="border: none">
-                 <span aria-hidden="true">&times;</span>
-             </button>
-         </div>
-
-         <form>
-             <div class="modal-body">
-                 <div class="different-address open-toggle mt-30">
-                     <div class="row">
-                        <table class="table">
-                            <thead>
-                              <tr>
-                                <th>Date</th>
-                                <th>Reason</th>
-                                <th>Amount</th>
-                                <th>Status</th>
-                              </tr>
-                            </thead>
-                          
-                                <% userData.walletHistory.forEach(item=>{ %>
-                            <tbody>
-                              
-                                <td><%= item.date.toDateString()  %> </td>
-                                <td><%= item.description  %> </td>
-                                <td><%= item.amount  %> </td>
-                                <td><%= item.status  %> </td>
-                              </tr>
-                            
-                            </tbody>
-                            <% }) %>
-                          
-                          </table>
-                     </div>
-                 </div>
-
-                 <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                         Close
-                     </button>
-                  
-                 </div>
-             </div>
-         </form>
-     </div>
- </div>
-</div>
+      </div>
+    </div>
+  </div>
 <br>
 <br>
 <br>
@@ -713,6 +674,7 @@
 }
 
     </script>
+
 
 
 

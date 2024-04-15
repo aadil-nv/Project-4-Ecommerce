@@ -1,446 +1,319 @@
 <%- include('../partials/mainheader.ejs')%>
-  
-<style>
-    #container1{
-        border-radius: 25px;
-        background-color: rgb(226, 235, 235);
-        height: 360px;
-        width: 200px;
-        
-    }
-    #productname{
-      font-size: 15px;
-      padding-left: 6px;
-      font-weight: 600;
-        
-    }
-    #offer{
-      color: #f5f5f5;
-      background-color: rgb(241, 145, 80)   ;
-      width: 40px;
-      border-radius: 25px; 
-      text-align: center;       
-    }
-    #productprice{
-        font-weight: 600;
-        padding-left: 6px;
-    }
-    .product-content{
-        margin-bottom: 55px;
-    }
-    .product-price{
-        padding-left: 6px; 
-        font-size:10px;
-    }
-    #stock1{
-        font-size: 10px;
-        color: red;
-    }
-    #stock2{
-        font-size: 10px;
-        color: rgb(235, 88, 34);
-    }
-    #stock3{
-        font-size: 10px;
-        color: rgb(116, 81, 16);
 
-    }
-    #stock4{
-        font-size: 10px;
-        color: blue;
-        
-    }
-    #stock5{
-        font-size: 10px;
-        color: rgb(3, 160, 50);
-    }
-   @media (max-width: 1200px) {
-    #container1{
-        width: 170px;
-        height: 320px;
-    }
+    <style>
+        #container1 {
+            border-radius: 25px;
+            background-color: rgb(226, 235, 235);
+            height: 360px;
+            width: 200px;
 
-   }
-   @media (max-width: 1440px) {
-    #container1{
-        width: 140px;
-        height: 280px;
-    }
+        }
 
-   }
-   @media (max-width: 1508px) {
-    #container1{
-        width: 190px;
-        height: 340px;
-    }
+        #productname {
+            font-size: 15px;
+            padding-left: 6px;
+            font-weight: 600;
 
-   }
-  
-    .swal2-popup {
-        width: 300px; 
-        height: 160px; 
-        font-size: 9px;
-    }
+        }
 
-</style>
-       
+        #offer {
+            color: #f5f5f5;
+            background-color: rgb(241, 145, 80);
+            width: 40px;
+            border-radius: 25px;
+            text-align: center;
+        }
 
-        <div class="shop-area shop-page-responsive pt-50 pb-100">
-            <div class="container" >
-                <div class="row flex-row-reverse">
-                    <div class="col-lg-9">
-                        <div class="shop-topbar-wrapper mb-40">
-                            <div class="shop-topbar-left">
-                                <div class="showing-item">
-                                    <span>Showing 1–12 of 60 results</span>
-                                </div>
-                            </div>
+        #productprice {
+            font-weight: 600;
+            padding-left: 6px;
+        }
 
+        .product-content {
+            margin-bottom: 55px;
+        }
 
-                            <div class="shop-topbar-right">
-                                <div class="shop-sorting-area">
-                                    <select  id="sortingSelect" class="nice-select nice-select-style-1"  onchange="redirectToSelectedPage()">
-                                        <option>Default Sorting</option>
-                                        <option  value="popularity">Sort -- popularity</option>
-                                        <option value="lowToHigh">Price -- Low to High</option>
-                                        <option value="highTolow">Price -- High to Low</option>
-                                        <option value="ATOZ">Name -- A-Z</option>
-                                        <option value="ZTOA">Name -- Z-A</option>
-                                    </select>
-                                </div>
+        .product-price {
+            padding-left: 6px;
+            font-size: 10px;
+        }
+
+        #stock1 {
+            font-size: 10px;
+            color: red;
+        }
+
+        #stock2 {
+            font-size: 10px;
+            color: rgb(235, 88, 34);
+        }
+
+        #stock3 {
+            font-size: 10px;
+            color: rgb(116, 81, 16);
+
+        }
+
+        #stock4 {
+            font-size: 10px;
+            color: blue;
+
+        }
+
+        #stock5 {
+            font-size: 10px;
+            color: rgb(3, 160, 50);
+        }
+
+        @media (max-width: 1200px) {
+            #container1 {
+                width: 170px;
+                height: 320px;
+            }
+
+        }
+
+        @media (max-width: 1440px) {
+            #container1 {
+                width: 140px;
+                height: 280px;
+            }
+
+        }
+
+        @media (max-width: 1508px) {
+            #container1 {
+                width: 190px;
+                height: 340px;
+            }
+
+        }
+
+        .swal2-popup {
+            width: 300px;
+            height: 160px;
+            font-size: 9px;
+        }
+    </style>
 
 
-
-                                <div class="shop-view-mode nav">
-                                    <a class="active" href="#shop-1" data-bs-toggle="tab"><i class=" ti-layout-grid3 "></i> </a>
-                                    <a href="#shop-2" data-bs-toggle="tab" class=""><i class=" ti-view-list-alt "></i></a>
-                                </div>
+    <div class="shop-area shop-page-responsive pt-50 pb-100">
+        <div class="container">
+            <div class="row flex-row-reverse">
+                <div class="col-lg-9">
+                    <div class="shop-topbar-wrapper mb-40">
+                        <div class="shop-topbar-left">
+                            <div class="showing-item">
+                                <span>Showing 1–12 of 60 results</span>
                             </div>
                         </div>
-                        <div class="shop-bottom-area"  >
-                            
-                            <div class="tab-content jump" id="productContainer">
-                                <div id="shop-1" class="tab-pane active">
-                                    <div class="row"   >
+
+
+                        <div class="shop-topbar-right">
+                            <div class="shop-sorting-area">
+                                <select id="sortingSelect" class="nice-select nice-select-style-1"
+                                    onchange="redirectToSelectedPage()">
+                                    <option>Default Sorting</option>
+                                    <option value="popularity">Sort -- popularity</option>
+                                    <option value="lowToHigh">Price -- Low to High</option>
+                                    <option value="highTolow">Price -- High to Low</option>
+                                    <option value="ATOZ">Name -- A-Z</option>
+                                    <option value="ZTOA">Name -- Z-A</option>
+                                </select>
+                            </div>
 
 
 
- <!-- !ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg -->
-                                            <%  productData.forEach(data=>{%>
-                                        <div class="col-6 col-sm-4 col-md-3 col-lg-3 col-xl-3"   id="Container" >
-                                            <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200" id="container1">
-                                                <div class="product-img img-zoom mb-25">
-                                                    <a href="/producttab/<%= data._id %>">
-                                                        <img  src="/uploads/<%= data.productimage[0] %>" alt="">
-                                                    </a>
-                                                    <div class="product-badge badge-top badge-right badge-pink">
-                                                        <% if (!data.offerId ) { %>
-                                                            <p id="offer" style="display: none;"><%= data.offerId?.percentage %>%</p>
-                                                            <% }else{ %>
-                                                                <p id="offer"><%= data.offerId.percentage %>%</p>
-                                                            <% } %>
-                                                    </div>
-                                                    <div class="product-action-wrap">
-                                                        <button class="product-action-btn-1" title="Wishlist"  onclick="wishlstProductId('<%= data._id %>')" ><i class="pe-7s-like"></i></button>
-                                                        <button class="product-action-btn-1" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                            <i class="pe-7s-look"></i>
-                                                        </button>
-                                                    </div>
-                                                    <div class="product-action-2-wrap">
-                                                        <button class="product-action-btn-2" title="Add To Cart" onclick="addItemInCart('<%= data._id %>')" ><i class="pe-7s-cart"></i> Add to cart</button>
-                                                    </div>
-                                                </div>
-                                                <div class="product-content">
-                                                    <h3 id="productname"><a href=/producttab/<%= data._id %> ><%= data.productname %></a></h3>
-<!-- todo------------------------------------------------------------- produvt price ------------------------------------------------------------------------------->
-
-
-<div class="product-price">
-    <% if (!data.offerId) { %>
-        <span class="new-price" id="productprice"><%= data.productprice %></span>
-        <% } else { %>
-            <% var discountedPrice = data.productprice - (data.productprice * data.offerId?.percentage / 100);%>
-             <span class="text-muted" ><del><%= data.productprice %></del></span>
-            <span class="new-price" id="productprice">Rs.<%= discountedPrice.toFixed(0) %>/-</span>
-    <% } %>
-</div>
-        
-<!-- todo------------------------------------------------------------- produvt price ------------------------------------------------------------------------------->
-                                                    <% if (data.productquadity > 100) { %>
-                                                        <div class="product-price">
-                                                            <span class="new-price"><p id="stock5">Stock Available</p></span>
-                                                        </div>
-                                                    <% } else if (data.productquadity < 100 && data.productquadity >= 50) { %>
-                                                        <div class="product-price">
-                                                            <span class="new-price"><p  id="stock4">Limited Stock Only</p></span>
-                                                        </div>
-                                                    <% } else if (data.productquadity < 50 && data.productquadity >= 10) { %>
-                                                        <div class="product-price">
-                                                            <span class="new-price"><p  id="stock3">Hurry few left </p></span>
-                                                        </div>
-                                                    <% } else if (data.productquadity <10 && data.productquadity >= 1) { %>
-                                                        <div class="product-price">
-                                                            <span class="new-price"><p  id="stock2">Only (<%=data.productquadity %>)Available</p></span>
-                                                        </div>
-                                                        <% } else if (data.productquadity < 1) { %>   
-                                                            <div class="product-price">
-                                                                <span class="new-price"><p id="stock1">Out of Stock</p></span>
-                                                            </div>
-                                                    <% } %>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <% }) %>
-                                    </div>
-<!-- !ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg -->
-
-
-
-                                        
-                                    <div class="pagination-style-1" data-aos="fade-up" data-aos-delay="200">
-                                        <ul>
-                                            <li><a class="active" href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                            <li><a class="next" href="#"><i class=" ti-angle-double-right "></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                
-                               
-                                <div id="shop-2" class="tab-pane">
-                                    <div class="shop-list-wrap mb-30">
-                                        <div class="row">
-                                            <div class="col-lg-4 col-sm-5">
-                                                <div class="product-list-img">
-                                                    <a href="product-details.html">
-                                                        <img src="/userpublic/indexassets/assets/images/product/product-5.png" alt="Product Style">
-                                                    </a>
-                                                    <div class="product-list-badge badge-right badge-pink">
-                                                        <span>-20%</span>
-                                                    </div>
-                                                    <div class="product-list-quickview">
-                                                        <button class="product-action-btn-2" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                            <i class="pe-7s-look"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-8 col-sm-7">
-                                                <div class="shop-list-content">
-                                                    <h3><a href="product-details.html">Interior moderno render</a></h3>
-                                                    <div class="product-price">
-                                                        <span class="old-price">$70.89 </span>
-                                                        <span class="new-price">$55.25 </span>
-                                                    </div>
-                                                    <div class="product-list-rating">
-                                                        <i class=" ti-star"></i>
-                                                        <i class=" ti-star"></i>
-                                                        <i class=" ti-star"></i>
-                                                        <i class=" ti-star"></i>
-                                                        <i class=" ti-star"></i>
-                                                    </div>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipic it, sed do eiusmod tempor labor incididunt ut et dolore magna aliqua.</p>
-                                                    <div class="product-list-action">
-                                                        <button class="product-action-btn-3" title="Add to cart"><i class="pe-7s-cart"></i></button>
-                                                        <button class="product-action-btn-3" title="Wishlist"><i class="pe-7s-like"></i></button>
-                                                        <button class="product-action-btn-3" title="Compare"><i class="pe-7s-shuffle"></i></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="shop-list-wrap mb-30">
-                                        <div class="row">
-                                            <div class="col-lg-4 col-sm-5">
-                                                <div class="product-list-img">
-                                                    <a href="product-details.html">
-                                                        <img src="/userpublic/indexassets/assets/images/product/product-7.png" alt="Product Style">
-                                                    </a>
-                                                    <div class="product-list-quickview">
-                                                        <button class="product-action-btn-2" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                            <i class="pe-7s-look"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-8 col-sm-7">
-                                                <div class="shop-list-content">
-                                                    <h3><a href="product-details.html">Round Standard Chair</a></h3>
-                                                    <div class="product-price">
-                                                        <span>$50.25 </span>
-                                                    </div>
-                                                    <div class="product-list-rating">
-                                                        <i class=" ti-star"></i>
-                                                        <i class=" ti-star"></i>
-                                                        <i class=" ti-star"></i>
-                                                        <i class=" ti-star"></i>
-                                                        <i class=" ti-star"></i>
-                                                    </div>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipic it, sed do eiusmod tempor labor incididunt ut et dolore magna aliqua.</p>
-                                                    <div class="product-list-action">
-                                                        <button class="product-action-btn-3" title="Add to cart"><i class="pe-7s-cart"></i></button>
-                                                        <button class="product-action-btn-3" title="Wishlist"><i class="pe-7s-like"></i></button>
-                                                        <button class="product-action-btn-3" title="Compare"><i class="pe-7s-shuffle"></i></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="shop-list-wrap mb-30">
-                                        <div class="row">
-                                            <div class="col-lg-4 col-sm-5">
-                                                <div class="product-list-img">
-                                                    <a href="product-details.html">
-                                                        <img src="/userpublic/indexassets/assets/images/product/product-4.png" alt="Product Style">
-                                                    </a>
-                                                    <div class="product-list-badge badge-right badge-pink">
-                                                        <span>-10%</span>
-                                                    </div>
-                                                    <div class="product-list-quickview">
-                                                        <button class="product-action-btn-2" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                            <i class="pe-7s-look"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-8 col-sm-7">
-                                                <div class="shop-list-content">
-                                                    <h3><a href="product-details.html">Stylish Swing Chair</a></h3>
-                                                    <div class="product-price">
-                                                        <span class="old-price">$80.89 </span>
-                                                        <span class="new-price">$60.25 </span>
-                                                    </div>
-                                                    <div class="product-list-rating">
-                                                        <i class=" ti-star"></i>
-                                                        <i class=" ti-star"></i>
-                                                        <i class=" ti-star"></i>
-                                                        <i class=" ti-star"></i>
-                                                        <i class=" ti-star"></i>
-                                                    </div>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipic it, sed do eiusmod tempor labor incididunt ut et dolore magna aliqua.</p>
-                                                    <div class="product-list-action">
-                                                        <button class="product-action-btn-3" title="Add to cart"><i class="pe-7s-cart"></i></button>
-                                                        <button class="product-action-btn-3" title="Wishlist"><i class="pe-7s-like"></i></button>
-                                                        <button class="product-action-btn-3" title="Compare"><i class="pe-7s-shuffle"></i></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="shop-list-wrap mb-30">
-                                        <div class="row">
-                                            <div class="col-lg-4 col-sm-5">
-                                                <div class="product-list-img">
-                                                    <a href="product-details.html">
-                                                        <img src="/userpublic/indexassets/assets/images/product/product-8.png" alt="Product Style">
-                                                    </a>
-                                                    <div class="product-list-badge badge-right badge-pink">
-                                                        <span>-10%</span>
-                                                    </div>
-                                                    <div class="product-list-quickview">
-                                                        <button class="product-action-btn-2" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                                            <i class="pe-7s-look"></i>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-8 col-sm-7">
-                                                <div class="shop-list-content">
-                                                    <h3><a href="product-details.html">Modern Swivel Chair</a></h3>
-                                                    <div class="product-price">
-                                                        <span class="old-price">$45.89 </span>
-                                                        <span class="new-price">$30.25 </span>
-                                                    </div>
-                                                    <div class="product-list-rating">
-                                                        <i class=" ti-star"></i>
-                                                        <i class=" ti-star"></i>
-                                                        <i class=" ti-star"></i>
-                                                        <i class=" ti-star"></i>
-                                                        <i class=" ti-star"></i>
-                                                    </div>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipic it, sed do eiusmod tempor labor incididunt ut et dolore magna aliqua.</p>
-                                                    <div class="product-list-action">
-                                                        <button class="product-action-btn-3" title="Add to cart"><i class="pe-7s-cart"></i></button>
-                                                        <button class="product-action-btn-3" title="Wishlist"><i class="pe-7s-like"></i></button>
-                                                        <button class="product-action-btn-3" title="Compare"><i class="pe-7s-shuffle"></i></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="pagination-style-1">
-                                        <ul>
-                                            <li><a class="active" href="#">1</a></li>
-                                            <li><a href="#">2</a></li>
-                                            <li><a href="#">3</a></li>
-                                            <li><a class="next" href="#"><i class=" ti-angle-double-right "></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
+                            <div class="shop-view-mode nav">
+                                <a class="active" href="#shop-1" data-bs-toggle="tab"><i class=" ti-layout-grid3 "></i>
+                                </a>
+                                <a href="#shop-2" data-bs-toggle="tab" class=""><i class=" ti-view-list-alt "></i></a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3">
-                        <div class="sidebar-wrapper">
-                            <div class="sidebar-widget mb-40" data-aos="fade-up" data-aos-delay="200">
-                                <div class="search-wrap-2">
-                                    <form class="search-2-form" action="#"  id="searchForm">
-                                        <input placeholder="Search*" type="text" name="search"  type="text" id="searchInput" >
-                                        <button type="submit" class="button-search"><i class=" ti-search "></i></button>
-                                    </form>
+                    <div class="shop-bottom-area">
+
+                        <div class="tab-content jump" id="productContainer">
+                            <div id="shop-1" class="tab-pane active">
+                                <div class="row">
+
+
+
+                                    <!-- !ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg -->
+                                    <% productData.forEach(data => {
+                                        if (data.isListed) { %>
+                                            <div class="col-6 col-sm-4 col-md-3 col-lg-3 col-xl-3" id="Container">
+                                                <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200" id="container1">
+                                                    <div class="product-img img-zoom mb-25">
+                                                        <a href="/producttab/<%= data._id %>">
+                                                            <img src="/uploads/<%= data.productimage[0] %>" alt="">
+                                                        </a>
+                                                        <div class="product-badge badge-top badge-right badge-pink">
+                                                            <% if (!data.offerId) { %>
+                                                                <p id="offer" style="display: none;">
+                                                                    <%= data.offerId?.percentage %>%
+                                                                </p>
+                                                            <% } else { %>
+                                                                <p id="offer">
+                                                                    <%= data.offerId.percentage %>%
+                                                                </p>
+                                                            <% } %>
+                                                        </div>
+                                                        <div class="product-action-wrap">
+                                                            <button class="product-action-btn-1" title="Wishlist" onclick="wishlstProductId('<%= data._id %>')">
+                                                                <i class="pe-7s-like"></i>
+                                                            </button>
+                                                            <button class="product-action-btn-1" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                                <i class="pe-7s-look"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="product-action-2-wrap">
+                                                            <button class="product-action-btn-2" title="Add To Cart" onclick="addItemInCart('<%= data._id %>')">
+                                                                <i class="pe-7s-cart"></i> Add to cart
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-content">
+                                                        <h3 id="productname">
+                                                            <a href="/producttab/<%= data._id %>"><%= data.productname %></a>
+                                                        </h3>
+                                                        <div class="product-price">
+                                                            <% if (!data.offerId) { %>
+                                                                <span class="new-price" id="productprice">
+                                                                    <%= data.productprice %>
+                                                                </span>
+                                                            <% } else { %>
+                                                                <% var discountedPrice = data.productprice - (data.productprice * data.offerId?.percentage / 100); %>
+                                                                <span class="text-muted">
+                                                                    <del><%= data.productprice %></del>
+                                                                </span>
+                                                                <span class="new-price" id="productprice">
+                                                                    Rs.<%= discountedPrice.toFixed(0) %>/-
+                                                                </span>
+                                                            <% } %>
+                                                        </div>
+                                                        <% if (data.productquadity > 100) { %>
+                                                            <div class="product-price">
+                                                                <span class="new-price">
+                                                                    <p id="stock5">Stock Available</p>
+                                                                </span>
+                                                            </div>
+                                                        <% } else if (data.productquadity < 100 && data.productquadity >= 50) { %>
+                                                            <div class="product-price">
+                                                                <span class="new-price">
+                                                                    <p id="stock4">Limited Stock Only</p>
+                                                                </span>
+                                                            </div>
+                                                        <% } else if (data.productquadity < 50 && data.productquadity >= 10) { %>
+                                                            <div class="product-price">
+                                                                <span class="new-price">
+                                                                    <p id="stock3">Hurry few left </p>
+                                                                </span>
+                                                            </div>
+                                                        <% } else if (data.productquadity < 10 && data.productquadity >= 1) { %>
+                                                            <div class="product-price">
+                                                                <span class="new-price">
+                                                                    <p id="stock2">Only (<%= data.productquadity %>) Available</p>
+                                                                </span>
+                                                            </div>
+                                                        <% } else if (data.productquadity < 1) { %>
+                                                            <div class="product-price">
+                                                                <span class="new-price">
+                                                                    <p id="stock1">Out of Stock</p>
+                                                                </span>
+                                                            </div>
+                                                        <% } %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <% } // End of if (data.isListed)
+                                    }); %>
                                 </div>
-                            </div>
-                            <div class="sidebar-widget sidebar-widget-border mb-40 pb-35" data-aos="fade-up" data-aos-delay="200">
-                                <div class="sidebar-widget-title mb-30">
-                                    <h3>Filter By Price</h3>
-                                </div>
-                                <div class="price-filter">
-                                    <div id="slider-range"></div>
-                                    <div class="price-slider-amount">
-                                        <div class="label-input">
-                                            <label>Price:</label>
-                                            <input type="text" id="amount" name="price" placeholder="Add Your Price" />
-                                        </div>
-                                        <button type="button">Filter</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="sidebar-widget sidebar-widget-border mb-40 pb-35" data-aos="fade-up" data-aos-delay="200">
-                                <div class="sidebar-widget-title mb-25">
-                                    <h3>Product Categories</h3>
-                                </div>
-                                <div class="sidebar-list-style">
-                                    <ul id="categoryList">
-                                        <% if(categoryData.length > 0) { %>
-                                            <% categoryData.forEach(item => { %>
-                                                <li ><a class="categoryItem"><%= item.categoryname %></a></li>
-                                            <% }) %>
-                                        <% } %>
+                                <!-- !ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg -->
+
+
+
+
+                                <div class="pagination-style-1" data-aos="fade-up" data-aos-delay="200">
+                                    <ul>
+                                        <% for(let i=1; i <=totalPages; i++) { %>
+                                            <li><a <% if (i===currentPage) { %> class="active" <% } %>
+                                                        href="/shoppage?page=<%= i %>"><%= i %></a></li>
+                                            <% } %>
                                     </ul>
                                 </div>
+
                             </div>
-                           
-                         
+
+
+
                         </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="sidebar-wrapper">
+                        <div class="sidebar-widget mb-40" data-aos="fade-up" data-aos-delay="200">
+                            <div class="search-wrap-2">
+                                <form class="search-2-form" action="#" id="searchForm">
+                                    <input placeholder="Search*" type="text" name="search" type="text" id="searchInput">
+                                    <button type="submit" class="button-search"><i class=" ti-search "></i></button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="sidebar-widget sidebar-widget-border mb-40 pb-35" data-aos="fade-up"
+                            data-aos-delay="200">
+                            <div class="sidebar-widget-title mb-30">
+                                <h3>Filter By Price</h3>
+                            </div>
+                            <div class="price-filter">
+                                <div id="slider-range"></div>
+                                <div class="price-slider-amount">
+                                    <div class="label-input">
+                                        <label>Price:</label>
+                                        <input type="text" id="amount" name="price" placeholder="Add Your Price" />
+                                    </div>
+                                    <button type="button">Filter</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sidebar-widget sidebar-widget-border mb-40 pb-35" data-aos="fade-up"
+                            data-aos-delay="200">
+                            <div class="sidebar-widget-title mb-25">
+                                <h3>Product Categories</h3>
+                            </div>
+                            <div class="sidebar-list-style">
+                                <ul id="categoryList">
+                                    <% if(categoryData.length> 0) { %>
+                                        <% categoryData.forEach(item=> { %>
+                                            <li><a class="categoryItem">
+                                                    <%= item.categoryname %>
+                                                </a></li>
+                                            <% }) %>
+                                                <% } %>
+                                </ul>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Include SweetAlert CSS -->
+    </div>
+    <!-- Include SweetAlert CSS -->
 
-<!-- Include SweetAlert JS -->
+    <!-- Include SweetAlert JS -->
 
-        <script>
-            function addItemInCart(id) {
-                console.log(id);
-                fetch(`/producttab/${id}`, {
-                    method: "post",
-                    headers: { "Content-Type": "application/json" },
-                })
+    <script>
+        function addItemInCart(id) {
+            console.log(id);
+            fetch(`/producttab/${id}`, {
+                method: "post",
+                headers: { "Content-Type": "application/json" },
+            })
                 .then((response) => {
                     if (response.ok) {
-                       
+
                         window.location.href = '/viewcart';
                     } else {
                         window.location.href = '/viewcart';
@@ -448,216 +321,121 @@
                 })
                 .catch((err) => {
                     console.log(err);
-                    
+
                 });
-            }
-        </script>
-
-
-<script>
-    function redirectToSelectedPage() {
-        const selectElement = document.getElementById('sortingSelect');
-        const selectedValue = selectElement.value;
-            console.log("=============================",selectedValue)
-        if (selectedValue === 'popularity') {
-            window.location.href = '/productspopular';
-        } else if (selectedValue === 'lowToHigh') {
-            window.location.href = '/productslowtohigh';
-        } else if (selectedValue === 'highTolow') {
-            window.location.href = '/productshightolow';
-        } else if (selectedValue === 'ATOZ') {
-            window.location.href = '/productsatoz';
-        } else if (selectedValue === 'ZTOA') {
-            window.location.href = '/productsztoa';
         }
-    }
-</script>
+    </script>
 
 
     <script>
-   
-  function wishlstProductId(id) {
-    console.log('=======================productId==========================', id)
-    fetch('/user/wishlist', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: id })
-    })
-    .then(response => {
-        if (response.ok) {
-            return response.json(); // Parse response JSON if response is okay
-        } else {
-            throw new Error('Error adding product to wishlist');
+        function redirectToSelectedPage() {
+            const selectElement = document.getElementById('sortingSelect');
+            const selectedValue = selectElement.value;
+            console.log("=============================", selectedValue)
+            if (selectedValue === 'popularity') {
+                window.location.href = '/productspopular';
+            } else if (selectedValue === 'lowToHigh') {
+                window.location.href = '/productslowtohigh';
+            } else if (selectedValue === 'highTolow') {
+                window.location.href = '/productshightolow';
+            } else if (selectedValue === 'ATOZ') {
+                window.location.href = '/productsatoz';
+            } else if (selectedValue === 'ZTOA') {
+                window.location.href = '/productsztoa';
+            }
         }
-    })
-    .then(data => {
-        console.log('Response Data:', data); // Log the parsed data to the console
-        if (data && data.message) {
-            Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: data.message,
-                    position: 'top-end',
-                    timer: 900,
-                    showConfirmButton: false
+    </script>
+
+
+    <script>
+
+        function wishlstProductId(id) {
+            console.log('=======================productId==========================', id)
+            fetch('/user/wishlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id: id })
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json(); // Parse response JSON if response is okay
+                    } else {
+                        throw new Error('Error adding product to wishlist');
+                    }
+                })
+                .then(data => {
+                    console.log('Response Data:', data); // Log the parsed data to the console
+                    if (data.message === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: "product added in Wishlist",
+                            position: 'top-end',
+                            timer: 900,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Success!',
+                            text: "Product Alredy in Cart",
+                            position: 'top-end',
+                            timer: 900,
+                            showConfirmButton: false
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: error.message,
+                        position: 'top-end',
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
+
+                    console.error('Error:', error);
                 });
-        } else {
-            throw new Error('Invalid response data');
         }
-    })
-    .catch(error => {
-        Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: error.message,
-                position: 'top-end',
-                timer: 1000,
-                showConfirmButton: false
-            });
-      
-        console.error('Error:', error);
-    });
-}
 
 
-// document.addEventListener("DOMContentLoaded", function() {
-//     const searchForm = document.getElementById("searchForm");
 
-//     searchForm.addEventListener("submit", function(event) {
-//         event.preventDefault();
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchForm = document.getElementById("searchForm");
 
-//         const searchInput = document.getElementById("searchInput").value;
-        
-//         fetch("/user/search", {
-//             method: "POST",
-//             headers: {
-//                 "Content-Type": "application/json"
-//             },
-//             body: JSON.stringify({ search: searchInput })
-//         })
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error("Network response was not ok");
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-           
-//             console.log(data);
-//         })
-//         .catch(error => {
-//             console.error("Error:", error);
-//         });
-//     });
-// });
-// document.addEventListener("DOMContentLoaded", function() {
-//     const searchForm = document.getElementById("searchForm");
+            searchForm.addEventListener("submit", function (event) {
+                event.preventDefault();
 
-//     searchForm.addEventListener("submit", function(event) {
-//         event.preventDefault();
+                const searchInput = document.getElementById("searchInput").value;
 
-//         const searchInput = document.getElementById("searchInput").value;
-        
-//         fetch("/user/search", {
-//             method: "POST",
-//             headers: {
-//                 "Content-Type": "application/json"
-//             },
-//             body: JSON.stringify({ search: searchInput })
-//         })
-//         .then(response => {
-//             if (!response.ok) {
-//                 throw new Error("Network response was not ok");
-//             }
-//             return response.json();
-//         })
-//         .then(data => {
-//             console.log(data)
-//             const productContainer = document.getElementById("productContainer");
-//             productContainer.innerHTML = "" // Clear previous content
+                fetch("/user/search", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ search: searchInput })
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Network response was not ok");
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const productContainer = document.getElementById("productContainer");
+                        productContainer.innerHTML = ""; // Clear previous content
 
-//             data.result.forEach(product => {
-//                 const productHTML = `
-       
-//          <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200" id="container1">
-//                 <div class="row">
-//                     <div class="col-12">
-//                         <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200" id="container1">
-//                             <div class="product-img img-zoom mb-25">
-//                                 <a href="/producttab/${product._id}">
-//                                     <img src="/uploads/${product.productimage[0]}" alt="">
-//                                 </a>
-//                                 <div class="product-badge badge-top badge-right badge-pink">
-//                                     ${product.offerId ? `<p id="offer">${product.offerId.percentage}%</p>` : `<p id="offer" style="display: none;"></p>`}
-//                                 </div>
-//                                 <div class="product-action-wrap">
-//                                     <button class="product-action-btn-1" title="Wishlist" onclick="wishlstProductId('${product._id}')"><i class="pe-7s-like"></i></button>
-//                                     <button class="product-action-btn-1" title="Quick View" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="pe-7s-look"></i></button>
-//                                 </div>
-//                                 <div class="product-action-2-wrap">
-//                                     <button class="product-action-btn-2" title="Add To Cart" onclick="addItemInCart('${product._id}')"><i class="pe-7s-cart"></i> Add to cart</button>
-//                                 </div>
-//                             </div>
-//                             <div class="product-content">
-//                                 <h3 id="productname"><a href="/producttab/${product._id}">${product.productname}</a></h3>
-//                                 <div class="product-price">
-//                                     ${!product.offerId ? `<span class="new-price" id="productprice">${product.productprice}</span>` : `<span class="text-muted"><del>${product.productprice}</del></span><span class="new-price" id="productprice">Rs.${(product.productprice - (product.productprice * product.offerId.percentage / 100)).toFixed(0)}/-</span>`}
-//                                 </div>
-//                                 <div class="product-price">
-//                                     ${product.productquadity > 100 ? `<span class="new-price"><p id="stock5">Stock Available</p></span>` : (product.productquadity < 100 && product.productquadity >= 50 ? `<span class="new-price"><p id="stock4">Limited Stock Only</p></span>` : (product.productquadity < 50 && product.productquadity >= 10 ? `<span class="new-price"><p id="stock3">Hurry few left</p></span>` : (product.productquadity < 10 && product.productquadity >= 1 ? `<span class="new-price"><p id="stock2">Only (${product.productquadity}) Available</p></span>` : `<span class="new-price"><p id="stock1">Out of Stock</p></span>`)))}
-//                                 </div>
-//                             </div>
-//                         </div>
-//                         </div>
-//                         </dv>
-                   
-//                     </div>`;
-                    
-                
-//                 // Append product HTML to the container
-//                 productContainer.insertAdjacentHTML('beforeend', productHTML);
-//             });
-//         })
-//         .catch(error => {
-//             console.error("Error:", error);
-//         });
-//     });
-// });
-document.addEventListener("DOMContentLoaded", function() {
-    const searchForm = document.getElementById("searchForm");
+                        const row = document.createElement("div");
+                        row.classList.add("row");
 
-    searchForm.addEventListener("submit", function(event) {
-        event.preventDefault();
+                        data.result.forEach(product => {
+                            const productCol = document.createElement("div");
+                            productCol.classList.add("col-3");
 
-        const searchInput = document.getElementById("searchInput").value;
-
-        fetch("/user/search", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ search: searchInput })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-            return response.json();
-        })
-        .then(data => {
-            const productContainer = document.getElementById("productContainer");
-            productContainer.innerHTML = ""; // Clear previous content
-
-            const row = document.createElement("div");
-            row.classList.add("row");
-
-            data.result.forEach(product => {
-                const productCol = document.createElement("div");
-                productCol.classList.add("col-3");
-
-                const productHTML = `
+                            const productHTML = `
                     <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200" id="container1">
                         <div class="product-img img-zoom mb-25">
                             <a href="/producttab/${product._id}">
@@ -686,56 +464,56 @@ document.addEventListener("DOMContentLoaded", function() {
                         </div>
                     </div>`;
 
-                productCol.innerHTML = productHTML;
-                row.appendChild(productCol);
+                            productCol.innerHTML = productHTML;
+                            row.appendChild(productCol);
+                        });
+
+                        productContainer.appendChild(row);
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+            });
+        });
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const categoryList = document.getElementById("categoryList");
+
+            categoryList.addEventListener("click", function (event) {
+                const clickedListItem = event.target;
+                if (clickedListItem.classList.contains("categoryItem")) {
+                    const categoryName = clickedListItem.textContent.trim();
+                    sendDataToController(categoryName);
+                }
             });
 
-            productContainer.appendChild(row);
-        })
-        .catch(error => {
-            console.error("Error:", error);
-        });
-    });
-});
+            const sendDataToController = (categoryName) => {
+                fetch("/user/sendcategoryname", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ category: categoryName })
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Failed to send category name to the controller.");
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        const productContainer = document.getElementById("productContainer");
+                        productContainer.innerHTML = ""; // Clear previous content
 
+                        const row = document.createElement("div");
+                        row.classList.add("row");
 
-document.addEventListener("DOMContentLoaded", function() {
-    const categoryList = document.getElementById("categoryList");
+                        data.result.forEach(product => {
+                            const productCol = document.createElement("div");
+                            productCol.classList.add("col-3");
 
-    categoryList.addEventListener("click", function(event) {
-        const clickedListItem = event.target;
-        if (clickedListItem.classList.contains("categoryItem")) {
-            const categoryName = clickedListItem.textContent.trim();
-            sendDataToController(categoryName);
-        }
-    });
-
-    const sendDataToController = (categoryName) => {
-        fetch("/user/sendcategoryname", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ category: categoryName })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Failed to send category name to the controller.");
-            }
-            return response.json();
-        })
-        .then(data => {
-            const productContainer = document.getElementById("productContainer");
-            productContainer.innerHTML = ""; // Clear previous content
-
-            const row = document.createElement("div");
-            row.classList.add("row");
-
-            data.result.forEach(product => {
-                const productCol = document.createElement("div");
-                productCol.classList.add("col-3");
-
-                const productHTML = `
+                            const productHTML = `
                     <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200" id="container1">
                         <div class="product-img img-zoom mb-25">
                             <a href="/producttab/${product._id}">
@@ -764,57 +542,57 @@ document.addEventListener("DOMContentLoaded", function() {
                         </div>
                     </div>`;
 
-                productCol.innerHTML = productHTML;
-                row.appendChild(productCol);
+                            productCol.innerHTML = productHTML;
+                            row.appendChild(productCol);
+                        });
+
+                        productContainer.appendChild(row);
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+            };
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            const categoryList = document.getElementById("categoryList");
+
+            categoryList.addEventListener("click", function (event) {
+                const clickedListItem = event.target;
+                if (clickedListItem.classList.contains("categoryItem")) {
+                    const categoryName = clickedListItem.textContent.trim();
+                    console.log("first :::::" + categoryName);
+                    sendDataToController(categoryName);
+                }
             });
 
-            productContainer.appendChild(row);
-        })
-        .catch(error => {
-            console.error("Error:", error);
+            const sendDataToController = (categoryName) => {
+                fetch("/user/sendcategoryname", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ category: categoryName })
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("Failed to send category name to the controller.");
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Product Data:", data.productData);
+                    })
+                    .catch(error => {
+                        console.error("Error:", error);
+                    });
+            };
         });
-    };
-});
-document.addEventListener("DOMContentLoaded", function() {
-    const categoryList = document.getElementById("categoryList");
-
-    categoryList.addEventListener("click", function(event) {
-        const clickedListItem = event.target;
-        if (clickedListItem.classList.contains("categoryItem")) {
-            const categoryName = clickedListItem.textContent.trim();
-            console.log("first :::::"+categoryName);
-            sendDataToController(categoryName);
-        }
-    });
-
-    const sendDataToController = (categoryName) => {
-        fetch("/user/sendcategoryname", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ category: categoryName })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Failed to send category name to the controller.");
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log("Product Data:", data.productData);
-        })
-        .catch(error => {
-            console.error("Error:", error);
-        });
-    };
-});
 
 
     </script>
-    
-    
 
-        
- 
-        <%- include('../partials/mainfooter.ejs')%>   
+
+
+
+
+    <%- include('../partials/mainfooter.ejs')%>

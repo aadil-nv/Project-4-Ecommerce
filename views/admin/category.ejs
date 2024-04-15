@@ -1,6 +1,6 @@
     <%- include('../partials/asidenav.ejs')%>
 
-    <section class="content-main"  style="background-color: rgb(211, 218, 218);">
+    <section class="content-main" >
         <div class="content-header">
             <div>
                 <h2 class="content-title card-title">Category Lists</h2>
@@ -110,14 +110,11 @@
         <div class="pagination-area mt-15 mb-50">
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-start">
-                    <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                    <li class="page-item"><a class="page-link" href="#">02</a></li>
-                    <li class="page-item"><a class="page-link" href="#">03</a></li>
-                    <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                    <li class="page-item"><a class="page-link" href="#">16</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
-                    </li>
+                    <% for(let i = 1; i <= totalPages; i++) { %>
+                        <li class="page-item <% if (i == currentPage) { %>active<% } %>">
+                            <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                        </li>
+                    <% } %>
                 </ul>
             </nav>
         </div>

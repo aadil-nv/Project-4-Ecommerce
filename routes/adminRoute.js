@@ -65,8 +65,16 @@ admin_route.get('/admin/createoffer',admincontroller.createCoupon)
 admin_route.post('/admin/createoffer',admincontroller.addNewOffer)
 admin_route.post('/admin/selectoffertype',admincontroller.selectOfferType)
 admin_route.get('/admin/salesreports',admincontroller.totalSalesReport)
+//todo-------------------------------------------------------------------------------
 
-admin_route.post('/admin/filtersalesreport',admincontroller.filterSalesReport)
+admin_route.get('/admin/dailysalesreport',admincontroller.dailySalesReport)
+admin_route.get('/admin/weeklysalesreport',admincontroller.weeklySalesReport)
+admin_route.get('/admin/monthlysalesreport',admincontroller.monthlySalesReport)
+admin_route.get('/admin/yearlysalesreport',admincontroller.yearlySalesReport)
+//todo-------------------------------------------------------------------------------
+
+
+
 admin_route.post('/admin/filtercustomdate',admincontroller.filterCustomDate)
 
 
@@ -79,6 +87,7 @@ admin_route.post('/generate-pdf',admincontroller.downloadSalesReport)
 admin_route.post('/admin/graphdata',admincontroller.graphData)
 
 admin_route.post('/admin/approvereturnrequest',admincontroller.approveRetrunRequest)
+admin_route.post('/admin/deleteoffer',admincontroller.deleteOffer)
 
 
 

@@ -213,13 +213,26 @@ const mostBoughtBrands = await order.aggregate([
 
 const adminUsersList = async (req, res) => {
   try {
-    const user = await User.find().sort({ _id: -1 });
+      const perPage = 5;
+      const page = req.query.page || 1;
 
-    res.render("admin/userslist", { user });
+      const user = await User.find()
+       .sort({ _id: -1 })
+       .skip((perPage * page) - perPage)
+       .limit(perPage);
+      
+      const count = await User.countDocuments();
+
+      res.render("admin/userslist", {
+          user,
+          currentPage: page,
+          totalPages: Math.ceil(count / perPage)
+      });
   } catch (error) {
-    console.log(error.meaasage);
+      console.log(error.message);
   }
 };
+
 // ------------------------------End------------------------------------
 
 // ------------------------------Loading Admin to addProduct page------------------------------------
@@ -241,13 +254,26 @@ const addProduct = async (req, res) => {
 
 const categoryManage = async (req, res) => {
   try {
-    const category = await Addcategory.find();
+      const perPage = 5;
+      const page = req.query.page || 1;
 
-    res.render("admin/category", { category });
+      const category = await Addcategory.find()
+       .sort({ _id: -1 })
+       .skip((perPage * page) - perPage)
+       .limit(perPage);
+      
+      const count = await Addcategory.countDocuments();
+
+      res.render("admin/category", {
+          category,
+          currentPage: page,
+          totalPages: Math.ceil(count / perPage)
+      });
   } catch (error) {
-    console.log(error.message);
+      console.log(error.message);
   }
 };
+
 
 // ---------------------------------------------------End-----------------------------------------------------
 
@@ -401,15 +427,29 @@ const updateCategory = async (req, res) => {
 // -----------------------------------------------End-------------------------------------------------------
 
 // ------------------------------Loading Productlist and sending Product data intothe page ------------------------------------
+
 const productList = async (req, res) => {
   try {
-    const product = await Products.find().sort({ _id: -1 });
+      const perPage = 10;
+      const page = req.query.page || 1;
 
-    res.render("admin/productlist", { product });
+      const product = await Products.find()
+       .sort({ _id: -1 })
+       .skip((perPage * page) - perPage)
+       .limit(perPage);
+      
+      const count = await Products.countDocuments();
+
+      res.render("admin/productlist", {
+          product,
+          currentPage: page,
+          totalPages: Math.ceil(count / perPage)
+      });
   } catch (error) {
-    console.log(error.message);
+      console.log(error.message);
   }
 };
+
 
 // ------------------------------Updating Product  ------------------------------------
 
@@ -646,19 +686,46 @@ const deleteProductImage = async (req, res) => {
 
 // --------------------------------------------Load UsersList -------------------------------------------
 
+// const adminOrdersList = async (req, res) => {
+//   try {
+//     const orderData = await order
+//       .find()
+//       .populate("orderedItem.productId")
+//       .populate("deliveryAddress")
+//       .populate("userId").sort({ _id: -1 })
+
+//     res.render("admin/orderlist", { orderData });
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// };
 const adminOrdersList = async (req, res) => {
   try {
-    const orderData = await order
-      .find()
-      .populate("orderedItem.productId")
-      .populate("deliveryAddress")
-      .populate("userId").sort({ _id: -1 })
+      const perPage = 10;
+      const page = req.query.page || 1;
 
-    res.render("admin/orderlist", { orderData });
+      const orderData = await order
+          .find()
+          .populate("orderedItem.productId")
+          .populate("deliveryAddress")
+          .populate("userId")
+          .sort({ _id: -1 })
+          .skip((page - 1) * perPage)
+          .limit(perPage);
+
+      const count = await order.countDocuments();
+
+      res.render("admin/orderlist", {
+          orderData,
+          currentPage: page,
+          totalPages: Math.ceil(count / perPage)
+      });
   } catch (error) {
-    console.log(error.message);
+      console.log(error.message);
   }
 };
+
+
 
 const adminOrderDetiles = async (req, res) => {
   try {
@@ -803,15 +870,28 @@ const deleteCoupon = async (req, res) => {
 
 
 
+
 const adminOfferList = async (req, res) => {
   try {
-    const offerData = await Offer.find()
-    res.render('admin/offerlist', { offerData })
+      const perPage = 5;
+      const page = req.query.page || 1;
 
+      const offerData = await Offer.find()
+          .skip((page - 1) * perPage)
+          .limit(perPage);
+
+      const count = await Offer.countDocuments();
+
+      res.render('admin/offerlist', {
+          offerData,
+          currentPage: page,
+          totalPages: Math.ceil(count / perPage)
+      });
   } catch (error) {
-    console.log(error.message)
+      console.log(error.message);
   }
-}
+};
+
 
 const createCoupon = async (req, res) => {
   try {
@@ -917,20 +997,17 @@ const selectOfferType = async (req, res) => {
 
 const totalSalesReport = async (req, res) => {
   try {
-    const salesReport= await order.find().populate("orderedItem.productId").populate("deliveryAddress").populate("userId").sort({_id:-1})
+    const page = req.query.page || 1; 
+    const perPage = 10; 
+    const skip = (page - 1) * perPage;
+    const salesReport= await order.find().populate("orderedItem.productId").populate("deliveryAddress").populate("userId")
+    .sort({ _id: -1 })
+    .skip(skip)
+    .limit(perPage);
+    
     let totalSalesAmount = 0;
     let totalSalesAmount2 = 0;
-    const pageSize = 10; 
-        const page = req.query.page || 1;
-
-
-        const startIndex = (page - 1) * pageSize;
-        const endIndex = page * pageSize;
-
-
-        const salesReportPage = salesReport.slice(startIndex, endIndex);
-
-        const totalPages = Math.ceil(salesReport.length / pageSize);
+    
     
 
     salesReport.forEach(order => {
@@ -960,74 +1037,302 @@ const totalSalesReport = async (req, res) => {
       overAllOrderAmount+= item.orderAmount
     })
     
-  
-   res.render('admin/salesreport',{salesReport: salesReportPage,totalSalesAmount,totalCouponDeduction,
-    salesCount,overAllOrderAmount,totalPages,page})
+    const totalSalesCount = await order.countDocuments();
+    const totalPages = Math.ceil(totalSalesCount / perPage);
+
+   res.render('admin/salesreport',{salesReport,totalSalesAmount,totalCouponDeduction,
+    salesCount,overAllOrderAmount, totalPages,
+    currentPage: page})
 
   } catch (error) {
     console.log(error.message)
   }
 }
 
-const filterSalesReport= async (req,res)=>{
+const dailySalesReport= async(req,res)=>{
   try {
+    const page = req.query.page || 1; 
+    const perPage = 10; 
+    const skip = (page - 1) * perPage;
+    
+    const today = new Date();
+        today.setHours(0, 0, 0, 0); 
+        const tomorrow = new Date(today);
+        tomorrow.setDate(today.getDate() + 1); 
 
-    const salesReport= await order.find().populate("orderedItem.productId").populate("deliveryAddress").populate("userId").sort({_id:-1});
-    const {selectedOption}= req.body
-   
+        const salesReport = await order.find({
+            shippingDate: {
+                $gte: today,
+                $lt: tomorrow
+            }
+        }).sort({_id:-1}).skip(skip)
+        .limit(perPage);
 
-    let filteredReport = [];
+        let sc=await order.find({
+          shippingDate: {
+              $gte: today,
+              $lt: tomorrow
+          }
+      }).sort({_id:-1})
+    
+    let totalSalesAmount = 0;
+    let totalSalesAmount2 = 0;
+    
+    
 
-    if (selectedOption === "yearly") {
-      const currentYear = new Date().getFullYear();
-      filteredReport = salesReport.filter(item => new Date(item.shippingDate).getFullYear() === currentYear);
-  }  else if (selectedOption === "monthly") {
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
-    const currentMonth = currentDate.getMonth() + 1;
-    filteredReport = salesReport.filter(item => {
-        const shippingDate = new Date(item.shippingDate);
-        return shippingDate.getFullYear() === currentYear && shippingDate.getMonth() + 1 === currentMonth;
-    });
-  } else if (selectedOption === "weekly") {
-      const today = new Date();
-      const currentWeek = getWeek(today);
-      filteredReport = salesReport.filter(item => getWeek(new Date(item.shippingDate)) === currentWeek);
-  } else if (selectedOption === "daily") {
-      const today = new Date().toISOString().slice(0, 10);
-      filteredReport = salesReport.filter(item => item.shippingDate.toISOString().slice(0, 10) === today);
-  } else if (selectedOption === "all") {
-      filteredReport = salesReport; 
-  }
- 
-
-  const pageSize = 10; 
-        let page = parseInt(req.query.page) || 1; 
-        let startIndex = (page - 1) * pageSize;
-        let endIndex = page * pageSize;
-
-        const filteredReportPage = filteredReport.slice(startIndex, endIndex);
-
-        const totalPages = Math.ceil(filteredReport.length / pageSize);
-
-        if (filteredReportPage.length === 0 && page !== 1) {
-            page = 1;
-            startIndex = 0;
-            endIndex = pageSize;
+    salesReport.forEach(order => {
+      order.orderedItem.forEach(item => {
+        if (item.productStatus === "Delivered") {
+          console.log("order.couponDeduction ::::",order.couponDeduction)
+          if(order.couponDeduction == 0){
+          totalSalesAmount += item.totalProductAmount;
+        }else{
+          totalSalesAmount2 += item.totalProductAmount
+          totalSalesAmount=totalSalesAmount2-order.couponDeduction
         }
+      }
+      });
+    });
 
-        console.log("______________________________________")
-        console.log(filteredReport.length)
-        console.log(totalPages)
-        console.log(page)
-        console.log("______________________________________")
+    let totalCouponDeduction=0
+    salesReport.forEach(item=>{
+      totalCouponDeduction += item.couponDeduction
+    })
+    let salesCount=0
+    salesReport.forEach(item=>{
+      salesCount++
+    })
+    let overAllOrderAmount=0
+    salesReport.forEach(item=>{
+      overAllOrderAmount+= item.orderAmount
+    })
 
-        res.json({  filteredReport: filteredReportPage, totalPages, page });
+    let totalSalesCount = sc.length;
+    const totalPages = Math.ceil(totalSalesCount / perPage);
+    
 
+    res.render('admin/salesreport',{salesReport,totalSalesAmount,totalCouponDeduction,
+      salesCount,overAllOrderAmount, totalPages,
+      currentPage: page}) 
+    
   } catch (error) {
     console.log(error.message)
   }
 }
+const weeklySalesReport= async(req,res)=>{
+  try {
+    const page = req.query.page || 1; 
+    const perPage = 10; 
+    const skip = (page - 1) * perPage;
+    const currentDate = new Date();
+
+
+    const startOfWeek = new Date(currentDate);
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + (startOfWeek.getDay() === 0 ? -6 : 1));
+
+    
+    const endOfWeek = new Date(currentDate);
+    endOfWeek.setDate(endOfWeek.getDate() - endOfWeek.getDay() + 7);
+
+  
+    const salesReport = await order.find({
+        shippingDate: { $gte: startOfWeek, $lte: endOfWeek }
+    }).sort({_id:-1}).skip(skip)
+    .limit(perPage);
+
+    let sc= await order.find({
+      shippingDate: { $gte: startOfWeek, $lte: endOfWeek }
+  })
+
+    let totalSalesAmount = 0;
+    let totalSalesAmount2 = 0;
+    
+    
+
+    salesReport.forEach(order => {
+      order.orderedItem.forEach(item => {
+        if (item.productStatus === "Delivered") {
+          console.log("order.couponDeduction ::::",order.couponDeduction)
+          if(order.couponDeduction == 0){
+          totalSalesAmount += item.totalProductAmount;
+        }else{
+          totalSalesAmount2 += item.totalProductAmount
+          totalSalesAmount=totalSalesAmount2-order.couponDeduction
+        }
+      }
+      });
+    });
+
+    let totalCouponDeduction=0
+    salesReport.forEach(item=>{
+      totalCouponDeduction += item.couponDeduction
+    })
+    let salesCount=0
+    salesReport.forEach(item=>{
+      salesCount++
+    })
+    let overAllOrderAmount=0
+    salesReport.forEach(item=>{
+      overAllOrderAmount+= item.orderAmount
+    })
+
+    let totalSalesCount = sc.length;
+    const totalPages = Math.ceil(totalSalesCount / perPage);
+
+    console.log("_____________________________")
+    console.log(salesReport)
+    console.log(totalPages)
+    console.log("_____________________________")
+    
+
+    res.render('admin/salesreport',{salesReport,totalSalesAmount,totalCouponDeduction,
+      salesCount,overAllOrderAmount ,totalPages,
+      currentPage: page}) 
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+
+const monthlySalesReport= async(req,res)=>{
+  try {
+    const page = req.query.page || 1; 
+    const perPage = 10; 
+    const skip = (page - 1) * perPage;
+
+    const currentDate = new Date();
+    
+    const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+  
+    const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+
+    
+    const salesReport = await order.find({
+        shippingDate: { $gte: startOfMonth, $lte: endOfMonth }
+    }).sort({_id:-1}).skip(skip)
+    .limit(perPage);
+
+    let sc= await order.find({
+      shippingDate: { $gte: startOfMonth, $lte: endOfMonth }
+  }).sort({_id:-1})
+
+  
+    
+    let totalSalesAmount = 0;
+    let totalSalesAmount2 = 0;
+    
+    
+
+    salesReport.forEach(order => {
+      order.orderedItem.forEach(item => {                                                                     
+        if (item.productStatus === "Delivered") {
+          console.log("order.couponDeduction ::::",order.couponDeduction)
+          if(order.couponDeduction == 0){
+          totalSalesAmount += item.totalProductAmount;
+        }else{
+          totalSalesAmount2 += item.totalProductAmount
+          totalSalesAmount=totalSalesAmount2-order.couponDeduction
+        }
+      }
+      });
+    });
+
+    let totalCouponDeduction=0
+    salesReport.forEach(item=>{
+      totalCouponDeduction += item.couponDeduction
+    })
+    let salesCount=0
+    salesReport.forEach(item=>{
+      salesCount++
+    })
+    let overAllOrderAmount=0
+    salesReport.forEach(item=>{
+      overAllOrderAmount+= item.orderAmount
+    })
+
+    let totalSalesCount = sc.length;
+    let totalPages = Math.ceil(totalSalesCount / perPage);
+
+    
+
+    res.render('admin/salesreport',{salesReport,totalSalesAmount,totalCouponDeduction,
+      salesCount,overAllOrderAmount, totalPages,
+      currentPage: page}) 
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+
+
+const yearlySalesReport= async(req,res)=>{
+  try {
+    const page = req.query.page || 1; 
+    const perPage = 10; 
+    const skip = (page - 1) * perPage;
+
+    const currentDate = new Date();
+    
+    const startOfYear = new Date(currentDate.getFullYear(), 0, 1);
+   
+    const endOfYear = new Date(currentDate.getFullYear(), 11, 31);
+
+    
+    const salesReport = await order.find({
+        shippingDate: { $gte: startOfYear, $lte: endOfYear }
+    }).sort({_id:-1}).skip(skip)
+    .limit(perPage);
+
+    let sc=  await order.find({
+      shippingDate: { $gte: startOfYear, $lte: endOfYear }
+  }).sort({_id:-1})
+
+    let totalSalesAmount = 0;
+    let totalSalesAmount2 = 0;
+    
+    
+
+    salesReport.forEach(order => {
+      order.orderedItem.forEach(item => {
+        if (item.productStatus === "Delivered") {
+          console.log("order.couponDeduction ::::",order.couponDeduction)
+          if(order.couponDeduction == 0){
+          totalSalesAmount += item.totalProductAmount;
+        }else{
+          totalSalesAmount2 += item.totalProductAmount
+          totalSalesAmount=totalSalesAmount2-order.couponDeduction
+        }
+      }
+      });
+    });
+
+    let totalCouponDeduction=0
+    salesReport.forEach(item=>{
+      totalCouponDeduction += item.couponDeduction
+    })
+    let salesCount=0
+    salesReport.forEach(item=>{
+      salesCount++
+    })
+    let overAllOrderAmount=0
+    salesReport.forEach(item=>{
+      overAllOrderAmount+= item.orderAmount
+    })
+
+    let totalSalesCount = sc.length;
+    const totalPages = Math.ceil(totalSalesCount / perPage);
+
+    res.render('admin/salesreport',{salesReport,totalSalesAmount,totalCouponDeduction,
+      salesCount,overAllOrderAmount, totalPages,
+      currentPage: page}) 
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
 
 
 const filterCustomDate= async (req,res)=>{
@@ -1044,16 +1349,11 @@ const filterCustomDate= async (req,res)=>{
     return shippingDate >= new Date(startDate) && shippingDate < adjustedEndDate;
 });
 
-const pageSize = 10;
-const totalPages = Math.ceil(filteredSalesReport.length / pageSize);
-const page = parseInt(req.query.page) || 1; 
-const startIndex = (page - 1) * pageSize;
-const endIndex = page * pageSize;
-
-const filteredSalesReportPage = filteredSalesReport.slice(startIndex, endIndex);
 
 
-res.json({ filteredSalesReport: filteredSalesReportPage, totalPages, page });
+
+
+res.json({ filteredSalesReport });
 
   } catch (error) {
     console.log(error.message)
@@ -1111,34 +1411,80 @@ const downloadSalesReport = async (req, res) => {
 
 
 
+
 const graphData = async (req, res) => {
   try {
+    const { year, type } = req.body;
+
+    if (type === 'month') {
+      
+      const salesData = Array(12).fill(0);
+      const revenueData = Array(12).fill(0);
+
      
-    const allData= await order.find().populate("orderedItem.productId").populate("deliveryAddress").populate("userId").sort({_id:-1});
-    const {requestData}= req.body
+      const startDate = new Date(year, 0, 1);
+      const endDate = new Date(year, 11, 31, 23, 59, 59);
+      const allData = await order.find({
+        shippingDate: { $gte: startDate, $lte: endDate }
+      }).populate("orderedItem.productId").populate("deliveryAddress").populate("userId").sort({_id:-1});
 
-       console.log("______________________________________")
-        console.log(requestData)
+      
+      allData.forEach(item => {
+        const month = item.shippingDate.getMonth();
+        salesData[month] += item.orderAmount;
+        if (item.paymentStatus === "Payment Successfull") {
+          revenueData[month] += item.orderAmount;
+        }
+      });
+
+     
+      res.json({ labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'], salesData, revenueData });
+    } else if (type === 'year') {
+      if (year === "2024") {
        
-        console.log("______________________________________")
+        const currentYear = new Date().getFullYear();
+        const pastYears = Array.from({ length: 5 }, (_, i) => currentYear - i);
+        const salesData = Array(5).fill(0);
+        const revenueData = Array(5).fill(0);
 
+       
+        for (let i = 0; i < 5; i++) {
+          const startDate = new Date(pastYears[i], 0, 1);
+          const endDate = new Date(pastYears[i], 11, 31, 23, 59, 59);
+          const allData = await order.find({
+            shippingDate: { $gte: startDate, $lte: endDate }
+          }).populate("orderedItem.productId").populate("deliveryAddress").populate("userId").sort({_id:-1});
+
+          allData.forEach(item => {
+            salesData[i] += item.orderAmount;
+            if (item.paymentStatus === "Payment Successfull") {
+              revenueData[i] += item.orderAmount;
+            }
+          });
+        }
+
+  
+        res.json({ labels: pastYears.map(String), salesData, revenueData });
+      } else {
+        res.status(400).json({ error: 'Invalid year provided.' });
+      }
+    } else {
+      res.status(400).json({ error: 'Invalid type provided.' });
+    }
   } catch (error) {
-      console.log(error.message);
-      res.status(500).json({ error: 'Failed to generate sales report.' });
+    console.log(error.message);
+    res.status(500).json({ error: 'Failed to generate sales report.' });
   }
-}
+};
+
+
+
 
 const approveRetrunRequest = async (req, res) => {
   try {
      
     let {text, decision,productId,orderId,userId,totalProductAmount,quantity}= req.body
-    console.log("______________________________________")
-    console.log(userId)
-    console.log(totalProductAmount)
-    console.log(quantity)
-   
-   
-    console.log("______________________________________")
+  
 
     if(decision==="approve"){
        await order.findOneAndUpdate(
@@ -1178,12 +1524,21 @@ const approveRetrunRequest = async (req, res) => {
        res.json({message :"updated successsfully"})
 
   } catch (error) {
-      console.log(error.message);
+      console.log(error.message)
       res.status(500).json({ error: 'Failed to generate sales report.' });
   }
 }
 
+const deleteOffer= async (req,res)=>{
+  try {
+    const {offerId}=req.body
 
+    await Offer.findByIdAndDelete({_id:offerId})
+    res.json({message:"success"})
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 // --------------------------------------------End Load UsersList -------------------------------------------
 
 // ------------------------------------------------End--------------------------------------------------------
@@ -1219,12 +1574,16 @@ module.exports = {
   addNewOffer,
   selectOfferType,
   totalSalesReport,
-  filterSalesReport,
+  dailySalesReport,
+  weeklySalesReport,
+  monthlySalesReport,
+  yearlySalesReport,
   filterCustomDate,
   brandManagement,
   addNewBrand,
   downloadSalesReport,
   graphData,
-  approveRetrunRequest
+  approveRetrunRequest,
+  deleteOffer
  
 };

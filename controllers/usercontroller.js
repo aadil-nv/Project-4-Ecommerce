@@ -372,20 +372,48 @@ const backToUserHome = async (req, res) => {
 
 // ----------------------------------------------Loading ShopPage-------------------------------------------
 
-const loadShopPage = async (req, res) => {
+// const loadShopPage = async (req, res) => {
+//   try {
+//     const productData = await Products.find().populate("offerId");
+//     const categoryData = await Category.find()
+   
+//     res.render("user/shop", { User, productData,categoryData});
+//   } catch (error) {
+//     console.log(error.message);
+//   }
+// };
+// Controller function for loading the shop page with pagination
+const loadShopPage= async(req, res)=> {
   try {
-    const productData = await Products.find().populate("offerId");
+    const productsPerPage = 12;
+    let currentPage = parseInt(req.query.page) || 1;
+
+    const totalProducts = await Products.countDocuments();
+
+
+    const totalPages = Math.ceil(totalProducts / productsPerPage);
     const categoryData = await Category.find()
-    console.log("77777777777777777777777777777")
-    console.log(categoryData)
-    console.log("77777777777777777777777777777")
+
+    if (currentPage < 1) {
+        currentPage = 1;
+    } else if (currentPage > totalPages) {
+        currentPage = totalPages;
+    }
+
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const endIndex = Math.min(startIndex + productsPerPage, totalProducts);
+
+    const productData = await Products.find().populate("offerId").skip(startIndex).limit(productsPerPage);
+
+   
+    res.render("user/shop", { User, productData, categoryData, currentPage, totalPages });
+} catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+}
+}
 
 
-    res.render("user/shop", { User, productData,categoryData});
-  } catch (error) {
-    console.log(error.message);
-  }
-};
 
 // ----------------------------------------------End--------------------------------------------
 
@@ -417,7 +445,7 @@ const loadContactPage = async (req, res) => {
 const loadProductTab = async (req, res) => {
   try {
     const productId = req.params.id;
-    const savedData = await Products.findById(productId);
+    const savedData = await Products.findById(productId).populate("offerId");
 
     if (savedData) {
       return res.render("user/producttab", { savedData: savedData });
@@ -436,7 +464,7 @@ const loadGoogleAuth = async (req, res) => {
   try {
     const ProductData = await Products.find();
     const gUser = req.user;
-    console.log("==================guser=========================",gUser)
+    
     if (gUser) {
       req.session.user = gUser._id;
       res.redirect("/");
@@ -455,47 +483,17 @@ const loadViewCart = async (req, res) => {
 
     const cartDetiles = await Cart.find({ userId: user }).populate("products.productId").populate({path:'products.productId',populate:{path:"offerId",model:"offer"}})
 
-    let offerId = null;
-  
-    cartDetiles.forEach((item) => {
-      item.products.forEach((product) => {
-        if (product.productId && product.productId.offerId) {
-          offerId = product.productId.offerId;
-        
-        }
-      });
-    });
-
-    let offerPercentage = 0;
-    if (offerId) {
-      try {
-        const offerData = await Offer.findById(offerId);
-        if (offerData) {
-          offerPercentage = offerData.percentage;
-          
-          console.log("=========offerPercentage=============="+offerPercentage)
-        } else {
-          console.log("Offer not found with ID:", offerId);
-        }
-      } catch (error) {
-        console.error("Error fetching offer:", error);
-      }
-    }
+   
     
     let total = 0;
     cartDetiles .forEach((item) => {
-      item.products.forEach((product) => {
-        total += product.quantity * product.productId.productprice;
-      });
+       
+        total+=item.total
+     
     });
 
-    let discountedTotal = total
-    if (offerPercentage) {
 
-      discountedTotal *= (100 - offerPercentage) / 100
-    }
-
-    res.render("user/cart", { cartDetiles, total :discountedTotal});
+    res.render("user/cart", { cartDetiles, total});
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal Server Error");
@@ -679,22 +677,24 @@ const addProductInCart = async (req, res) => {
     const productId = req.params.id;
     const userId = req.session.user;
 
-    const existingProduct = await Cart.findOne({
-      userId: userId,
-      "products.productId": productId,});
+    const existingProduct = await Cart.findOne({userId: userId,"products.productId": productId,});
+    const productData2 = await Products.findById(productId).populate("offerId");
+
+    if (productData2.productquadity === 0) {
+      return res.status(400).json({ message: "Product is out of stock" });
+    }
 
     if (existingProduct) {
       return res.status(400).json({ message: "Product already in cart" });
     }
 
     const productData = await Products.findById(productId).populate("offerId")
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
     let totalPrice = productData.productprice;
+    
     if (productData.offerId) {
       const offerPercentage = productData.offerId.percentage;
       totalPrice = totalPrice * (100 - offerPercentage) / 100;
     }
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
     
     const add = await Cart.findOneAndUpdate(
       { userId: req.session.user },
@@ -703,11 +703,6 @@ const addProductInCart = async (req, res) => {
       },
       { new: true, upsert: true });
 
-    // await Cart.findOneAndUpdate(
-    //   { userId: userId },
-    //   { $set: { total: productData.productprice } },
-    //   { new: true });
-    
 
     res.status(200).json({ message: "Product added to cart successfully" });
   } catch (error) {
@@ -726,14 +721,12 @@ const addProductInCart = async (req, res) => {
 const quantityControll = async (req, res) => {
   try {
     const { change, qty } = req.body;
-    console.log("qty",+qty)
-    console.log("change",
-    change)
+   
     const user = req.session.user;
     const product = await Products.findOne({ _id: change }).populate('offerId');
-    console.log("product",+product)
+    
     const productQuantity = product.productquadity;
-    console.log("productQuantity",+qty)
+   
 
     let total = qty * product.productprice;
 
@@ -786,6 +779,8 @@ const quantityControll = async (req, res) => {
 
 
 
+
+
 // ---------------------------------------------- End Increasing decresing quantity -------------------------------------------
 
 // ---------------------------------------------- Delte cartProduct -------------------------------------------
@@ -821,6 +816,7 @@ const deleteCartProduct = async (req, res) => {
       return res.status(404).json({ error: "Cart not found" });
     }
     res.status(200).json({ message: "deletion successfull" });
+
   } catch (error) {
     console.log(error.message);
   }
@@ -1163,39 +1159,92 @@ const orderCancel = async (req, res) => {
 
 const sortByPopularity = async (req, res) => {
   try {
-    const productData = await Products.find().populate("offerId").sort({ _id: -1 });
     const categoryData= await Category.find().sort({id:-1})
-    res.render("user/shop", { productData,categoryData });
+    const productsPerPage = 12;
+    let currentPage = parseInt(req.query.page) || 1;
+    const totalProducts = await Products.countDocuments();
+    
+    
+    const totalPages = Math.ceil(totalProducts / productsPerPage);
+    if (currentPage < 1) {
+      currentPage = 1;
+    } else if (currentPage > totalPages) {
+      currentPage = totalPages;
+    }
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const endIndex = Math.min(startIndex + productsPerPage, totalProducts)
+    
+    const productData = await Products.find().populate("offerId").sort({ _id: -1 }).skip(startIndex).limit(productsPerPage)
+  
+    res.render("user/shop", { productData,categoryData ,currentPage, totalPages });
   } catch (error) {
     console.log(error.message);
   }
 };
+
+
 const sortByPriceLowToHigh = async (req, res) => {
   try {
-    const productData = await Products.find().populate("offerId").sort({ productprice: 1 });
     const categoryData= await Category.find().sort({id:1})
-
-    res.render("user/shop", { productData ,categoryData});
+    const productsPerPage = 12;
+    let currentPage = parseInt(req.query.page) || 1;
+    const totalProducts = await Products.countDocuments();
+    const totalPages = Math.ceil(totalProducts / productsPerPage);
+    if (currentPage < 1) {
+      currentPage = 1;
+    } else if (currentPage > totalPages) {
+      currentPage = totalPages;
+    }
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const endIndex = Math.min(startIndex + productsPerPage, totalProducts)
+    
+    const productData = await Products.find().populate("offerId").sort({ productprice: 1 }).skip(startIndex).limit(productsPerPage)
+    res.render("user/shop", { productData ,categoryData,currentPage, totalPages});
   } catch (error) {
     console.log(error.message);
   }
 };
+
+
 const sortByPriceHighToLow = async (req, res) => {
   try {
-    const productData = await Products.find().populate("offerId").sort({ productprice: -1 });
     const categoryData= await Category.find().sort({id:-1})
-
-    res.render("user/shop", { productData, categoryData});
+    const productsPerPage = 12;
+    let currentPage = parseInt(req.query.page) || 1;
+    const totalProducts = await Products.countDocuments();
+    const totalPages = Math.ceil(totalProducts / productsPerPage);
+    if (currentPage < 1) {
+      currentPage = 1;
+    } else if (currentPage > totalPages) {
+      currentPage = totalPages;
+    }
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const endIndex = Math.min(startIndex + productsPerPage, totalProducts)
+    
+    const productData = await Products.find().populate("offerId").sort({ productprice: -1 }).skip(startIndex).limit(productsPerPage)
+    res.render("user/shop", { productData, categoryData,currentPage, totalPages});
   } catch (error) {
     console.log(error.message);
   }
 };
+
 const sortByAtoZ = async (req, res) => {
   try {
-    const productData = await Products.find().populate("offerId").sort({ productname: 1 });
     const categoryData= await Category.find().sort({id:1})
-
-    res.render("user/shop", { productData, categoryData});
+    const productsPerPage = 12;
+    let currentPage = parseInt(req.query.page) || 1;
+    const totalProducts = await Products.countDocuments();
+    const totalPages = Math.ceil(totalProducts / productsPerPage);
+    if (currentPage < 1) {
+      currentPage = 1;
+    } else if (currentPage > totalPages) {
+      currentPage = totalPages;
+    }
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const endIndex = Math.min(startIndex + productsPerPage, totalProducts)
+    
+    const productData = await Products.find().populate("offerId").sort({ productname: 1 }).skip(startIndex).limit(productsPerPage)
+    res.render("user/shop", { productData, categoryData,currentPage, totalPages});
   } catch (error) {
     console.log(error.message);
   }
@@ -1203,10 +1252,21 @@ const sortByAtoZ = async (req, res) => {
 
 const sortByZtoA = async (req, res) => {
   try {
-    const productData = await Products.find().populate("offerId").sort({ productname: -1 });
     const categoryData= await Category.find().sort({id:-1})
-
-    res.render("user/shop", { productData,categoryData });
+    const productsPerPage = 12;
+    let currentPage = parseInt(req.query.page) || 1;
+    const totalProducts = await Products.countDocuments();
+    const totalPages = Math.ceil(totalProducts / productsPerPage);
+    if (currentPage < 1) {
+      currentPage = 1;
+    } else if (currentPage > totalPages) {
+      currentPage = totalPages;
+    }
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const endIndex = Math.min(startIndex + productsPerPage, totalProducts)
+    
+    const productData = await Products.find().populate("offerId").sort({ productname: -1 }).skip(startIndex).limit(productsPerPage)
+    res.render("user/shop", { productData,categoryData,currentPage, totalPages });
   } catch (error) {
     console.log(error.message);
   }
@@ -1238,7 +1298,7 @@ const addProductInWishlist = async (req, res) => {
     });
 
     if (existingProduct) {
-      return res.json({ message: "Product already exists in wishlist" });
+      return res.json({ message: "exists" });
     }
     const wishlists = await Wishlist.findOneAndUpdate(
       { userId: req.session.user },
@@ -1252,7 +1312,7 @@ const addProductInWishlist = async (req, res) => {
       { new: true, upsert: true }
     );
 
-    res.json({ message: "product added to wishlist successfully" });
+    res.json({ message: "success" });
   } catch (error) {
     console.log(error.message);
   }
@@ -1499,7 +1559,6 @@ const removeCoupon= async (req,res)=>{
     const {couponCode}= req.body
     const userId= req.session.user
 
-    console.log("couponCode[[[[[[[[",couponCode)
     const couponData= await Coupon.findOne({couponCode:couponCode})
 
     if (!couponData) {

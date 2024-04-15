@@ -129,10 +129,10 @@
                 <h2 class="content-title card-title">Dashboard Overview</h2>
                 <p>Whole data about your business here</p>
             </div>
-            <div>
+            <!-- <div>
                 <a href="#" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Create
                     report</a>
-            </div>
+            </div> -->
         </div>
         <div class="row">
             <div class="col-lg-3">
@@ -308,28 +308,28 @@
             <header class="card-header">
                 <h4 class="card-title">Latest orders</h4>
                 <div class="row align-items-center">
-
                     <div class="col-lg-6 col-6 col-md-3">
-                        <label>Enter Year</label>
-                        <input type="text" class="year" id="year">
-
-                        <button id="buttonyear"  >Yearly Data</button>
-                        <button id="buttonmonth"  >Monthly Data</button>
+                        <label for="year">Enter Year</label>
+                        <input type="text" class="form-control" id="year" placeholder="YYYY">
                     </div>
-
+                    <div class="col-lg-6 col-6 col-md-3">
+                        <button id="buttonmonth" class="btn btn-primary">Monthly Data</button>
+                        <button id="buttonyear" class="btn btn-primary">Yearly Data</button>
+                    </div>
                 </div>
+                
             </header>
             <div class="card-body">
                 <div class="chart-container">
                     <canvas id="lineChart"></canvas>
                 </div>
-                <!-- table-responsive end// -->
+              
             </div>
         </div>
 
 
     </section>
-    <!-- content-main end// -->
+   
     <footer class="main-footer font-xs">
         <div class="row pb-30 pt-15">
             <div class="col-sm-6">
@@ -357,22 +357,28 @@
     <script src="/adminpublic/adminlogin/js/custom-chart.js" type="text/javascript"></script>
 
     <script>
-       function fetchData() {
+
+
+document.getElementById('buttonmonth').addEventListener('click', function() {
     const year = document.getElementById('year').value;
-    let endpoint = '';
+    sendData(year, 'month');
+});
 
-    if (document.getElementById('buttonyear').clicked) {
-        endpoint = '/admin/graphdata';
-    } else if (document.getElementById('buttonmonth').clicked) {
-        endpoint = '/admin/graphdata';
-    }
+document.getElementById('buttonyear').addEventListener('click', function() {
+    const year = document.getElementById('year').value;
+    sendData(year, 'year');
+});
 
-    fetch(endpoint, {
+// Call sendData with default values for the current year and type 'month'
+sendData();
+
+function sendData(year = new Date().getFullYear(), type = 'month') {
+    fetch('/admin/graphdata', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ year })
+        body: JSON.stringify({ year, type })
     })
     .then(response => {
         if (!response.ok) {
@@ -381,42 +387,56 @@
         return response.json();
     })
     .then(data => {
-        console.log(data);
-        // Handle the response data
+        console.log("_______________________________")
+        console.log(data)
+        console.log("_______________________________")
+        renderChart(data);
     })
     .catch(error => {
         console.error('Error:', error);
     });
 }
 
-        const canvas = document.getElementById('lineChart');
-        const ctx = canvas.getContext('2d');
+const canvas = document.getElementById('lineChart');
+const ctx = canvas.getContext('2d');
+let lineChart = null; // Keep track of the chart instance
 
-        const lastMonthData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-            datasets: [{
-                label: 'Sales',
-                data: [65, 59, 80, 81, 56, 55, 40, 92, 15, 38, 78, 90],
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1
-            }, {
-                label: 'Revenue',
-                data: [800, 1000, 1200, 1300, 1100, 1500, 1400, 1600, 1000, 1600, 1200, 1300],
-                borderColor: 'rgb(255, 99, 132)',
-                tension: 0.1
-            }]
-        };
+function renderChart(data) {
+    console.log("******************************");
+    console.log(data.labels);
+    console.log("******************************");
+    const lastMonthData = {
+        labels: data.labels,
+        datasets: [{
+            label: 'Sales',
+            data: data.salesData,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0.1
+        }, {
+            label: 'Revenue',
+            data: data.revenueData,
+            borderColor: 'rgb(255, 99, 132)',
+            tension: 0.1
+        }]
+    };
 
-        // Create and render the line chart
-        const lineChart = new Chart(ctx, {
-            type: 'line',
-            data: lastMonthData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+    // Destroy existing chart instance if it exists
+    if (lineChart) {
+        lineChart.destroy();
+    }
+
+    // Create and render the line chart
+    lineChart = new Chart(ctx, {
+        type: 'line',
+        data: lastMonthData,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
-        });
+        }
+    });
+}
+
     </script>

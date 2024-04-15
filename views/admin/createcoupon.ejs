@@ -93,12 +93,26 @@
             }
 
             if (!couponDiscount.trim() || isNaN(couponDiscount.trim())) {
-                document.getElementById('couponDiscountError').innerHTML = 'Invalid entry !';
+                document.getElementById('couponDiscountError').innerHTML = 'Invalid entry!';
                 return;
-            } 
+            } else if (parseFloat(couponDiscount.trim()) > 4000) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Coupon Discount',
+                    text: 'Coupon Discount amount should be less than or equal to 4000.'
+                });
+                return;
+            }
 
             if (!couponMinAmount.trim() || isNaN(couponMinAmount.trim())) {
-                document.getElementById('couponMinAmountError').innerHTML = 'Invalid entry !';
+                document.getElementById('couponMinAmountError').innerHTML = 'Invalid entry!';
+                return;
+            } else if (parseFloat(couponMinAmount.trim()) > 4000) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Coupon Minimum Amount',
+                    text: 'Coupon Minimum Amount should be less than or equal to 4000.'
+                });
                 return;
             }
 
@@ -136,10 +150,10 @@
                             icon: "success",
                         });
                         setTimeout(() => {
-                            window.location.href='/admin/couponlist';
+                            window.location.href = '/admin/couponlist';
                         }, 1500);
 
-                    } else  {
+                    } else {
 
                         swal.fire({
                             title: "Error",
