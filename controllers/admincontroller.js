@@ -18,6 +18,7 @@ const puppeteer= require("puppeteer")
 const fs = require('fs');
 
 
+
 function getWeek(date) {
   const onejan = new Date(date.getFullYear(), 0, 1);
   const millisecsInDay = 86400000;
@@ -48,17 +49,24 @@ const adminid = {
   adminpassword: "12345",
 };
 
+
+
+
+
 const adminLogin = async (req, res) => {
   try {
+    const adminId=adminid
     const email = req.body.email;
     const password = req.body.password;
-
+    
+    
     if (adminid.adminemail === email && adminid.adminpassword === password) {
+     req.session.admin=adminId
       res.redirect("/admindashboard");
     } else {
-      return res.render("admin/adminlogin", {
+      return res.render("admin/adminlogin", { 
         message: "Email or Password were Incorrect",
-      });
+});
     }
   } catch (error) {
     console.log(error.meaasage);
@@ -1534,6 +1542,10 @@ const deleteOffer= async (req,res)=>{
     const {offerId}=req.body
 
     await Offer.findByIdAndDelete({_id:offerId})
+    await Products.updateMany(
+      { offerId: offerId },
+      { $unset: { offerId: "" } }
+    );
     res.json({message:"success"})
   } catch (error) {
     console.log(error.message)
@@ -1544,6 +1556,7 @@ const deleteOffer= async (req,res)=>{
 // ------------------------------------------------End--------------------------------------------------------
 
 module.exports = {
+  
   adminLogin,
   adminDashboard,
   adminUsersList,

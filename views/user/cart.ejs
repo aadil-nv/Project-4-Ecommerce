@@ -51,19 +51,60 @@
         button:nth-child(1):active {
             box-shadow: inset 4px 5px 10px rgba(0, 0, 0, 0.5);
         }
+        .swal2-popup {
+        width: 300px; 
+        height: 200px; 
+        font-size: 9px;
+        
+    }
+    @media (max-width:425px){
+        #tablemain{
+            width: 400px;
+        }
+        #grandtotal{
+            width: 60px;
+        }
+        
+    }
+    @media (max-width:768px){
+        #tablemain{
+            width: 400px;
+        }
+        #grandtotal{
+            width: 60px;
+        }
+        
+    }
+    @media (max-width:1024px){
+        #tablemain{
+            width: 400px;
+           
+        }
+        .container{
+            
+        }
+        
+       
+        
+        
+    }
+    @media (max-width:144px){
+      
+    }
+  
     </style>
 
     <div class="cart-area pt-100 pb-100">
-        <div class="container">
+        <div class="container" >
             <div class="row">
-                <div class="col-8">
-                    <form action="#">
-                        <div class="cart-table-content">
+                <div class="col-12 col-md-9 col-lg-8  col-xl-">
+                    <form action="#" >
+                        <div class="cart-table-content" id="cont1">
                             <div class="table-content table-responsive">
                                 <!----------------------------------------------------- CART TAB ------------------------------------------------------------------------------>
-                                <table style="width: 500px">
-                                    <thead>
-                                        <tr style="width: 300px">
+                                <table id="tablemain">
+                                    <thead  id="tablehead">
+                                        <tr id="tr1">
                                             <th class="width-thumbnail"></th>
                                             <th class="width-name">Product</th>
                                             <th class="width-price">Price</th>
@@ -111,7 +152,8 @@
 
                                                     </td>
 
-                                                    <% if(data.productId.productquadity> 0) {%>
+                                                    <input type="hidden" value="<%=data.productId.productquadity %>" id="product-quantity">
+                                                    <% if(data.productId.productquadity> 0||!data) {%>
 
                                                         <td class="cart-quality">
                                                             <div class="product-quality"
@@ -164,7 +206,7 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-4">
                                 <div class="cart-shiping-update-wrapper">
                                     <div class="cart-shiping-update btn-hover">
                                         <a style="margin-right: 50px" href="/shoppage">Continue Shopping</a>
@@ -181,9 +223,9 @@
                     </form>
                 </div>
 
-                <div class="col-4">
+                <div class="col-12 col-md-3 col-lg-4  col-xl-">
                     <div class="grand-total-wrap">
-                        <div class="grand-total-content">
+                        <div class="grand-total-content" id="grandtotal">
                             <h3>Subtotal
 
 
@@ -200,7 +242,7 @@
                         </div>
 
                         <div class="grand-total-btn btn-hover">
-                            <a class="btn theme-color" href="/checkoutpage">Proceed to Checkout</a>
+                            <a class="btn theme-color"  href="/checkoutpage" >Proceed to Checkout</a>
                         </div>
 
 
@@ -281,9 +323,41 @@
         }
 
 
+        document.querySelector('.theme-color').addEventListener('click', async function(event) {
+  event.preventDefault();
 
+  try {
+    const response = await fetch('/checkout-validation', {
+      method: 'GET',
+    });
 
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
 
+    const message = await response.text();
+    if (message === "Please remove out-of-stock items from the cart.") {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: message,
+      });
+    }else if(message === "Please ad Products in cart") {
+        Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: message,
+      });
+    }else{
+    window.location.href = "/checkoutpage";
+    }
+    
+  } catch (error) {
+    console.error('Error:', error);
+  }
+});
+
+       
     </script>
 
 

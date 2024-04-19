@@ -14,7 +14,7 @@ require("./middleware/passport");
 const passport = require("passport");
 
 app.use(flash());
-app.use(nocache());
+
 
 
 
@@ -33,7 +33,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(nocache());
 const userRoute = require("./routes/userRoute");
 app.use("/", userRoute);
 
@@ -42,10 +42,14 @@ const adminRoute = require("./routes/adminRoute");
 app.use("/", adminRoute);
 
 app.get("/adminlogin", (req, res) => {
-  res.render("admin/adminlogin");
+  if (req.session.admin) {
+    return res.redirect('/admindashboard');
+  } else {
+    res.render("admin/adminlogin");
+  }
 });
 //?-----------------------------------------------------------------------------
-app.get("*",(req,res)=>{
+app.get("*", (req, res) => {
   res.render('user/error404')
 })
 //?-----------------------------------------------------------------------------

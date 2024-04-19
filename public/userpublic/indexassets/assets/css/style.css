@@ -73,6 +73,7 @@
 .row > * {
   padding-right: 15px;
   padding-left: 15px;
+  font-family:  cursive;
 }
 
 .row.gx-0 > * {
@@ -101,7 +102,7 @@ body {
   position: relative;
   visibility: visible;
   color: #000000;
-  font-family: "Montserrat", sans-serif;
+  font-family: cursive;
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.5;
@@ -119,7 +120,7 @@ p {
   line-height: 24px;
   color: #535353;
   margin-bottom: 15px;
-  font-family: "Poppins", sans-serif;
+  font-family: cursive;
 }
 
 h1,
@@ -138,6 +139,7 @@ ul {
   list-style: outside none none;
   margin: 0;
   padding: 0;
+  
 }
 
 a,
@@ -791,7 +793,7 @@ textarea {
 .welcome-text p {
   color: #383837;
   margin: 0;
-  font-family: "Montserrat", sans-serif;
+  font-family: cursive;
 }
 
 .language-currency-wrap {
@@ -1127,6 +1129,7 @@ textarea {
 @media only screen and (max-width: 767px) {
   .header-action-wrap .header-action-style {
     margin-right: 7px;
+   
   }
 }
 
@@ -1135,7 +1138,7 @@ textarea {
 }
 
 .header-action-wrap .header-action-style a {
-  font-size: 23px;
+  font-size: 25px;
   line-height: 1;
   display: -webkit-box;
   display: -webkit-flex;
@@ -1150,6 +1153,7 @@ textarea {
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .header-action-wrap .header-action-cart {
     margin-right: 17px !important;
+    
   }
 }
 
@@ -1170,7 +1174,7 @@ textarea {
   display: inline-block;
   text-align: center;
   color: #ffffff;
-  font-family: "Poppins", sans-serif;
+  font-family:cursive;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -1205,13 +1209,13 @@ textarea {
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .header-height-1 {
-    min-height: 83px;
+    min-height: 70px;
   }
 }
 
 @media only screen and (max-width: 767px) {
   .header-height-1 {
-    min-height: 73px;
+    min-height: 70px;
   }
 }
 
@@ -1221,13 +1225,13 @@ textarea {
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .header-height-2 {
-    min-height: 85px;
+    min-height: 70px;
   }
 }
 
 @media only screen and (max-width: 767px) {
   .header-height-2 {
-    min-height: 75px;
+    min-height: 70px;
   }
 }
 
@@ -1884,7 +1888,7 @@ textarea {
 
 .slinky-theme-default .next::after {
   content: "\e649";
-  font-family: themify;
+  font-family: cursive;
   font-weight: 900;
   opacity: 1;
   -webkit-transition: all .3 ease 0s;
@@ -1900,7 +1904,7 @@ textarea {
 
 .slinky-theme-default .back::before {
   content: "\e649";
-  font-family: themify;
+  font-family: cursive;
   font-weight: 900;
   opacity: 1;
   -webkit-transition: all .3 ease 0s;
@@ -1916,7 +1920,7 @@ textarea {
 }
 
 .slinky-theme-default .back:hover::before {
-  font-family: themify;
+  font-family: cursive;
   background-color: #e97730;
   opacity: 1;
 }
@@ -2131,7 +2135,7 @@ textarea {
 .slider-content-1 h1 {
   font-size: 78px;
   line-height: 90px;
-  font-family: "Poppins", sans-serif;
+  font-family: cursive;
   margin: 19px 0 44px;
 }
 
@@ -2524,7 +2528,7 @@ textarea {
   color: #242424;
   line-height: 74px;
   margin: 9px 0 24px;
-  font-family: "Poppins", sans-serif;
+  font-family: cursive;
   z-index: 5;
   position: relative;
 }
@@ -2972,7 +2976,7 @@ textarea {
   line-height: 90px;
   margin: 6px 0 43px;
   color: #ffffff;
-  font-family: "Poppins", sans-serif;
+  font-family:cursive;
 }
 
 @media only screen and (min-width: 1366px) and (max-width: 1600px) {
@@ -3182,7 +3186,7 @@ textarea {
 .banner-wrap .banner-content-1 h3 {
   font-size: 24px;
   font-weight: 500;
-  font-family: "Poppins", sans-serif;
+  font-family:cursive;
   margin: 7px 0 15px;
 }
 
@@ -3506,7 +3510,7 @@ textarea {
   font-size: 70px;
   margin: 0;
   line-height: 1;
-  font-family: "Great Vibes", cursive;
+  font-family: cursive;
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
@@ -3535,7 +3539,7 @@ textarea {
   letter-spacing: 1.6px;
   display: inline-block;
   line-height: 1;
-  font-family: "Poppins", sans-serif;
+  font-family: cursive;
   position: relative;
 }
 
@@ -3594,7 +3598,7 @@ textarea {
   line-height: 55px;
   color: #ffffff;
   margin: 12px 0 29px;
-  font-family: "URWAbbeyW01";
+  font-family: cursive;
   letter-spacing: .5px;
 }
 
@@ -3749,7 +3753,7 @@ textarea {
 
 .banner-wrap .banner-content-10-position .banner-content-10 h3 {
   font-size: 70px;
-  font-family: "Great Vibes", cursive;
+  font-family: cursive;
   margin: 0;
 }
 
@@ -3775,7 +3779,7 @@ textarea {
   font-size: 16px;
   font-weight: 500;
   color: #e97730;
-  font-family: "Poppins", sans-serif;
+  font-family: cursive;
   text-transform: uppercase;
   display: block;
   margin: -15px 0 0;
@@ -3916,7 +3920,7 @@ textarea {
   font-size: 31px;
   margin: 0 0 6px;
   line-height: 1;
-  font-family: "Great Vibes", cursive;
+  font-family: cursive;
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
@@ -4000,7 +4004,7 @@ textarea {
 
 .btn-style-2 a {
   display: inline-block;
-  font-family: "Poppins", sans-serif;
+  font-family: cursive;
   z-index: 1;
 }
 
@@ -4285,7 +4289,7 @@ textarea {
   font-size: 72px;
   line-height: 67px;
   margin: 25px 0 40px;
-  font-family: "URWAbbeyW01";
+  font-family: cursive;
   color: #ffffff;
   -webkit-text-stroke: 4px #e97730;
 }
@@ -4293,7 +4297,7 @@ textarea {
 .banner-content-5 h1.font-montserrat {
   font-weight: bold;
   color: #000000;
-  font-family: "Montserrat", sans-serif;
+  font-family: cursive;
   -webkit-text-stroke: inherit;
   margin: 21px 0 15px;
 }
@@ -4499,7 +4503,7 @@ textarea {
   letter-spacing: .3px;
   margin: 0;
   font-weight: 600;
-  font-family: "Poppins", sans-serif;
+  font-family: cursive;
 }
 
 .section-border {
@@ -4728,7 +4732,7 @@ textarea {
 .timer-style-1 span {
   font-size: 16px;
   font-weight: 500;
-  font-family: "Poppins", sans-serif;
+  font-family: cursive;
   color: #ffffff;
   margin-right: 10px;
   line-height: 1;
@@ -4782,7 +4786,7 @@ textarea {
 .timer-style-1 .syotimer__body .syotimer-cell .syotimer-cell__value {
   font-size: 16px;
   font-weight: 500;
-  font-family: "Poppins", sans-serif;
+  font-family: cursive;
   color: #ffffff;
   line-height: 1;
 }
@@ -5211,7 +5215,7 @@ textarea {
 }
 
 .home-single-product-content p {
-  font-family: "Montserrat", sans-serif;
+  font-family: cursive;
   font-weight: 500;
   margin: 0;
 }
@@ -5329,7 +5333,7 @@ textarea {
 .product-color.product-details-color ul li a.active:before {
   position: absolute;
   content: "\e64d";
-  font-family: 'themify';
+  font-family: 'cursive';
   top: 50%;
   left: 50%;
   -webkit-transform: translateY(-50%) translateX(-50%);
@@ -5367,7 +5371,7 @@ textarea {
   font-size: 14px;
   color: #8f8f8f;
   padding: 0;
-  font-family: "Poppins", sans-serif;
+  font-family: cursive;
 }
 
 .product-quality > input::-moz-input-placeholder {

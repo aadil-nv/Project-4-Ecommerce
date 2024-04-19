@@ -61,7 +61,7 @@
 
 
         .progress-bar {
-            background-color: #6a47bc !important;
+            background-color: #9dbc47 !important;
         }
 
 
@@ -81,7 +81,7 @@
         }
 
         .card-footer {
-            background-color: #AB47BC;
+            background-color: #e97910;
             color: #fff;
         }
 
@@ -139,6 +139,19 @@
 .fa-circle.active {
     color: #28a745;
 }
+#invoisebutton{
+    width: 120px;
+    height: 40px;
+    border: none;
+    background-color: #ffffff;
+    color: rgb(14, 3, 65);
+    font-size: 13px;
+    margin-bottom: 30px;
+    margin-left: 30px;
+    border-radius: 10px;
+
+
+}
 
     </style>
 
@@ -147,7 +160,7 @@
     <!-- !-----------------------------------------------------------------------------------------------------------------------------------------------neworder -->
     
     <body>
-        <div class="invoice-box" id="invoiceContent" style="   max-width: 800px; margin: auto; padding: 30px; border: 1px solid #000000; box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); font-size: 16px; line-height: 24px; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; color: #555;">
+        <div class="invoice-box" id="invoiceContent" style="   max-width: 800px; margin: auto; padding: 30px; border: 1px solid #000000; box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); font-size: 16px; line-height: 24px; font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif; color: #555; display: none;">
             <table cellpadding="0" cellspacing="0" style="width: 100%; line-height: inherit; text-align: left;">
                 <tr class="top">
                     <td colspan="2">
@@ -432,27 +445,33 @@
                     </div>
                 </div>
 
-                <% orderData.forEach(item=>{ %>
-                    
-                    <% if(item.paymentStatus==="Payment Successfull") {%>
-                        <button onclick="downloadInvoice()">Download Invoice</button>
+                
 
-                    <% } %>
-                    <% }) %>
-
-                <div class="card-footer">
+                <div class="card-footer" style="height: 170px;">
                     <div class="jumbotron-fluid">
                         <div class="row justify-content-between ">
-                            <div class="col-sm-auto col-auto my-auto"><img class="img-fluid my-auto align-self-center " src="https://i.imgur.com/7q7gIzR.png" width="115" height="115"></div>
-                            <div class="col-auto my-auto "><h2 class="mb-0 font-weight-bold" >TOTAL PAYABLE</h2></div>
+                            <div class="col-sm-auto col-auto my-auto"><img class="img-fluid my-auto align-self-center " src="/userpublic/indexassets/assets/images/brand-logo/brand-logo-2.png" width="115" height="115"></div>
+                            <% orderData.forEach(item=>{ %>  
+                                <% if(item.paymentStatus==="Payment Successfull") {%>
+                            <div class="col-auto my-auto "><h2 class="mb-0 font-weight-bold" >TOTAL PAID</h2></div>
+                            <% }else{ %>
+                                <div class="col-auto my-auto "><h2 class="mb-0 font-weight-bold" >TOTAL PAYABLE</h2></div>
+
+                                <% } %>
+                            <% }) %>
                             <% orderData.forEach((item)=> { %>
                             <div class="col-auto my-auto ml-auto"><h1 class="display-3 " style="color: white;">&#8377; <%= item.orderAmount %></h1></div>
                             <% }) %>
                         </div>
-                        <div class="row mb-3 mt-3 mt-md-0">
-                            <div class="col-auto border-line"> <small class="text-white">PAN:AA02hDW7E</small></div>
-                            <div class="col-auto border-line"> <small class="text-white">CIN:UMMC20PTC </small></div>
-                            <div class="col-auto "><small class="text-white">GSTN:268FD07EXX </small> </div>
+                        <div class="row mb-3 mt-3 mt-md-0 ">
+                            <div class="col-auto "  style="padding-top: 10px;"> <small class="text-white">PAN:AA02hDW7E</small></div>
+                            <div class="col-auto "  style="padding-top: 10px;"> <small class="text-white">CIN:UMMC20PTC </small></div>
+                            <div class="col-auto "  style="padding-left: 30px;"><small class="text-white">
+                                <% orderData.forEach(item=>{ %>  
+                                    <% if(item.paymentStatus==="Payment Successfull") {%>
+                                        <button  id="invoisebutton"  onclick="downloadInvoice()">Download Invoice</button>
+                                    <% } %>
+                                    <% }) %> </small> </div>
                         </div>
                     </div>
                 </div>

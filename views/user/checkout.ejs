@@ -1,65 +1,75 @@
 <%- include('../partials/mainheader.ejs')%>
 
-    <style>
-        .data-cell {
-            padding-left: 50px;
-            padding-top: 20;
-        }
+<style>
+    .data-cell {
+        padding-left: 50px;
+        padding-top: 20;
+    }
 
-        .data-radio {
-            padding-top: 10px;
-            padding-right: 80px;
-        }
+    .data-radio {
+        padding-top: 10px;
+        padding-right: 80px;
+    }
 
-        .table-data {
-            padding-right: 200px;
-            overflow: hidden;
-            font-size: 11px;
-        }
+    .table-data {
+        padding-right: 200px;
+        overflow: hidden;
+        font-size: 11px;
+    }
 
-        .save-btn {
-            background-color: rgb(219, 99, 0);
-            border: none;
-            width: 150px;
-            height: 40px;
-        }
+    .save-btn {
+        background-color: rgb(219, 99, 0);
+        border: none;
+        width: 150px;
+        height: 40px;
+    }
 
-        .error-message {
-            color: red;
-        }
+    .error-message {
+        color: red;
+    }
 
-        #save {
-            background-color: orangered;
-            border: none;
-            height: 53px;
-        }
+    #save {
+        background-color: orangered;
+        border: none;
+        height: 53px;
+    }
 
-        #couponCodeInput {
-            width: 255px;
-            height: 41px;
-            border: 1px solid rgb(190, 204, 216);
-        }
+    #couponCodeInput {
+        width: 255px;
+        height: 41px;
+        border: 1px solid rgb(190, 204, 216);
+    }
 
-        #applyCoupon {
-            width: 100px;
-            height: 40px;
-            font-size: 11px;
-            background-color: black;
-            color: white;
-        }
+    #applyCoupon {
+        width: 100px;
+        height: 40px;
+        font-size: 11px;
+        background-color: black;
+        color: white;
+    }
 
-        #removeCoupon {
-            width: 100px;
-            height: 40px;
-            font-size: 11px;
-            background-color: rgb(223, 28, 28);
-            border: none;
-            color: white;
+    #removeCoupon {
+        width: 100px;
+        height: 40px;
+        font-size: 11px;
+        background-color: rgb(223, 28, 28);
+        border: none;
+        color: white;
+    }
+    @media (max-width:320px){
+        
+        .your-order-area{
+            max-width: 300px;
         }
-    </style>
+        .container{
+            width: 300px;
+        }
+    }
+    
+</style>
 
-    <div class="checkout-main-area  pt-70">
-        <div class="container">
+    <div class="checkout-main-area  pb-100 pt-100" >
+        <div class="container" style="padding-top: 40px;  ;">
             <div class="customer-zone mb-20" id="returningcustomer">
                 <p class="cart-page-title">
                     Returning customer?
@@ -281,22 +291,23 @@
                         </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-6 col-xl-6">
-                        <div class="your-order-area">
+                        <div class="your-order-area " >
                             <h3>Your order</h3>
-                            <div class="your-order-wrap gray-bg-4">
+                            <div class="your-order-wrap gray-bg-4" >
                                 <div class="your-order-info-wrap">
                                     <div class="your-order-info">
                                         <ul>
                                             <li>Product <span>Total</span></li>
                                         </ul>
                                     </div>
-                                    <% if(cartDetiles.length> 0){ %> <% cartDetiles[0].products.forEach((data)=>{ %>
+                                    <% if(cartDetiles.length> 0){ %>
+                                         <% cartDetiles[0].products.forEach((data)=>{ %>
                                             <div class="your-order-middle">
                                                 <ul>
                                                     <li>
-                                                        <%= data.productId.productname %>
+                                                        <%= data.productId.productname %>&nbsp;x&nbsp;(<%= data.quantity %>)
                                                             <span>
-                                                                <%= data.productId.productprice %>
+                                                                <%= data.totalPrice %>
                                                             </span>
                                                     </li>
                                                 </ul>
@@ -470,6 +481,8 @@
                 </div>
             </div>
         </div>
+
+        
         <!-----------------------------------------------------------------End  Moda --------------------------------------------------------------->
 
         <script>
@@ -528,7 +541,7 @@
                 let city = document.getElementById("city1").value;
 
                 var username1 = document.getElementById("username1").value.trim();
-                alert("fghj");
+              
                 if (!username1.match(/^[A-Za-z]+$/)) {
                     document.getElementById("usernameError3").innerHTML =
                         "Username can only contain letters!";

@@ -94,7 +94,7 @@
                     </li>
                     <li class="menu-item ">
                         <a class="menu-link" href='/admin/offerlist'>
-                            <i class="icon material-icons md-bookmark"></i>
+                            <i class="icon material-icons md-local_offer"></i>
                             <span class="text">Offer mangement</span>
                         </a>
                     </li>
@@ -108,6 +108,13 @@
                         <a class="menu-link" href='/admin/brandsmanagement'>
                             <i class="icon material-icons md-stars"></i>
                             <span class="text">Brands Management</span>
+                        </a>
+                    </li>
+                    <li class="menu-item ">
+                        <a class="menu-link" href='/adminlogin' onclick="confirmLogout(event)">
+                            <i class="icon material-icons md-exit_to_app"></i>
+                            
+                            <span class="text">Logout</span>
                         </a>
                     </li>
                    
@@ -176,5 +183,25 @@
                     </ul>
                 </div>
             </header>
+
+            <script>
+                 function confirmLogout(event) {
+        event.preventDefault(); // Prevent the default link action (navigation)
+
+        Swal.fire({
+            title: 'Logout',
+            text: 'Are you sure you want to logout?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Logout',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Perform logout action here
+                window.location.href = '/adminlogin'; // Example logout URL
+            }
+        });
+    }
+            </script>
 
   

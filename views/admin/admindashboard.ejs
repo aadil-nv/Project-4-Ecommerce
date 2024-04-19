@@ -101,26 +101,20 @@
         }
 
         #buttonmonth {
-            width: 90px;
-            height: 35px;
-            font-size: 12px;
-            border: none;
-            background-color: rgb(12, 179, 12);
+            margin-top: 20px;
+            background-color: #3BB77E;
             color: white;
         }
 
         #buttonyear {
-            width: 90px;
-            height: 35px;
-            font-size: 12px;
-            border: none;
-            background-color: rgb(37, 177, 37);
+            margin-top: 20px;
+            background-color: #3BB77E;
             color: white;
         }
 
         #year {
-            width: 200px;
-            height: 35px;
+            width: 220px;
+            height: 40px;
         }
     </style>
     <section class="content-main">
@@ -194,15 +188,7 @@
         </div>
 
         <div class="row">
-            <!-- <div class="col-xl-8 col-lg-12">
-                        <div class="card mb-4">
-                            <article class="card-body">
-                                <h5 class="card-title">Sale statistics</h5>
-                                <canvas id="myChart" height="120px"></canvas>
-                            </article>
-                        </div>
-                        
-                    </div> -->
+         
             <div class="col-xl-4 col-lg-12">
 
                 <div class="card mb-4" style="height: 200px;">
@@ -308,13 +294,13 @@
             <header class="card-header">
                 <h4 class="card-title">Latest orders</h4>
                 <div class="row align-items-center">
-                    <div class="col-lg-6 col-6 col-md-3">
+                    <div class="col-lg-3 col-1 col-md-3">
                         <label for="year">Enter Year</label>
-                        <input type="text" class="form-control" id="year" placeholder="YYYY">
+                        <input type="number" class="form-control" id="year" placeholder="YYYY">
                     </div>
-                    <div class="col-lg-6 col-6 col-md-3">
-                        <button id="buttonmonth" class="btn btn-primary">Monthly Data</button>
-                        <button id="buttonyear" class="btn btn-primary">Yearly Data</button>
+                    <div class="col-lg-6 col-12 col-md-3">
+                        <button id="buttonmonth" class="btn btn-primary">Monthly</button>
+                        <button id="buttonyear" class="btn btn-primary">Yearly</button>
                     </div>
                 </div>
                 
@@ -369,10 +355,13 @@ document.getElementById('buttonyear').addEventListener('click', function() {
     sendData(year, 'year');
 });
 
-// Call sendData with default values for the current year and type 'month'
+
+
 sendData();
 
 function sendData(year = new Date().getFullYear(), type = 'month') {
+    
+
     fetch('/admin/graphdata', {
         method: 'POST',
         headers: {
@@ -396,6 +385,7 @@ function sendData(year = new Date().getFullYear(), type = 'month') {
         console.error('Error:', error);
     });
 }
+
 
 const canvas = document.getElementById('lineChart');
 const ctx = canvas.getContext('2d');

@@ -1,13 +1,14 @@
 
 const User = require("../models/userModel");
 const Products = require("../models/productModel");
-
+const Cart = require("../models/cartModel");
 
 const isLogin = async (req, res, next) => {
     try {
         
          if (req.session.user) {
             res.locals.customer=true
+            
             
            next()
         }

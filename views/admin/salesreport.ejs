@@ -34,6 +34,9 @@
     .rounded {
         border-radius: 0;
     }
+    #downloadicon{
+        font-size: 25px;
+    }
 </style>
 
     <section class="content-main">
@@ -44,7 +47,7 @@
             </div>
             <div>
               
-                <a href="#" class="btn btn-primary btn-sm rounded" id="downloadBtn">Download Sales Report</a>
+                <a href="#" class="btn btn-primary btn-sm rounded" id="downloadBtn"><i class="text-muted material-icons md-post_add" id="downloadicon"></i>Create Report</a>
 
 
             </div>
@@ -95,9 +98,9 @@
                             </tr>
                         </thead>
 
+                        <tbody id="tablebody">
                         <% if(salesReport.length> 0) {%>
                             <% salesReport.forEach(item=>{ %>
-                                <tbody id="tablebody">
                                     <tr >
                                         <td>
                                             <%= item.shippingDate.toDateString() %>
@@ -126,9 +129,9 @@
 
                                     </tr>
 
-                                </tbody>
-                                <% }) %>
+                                    <% }) %>
                                     <% } %>
+                                </tbody>
                     </table>
                 </div>
                 <!-- table-responsive //end -->
@@ -218,9 +221,9 @@
                         </tr>
                     </thead>
 
+                    <tbody id="tablebody">
                     <% if(salesReport.length> 0) {%>
                         <% salesReport.forEach(item=>{ %>
-                            <tbody id="tablebody">
                                 <tr >
                                     <td>
                                         <%= item.shippingDate.toDateString() %>
@@ -249,9 +252,9 @@
 
                                 </tr>
 
-                            </tbody>
-                            <% }) %>
+                                <% }) %>
                                 <% } %>
+                            </tbody>
                 </table>
             </div>
             <!-- table-responsive //end -->
@@ -374,6 +377,7 @@ function redirectToSelectedPage() {
 
         // Clear existing table rows
         tableBody.innerHTML = '';
+        console.log("table body cleared");
 
     // Add table headers
     const headerRow = document.getElementById('thead');
@@ -386,8 +390,8 @@ function redirectToSelectedPage() {
         <th scope="col">Payment Method</th>
         <th scope="col" class="text-end">Total</th>
     `;
-    tableHead.appendChild(headerRow);
-
+    // tableHead.appendChild(headerRow);
+        console.log("CUSTOM : ",customData.filteredSalesReport);
     // Populate table with data
     if (customData.filteredSalesReport.length > 0) {
         customData.filteredSalesReport.forEach(item => {

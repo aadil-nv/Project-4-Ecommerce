@@ -84,7 +84,6 @@ user_route.get("/productsatoz",userAuth.isLogin,userAuth.isUserBlock, usercontro
 user_route.get("/productsztoa",userAuth.isLogin,userAuth.isUserBlock, usercontroller.sortByZtoA);
 
 
-//todo-----------------------------------------------week3 Project---------------------------------------------------
 
 user_route.get("/user/wishlist",userAuth.isLogin,userAuth.isUserBlock,usercontroller.loadWishliist)
 user_route.post("/user/wishlist",userAuth.isLogin,userAuth.isUserBlock,usercontroller.addProductInWishlist)
@@ -102,18 +101,9 @@ user_route.post("/user/sendcategoryname",userAuth.isLogin,userAuth.isUserBlock,u
 
 user_route.post("/user/removecoupon",userAuth.isLogin,userAuth.isUserBlock,usercontroller.removeCoupon)
 
+user_route.get("/checkout-validation",userAuth.isLogin,userAuth.isUserBlock,usercontroller.proceedToCheckout )
 
-
-
-
-
-
-
-
-
-
-
-
+user_route.get("/headercarrcount",userAuth.isLogin,userAuth.isUserBlock,usercontroller.headerCount )
 
 
 
