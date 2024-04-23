@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
-mongoose.connect("mongodb+srv://adilev2000:zlUXzVPoyvBdHnue@cluster0.nlcjdgg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
+mongoose.connect("mongodb+srv://adilev2000:zlUXzVPoyvBdHnue@cluster0.nlcjdgg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+.then((data)=>{
+  console.log('mongodb Connected',data.connection.host)
+})
 
 const { render } = require("ejs");
 const flash = require('express-flash')
