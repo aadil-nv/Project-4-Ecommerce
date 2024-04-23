@@ -33,6 +33,13 @@
 
     <body>
         <style>
+            #logoutButton{
+                border: none;
+                width: 70px;
+                height: 35px;
+                background-color: white;
+                color: red;
+            }
             
         </style>
         
@@ -111,11 +118,14 @@
                         </a>
                     </li>
                     <li class="menu-item ">
-                        <a class="menu-link" href='/adminlogin' onclick="confirmLogout(event)">
-                            <i class="icon material-icons md-exit_to_app"></i>
-                            
-                            <span class="text">Logout</span>
-                        </a>
+                        <form action="/admin/adminlogout" method="post"  id="logoutForm">
+                            <p class="menu-link"  >
+                                <i class="icon material-icons md-exit_to_app"></i>
+                                
+                                <button type="submit" class="text"  id="logoutButton">Logout</button>
+                            </p>
+
+                        </form>
                     </li>
                    
                    
@@ -185,9 +195,11 @@
             </header>
 
             <script>
-                 function confirmLogout(event) {
-        event.preventDefault(); // Prevent the default link action (navigation)
-
+                document.addEventListener('DOMContentLoaded', function() {
+    // Function to handle form submission
+    function handleSubmit(event) {
+        event.preventDefault(); // Prevent default form submission
+        
         Swal.fire({
             title: 'Logout',
             text: 'Are you sure you want to logout?',
@@ -197,11 +209,15 @@
             cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Perform logout action here
-                window.location.href = '/adminlogin'; // Example logout URL
+                // If confirmed, submit the form
+                document.getElementById('logoutForm').submit();
             }
         });
     }
+
+    // Attach event listener to form submission
+    document.getElementById('logoutForm').addEventListener('submit', handleSubmit);
+});
             </script>
 
   

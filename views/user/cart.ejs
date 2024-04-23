@@ -1,364 +1,352 @@
 <%- include('../partials/mainheader.ejs')%>
 
-    <!-- mini cart start -->
-    <style>
-        .input-group {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: row;
-            box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.3), 4px 7px 15px rgba(0, 0, 0, 0.2),
-                9px 15px 25px rgba(0, 0, 0, 0.2);
-            border-radius: 15px;
-            width: 120px;
-        }
-
-        button,
-        input {
-            outline: none;
-            border: none;
-            padding: 14px;
-            font-size: 12px;
-        }
-
-        input {
-            width: 50px;
-            text-align: center;
-        }
-
-        button {
-            cursor: pointer;
-        }
-
-        button:nth-last-child(1) {
-            border-bottom-right-radius: 15px;
-            border-top-right-radius: 15px;
-        }
-
-        button:nth-child(1) {
-            border-bottom-left-radius: 15px;
-            border-top-left-radius: 15px;
-        }
-
-        button:hover {
-            background-color: #e6e6e6;
-        }
-
-        button:nth-last-child(1):active {
-            box-shadow: inset -4px 5px 10px rgba(0, 0, 0, 0.5);
-        }
-
-        button:nth-child(1):active {
-            box-shadow: inset 4px 5px 10px rgba(0, 0, 0, 0.5);
-        }
-        .swal2-popup {
-        width: 300px; 
-        height: 200px; 
-        font-size: 9px;
-        
-    }
-    @media (max-width:425px){
-        #tablemain{
-            width: 400px;
-        }
-        #grandtotal{
-            width: 60px;
-        }
-        
-    }
-    @media (max-width:768px){
-        #tablemain{
-            width: 400px;
-        }
-        #grandtotal{
-            width: 60px;
-        }
-        
-    }
-    @media (max-width:1024px){
-        #tablemain{
-            width: 400px;
-           
-        }
-        .container{
-            
-        }
-        
-       
-        
-        
-    }
-    @media (max-width:144px){
-      
-    }
-  
-    </style>
-
-    <div class="cart-area pt-100 pb-100">
-        <div class="container" >
-            <div class="row">
-                <div class="col-12 col-md-9 col-lg-8  col-xl-">
-                    <form action="#" >
-                        <div class="cart-table-content" id="cont1">
-                            <div class="table-content table-responsive">
-                                <!----------------------------------------------------- CART TAB ------------------------------------------------------------------------------>
-                                <table id="tablemain">
-                                    <thead  id="tablehead">
-                                        <tr id="tr1">
-                                            <th class="width-thumbnail"></th>
-                                            <th class="width-name">Product</th>
-                                            <th class="width-price">Price</th>
-                                            <th class="width-quantity">Quantity</th>
-                                            <!-- <th class="width-subtotal">Subtotal</th> -->
-                                            <th class="width-remove"></th>
-                                        </tr>
-                                    </thead>
-                                    <% if(cartDetiles.length> 0){ %>
-                                        <% cartDetiles[0].products.forEach((data,index)=>{
-                                            %>
-
-                                            <tbody>
-                                                <tr>
-                                                    <td class="product-thumbnail">
-                                                        <a href="product-details.html"><img
-                                                                src="/uploads/<%= data.productId.productimage[0] %>"
-                                                                alt="" /></a>
-                                                    </td>
-
-                                                    <td class="product-name">
-                                                        <h5>
-                                                            <a href="product-details.html">
-                                                                <%= data.productId.productname %>
-
-                                                            </a>
-                                                        </h5>
-                                                    </td>
-
-                                                    <td class="product-cart-price">
-                                                        <% if(!data.productId.offerId){%>
-                                                            <span class="amount">
-                                                                <%= data.productId.productprice %>
-                                                            </span>
-
-
-                                                            <%}else{%>
-                                                                <% const discountedPrice=data.productId.productprice - (
-                                                                    data.productId.productprice *
-                                                                    data.productId.offerId?.percentage / 100);%>
-                                                                    <span class="amount">
-                                                                        <%= discountedPrice.toFixed(0) %>
-                                                                    </span>
-                                                                    <%}%>
-
-                                                    </td>
-
-                                                    <input type="hidden" value="<%=data.productId.productquadity %>" id="product-quantity">
-                                                    <% if(data.productId.productquadity> 0||!data) {%>
-
-                                                        <td class="cart-quality">
-                                                            <div class="product-quality"
-                                                                onclick="qtyControl(this,'<%=data.productId._id %>','<%= index %>')">
-                                                                <input class="cart-plus-minus input-text qty text"
-                                                                    name="quantity"  value="<%=data.quantity %>"
-                                                                    
-                                                                    onchange="handleQuantityChange('<%= index %>')"
-                                                                    readonly />
-                                                            </div>
-                                                            <p id="stock<%= index %>" style="color: red"></p>
-                                                        </td>
-
-                                                        <%}else{%>
-
-                                                            <td class="cart-quality">
-                                                                <p style="color: red">out of Stock</p>
-                                                                <div class="product-quality"
-                                                                    onclick="qtyControl(this,'<%=data.productId._id %>')"
-                                                                    style="display: none">
-                                                                    <input class="cart-plus-minus input-text qty text"
-                                                                        name="quantity"  value="<%=data.quantity %>" />
-
-
-                                                                </div>
-                                                                <p id="stock" style="color: red"></p>
-                                                            </td>
-                                                            <%}%>
-
-                                                                <td class="product-remove">
-                                                                    <a
-                                                                        onclick="removeProduct('<%= data.productId._id %>')"><i
-                                                                            class="ti-trash"></i></a>
-
-                                                                </td>
-                                                </tr>
-                                                <% })%>
-                                                    <%}else{%>
-
-                                                        <td colspan="7" class="text-center"><a href="/shoppage"
-                                                                id="nocart">Add Products</a></td>
-
-
-
-                                                        <%}%>
-                                            </tbody>
-                                </table>
-
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-4">
-                                <div class="cart-shiping-update-wrapper">
-                                    <div class="cart-shiping-update btn-hover">
-                                        <a style="margin-right: 50px" href="/shoppage">Continue Shopping</a>
-                                    </div>
-                                    <div class="cart-clear-wrap">
-                                        <div class="cart-clear btn-hover">
-                                            <button>Update Cart</button>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="col-12 col-md-3 col-lg-4  col-xl-">
-                    <div class="grand-total-wrap">
-                        <div class="grand-total-content" id="grandtotal">
-                            <h3>Subtotal
-
-
-                                <span id="total">₹<%=total.toFixed() %></span>
-                            </h3>
-                            <br />
-                            <h6>Discout <span>₹900</span></h6>
-                            <h6>Coupons for you <span>₹1,100</span></h6>
-                            <h6>Product GST <span>₹1,191</span></h6>
-                            <h6>Delivery Charges <span>₹100</span></h6>
-
-                            <hr />
-
-                        </div>
-
-                        <div class="grand-total-btn btn-hover">
-                            <a class="btn theme-color"  href="/checkoutpage" >Proceed to Checkout</a>
-                        </div>
-
-
-
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
-
-    <script>
-  
-
-        function qtyControl(current, change, index) {
-            console.log("change", change)
-            const take = current.querySelector("input");
-            const sQuantity = current.querySelector("input").value;
-            
-
-            let message = document.getElementById(`stock${index}`);
-            if (parseInt(sQuantity) > 5) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Quantity Limit Exceeded',
-                    text: 'You can select a maximum of 5 quantities.'
-                });
-                return;
-            }
-
-            fetch("/viewcart", {
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ change, qty: take.value }),
-            })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error("Network response was not ok");
-                    }
-                    return response.json();
-                })
-                .then((data) => {
-                    console.log(data);
-                    if (data.message) {
-                        message.style.display = "block";
-                        message.innerHTML = data.message;
-                        
-                    } else {
-                        message.style.display = "none";
-                        document.getElementById("total").innerHTML = data.totalAmount;
-                    }
-                });
-
-        }
-    </script>
-    <script>
-        function removeProduct(id) {
-            fetch(`/viewcart/${id}`, {
-                method: "DELETE",
-                headers: { "Content-Type": "application/json" },
-            })
-                .then((response) => {
-
-                    return response.json();
-                })
-                .then((data) => {
-                    location.reload();
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-
-
-
-        }
-
-
-        document.querySelector('.theme-color').addEventListener('click', async function(event) {
-  event.preventDefault();
-
-  try {
-    const response = await fetch('/checkout-validation', {
-      method: 'GET',
-    });
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    const message = await response.text();
-    if (message === "Please remove out-of-stock items from the cart.") {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: message,
-      });
-    }else if(message === "Please ad Products in cart") {
-        Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: message,
-      });
-    }else{
-    window.location.href = "/checkoutpage";
-    }
-    
-  } catch (error) {
-    console.error('Error:', error);
+<!-- mini cart start -->
+<style>
+  .input-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    box-shadow: 2px 3px 4px rgba(0, 0, 0, 0.3), 4px 7px 15px rgba(0, 0, 0, 0.2),
+      9px 15px 25px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    width: 120px;
   }
-});
 
-       
-    </script>
+  button,
+  input {
+    outline: none;
+    border: none;
+    padding: 14px;
+    font-size: 12px;
+  }
 
+  input {
+    width: 50px;
+    text-align: center;
+  }
 
-    <%- include('../partials/mainfooter.ejs')%>
+  button {
+    cursor: pointer;
+  }
+
+  button:nth-last-child(1) {
+    border-bottom-right-radius: 15px;
+    border-top-right-radius: 15px;
+  }
+
+  button:nth-child(1) {
+    border-bottom-left-radius: 15px;
+    border-top-left-radius: 15px;
+  }
+
+  button:hover {
+    background-color: #e6e6e6;
+  }
+
+  button:nth-last-child(1):active {
+    box-shadow: inset -4px 5px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  button:nth-child(1):active {
+    box-shadow: inset 4px 5px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .swal2-popup {
+    width: 300px;
+    height: 200px;
+    font-size: 9px;
+  }
+
+  @media (max-width: 425px) {
+    #tablemain {
+      width: 400px;
+    }
+
+    #grandtotal {
+      width: 60px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    #tablemain {
+      width: 400px;
+    }
+
+    #grandtotal {
+      width: 60px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    #tablemain {
+      width: 400px;
+    }
+
+    .container {
+    }
+  }
+
+  @media (max-width: 144px) {
+  }
+</style>
+
+<div class="cart-area pt-100 pb-100">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-9 col-lg-8 col-xl-">
+        <form action="#">
+          <div class="cart-table-content" id="cont1">
+            <div class="table-content table-responsive">
+              <!----------------------------------------------------- CART TAB ------------------------------------------------------------------------------>
+              <table id="tablemain">
+                <thead id="tablehead">
+                  <tr id="tr1">
+                    <th class="width-thumbnail"></th>
+                    <th class="width-name">Product</th>
+                    <th class="width-price">Price</th>
+                    <th class="width-quantity">Quantity</th>
+                    <!-- <th class="width-subtotal">Subtotal</th> -->
+                    <th class="width-remove"></th>
+                  </tr>
+                </thead>
+                <% if(cartDetiles.length> 0){ %> <%
+                cartDetiles[0].products.forEach((data,index)=>{ %>
+
+                <tbody>
+                  <tr>
+                    <td class="product-thumbnail">
+                      <a href="product-details.html"
+                        ><img
+                          src="/uploads/<%= data.productId.productimage[0] %>"
+                          alt=""
+                      /></a>
+                    </td>
+
+                    <td class="product-name">
+                      <h5>
+                        <a href="product-details.html">
+                          <%= data.productId.productname %>
+                        </a>
+                      </h5>
+                    </td>
+
+                    <td class="product-cart-price">
+                      <% if(!data.productId.offerId){%>
+                      <span class="amount">
+                        <%= data.productId.productprice %>
+                      </span>
+
+                      <%}else{%> <% const
+                      discountedPrice=data.productId.productprice - (
+                      data.productId.productprice *
+                      data.productId.offerId?.percentage / 100);%>
+                      <span class="amount">
+                        <%= discountedPrice.toFixed(0) %>
+                      </span>
+                      <%}%>
+                    </td>
+
+                    <input
+                      type="hidden"
+                      value="<%=data.productId.productquadity %>"
+                      id="product-quantity"
+                    />
+                    <% if(data.productId.productquadity> 0||!data) {%>
+
+                    <td class="cart-quality">
+                      <div
+                        class="product-quality"
+                        onclick="qtyControl(this,'<%=data.productId._id %>','<%= index %>')"
+                      >
+                        <input
+                          class="cart-plus-minus input-text qty text"
+                          name="quantity"
+                          value="<%=data.quantity %>"
+                          onchange="handleQuantityChange('<%= index %>')"
+                          readonly
+                        />
+                      </div>
+                      <p id="stock<%= index %>" style="color: red"></p>
+                    </td>
+
+                    <%}else{%>
+
+                    <td class="cart-quality">
+                      <p style="color: red">out of Stock</p>
+                      <div
+                        class="product-quality"
+                        onclick="qtyControl(this,'<%=data.productId._id %>')"
+                        style="display: none"
+                      >
+                        <input
+                          class="cart-plus-minus input-text qty text"
+                          name="quantity"
+                          value="<%=data.quantity %>"
+                        />
+                      </div>
+                      <p id="stock" style="color: red"></p>
+                    </td>
+                    <%}%>
+
+                    <td class="product-remove">
+                      <a onclick="removeProduct('<%= data.productId._id %>')"
+                        ><i class="ti-trash"></i
+                      ></a>
+                    </td>
+                  </tr>
+                  <% })%>
+                   <%}else if (cartDetiles.products===null|| undefined||0){%>
+
+                  <td colspan="7" class="text-center">
+                    <a href="/shoppage" id="nocart">Add Products</a>
+                  </td>
+
+                  <%}%>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-4">
+              <div class="cart-shiping-update-wrapper">
+                <div class="cart-shiping-update btn-hover">
+                  <a style="margin-right: 50px" href="/shoppage"
+                    >Continue Shopping</a
+                  >
+                </div>
+                <div class="cart-clear-wrap">
+                  <div class="cart-clear btn-hover">
+                    <button>Update Cart</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="col-12 col-md-3 col-lg-4 col-xl-">
+        <div class="grand-total-wrap">
+          <div class="grand-total-content" id="grandtotal">
+            <h3>
+              Subtotal
+
+              <span id="total">₹<%=total.toFixed() %></span>
+            </h3>
+            <br />
+            <h6>Discout <span>₹900</span></h6>
+            <h6>Coupons for you <span>₹1,100</span></h6>
+            <h6>Product GST <span>₹1,191</span></h6>
+            <h6>Delivery Charges <span>₹100</span></h6>
+
+            <hr />
+          </div>
+
+          <div class="grand-total-btn btn-hover">
+            <a class="btn theme-color" href="/checkoutpage"
+              >Proceed to Checkout</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function qtyControl(current, change, index) {
+    console.log("change", change);
+    const take = current.querySelector("input");
+    const sQuantity = current.querySelector("input").value;
+
+    let message = document.getElementById(`stock${index}`);
+    if (parseInt(sQuantity) > 5) {
+      Swal.fire({
+        icon: "warning",
+        title: "Quantity Limit Exceeded",
+        text: "You can select a maximum of 5 quantities.",
+      });
+      return;
+    }
+
+    fetch("/viewcart", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ change, qty: take.value }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        if (data.message) {
+          message.style.display = "block";
+          message.innerHTML = data.message;
+        } else {
+          message.style.display = "none";
+          document.getElementById("total").innerHTML = data.totalAmount;
+        }
+      });
+  }
+</script>
+<script>
+  function removeProduct(id) {
+    fetch(`/viewcart/${id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        location.reload();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  document
+    .querySelector(".theme-color")
+    .addEventListener("click", async function (event) {
+      event.preventDefault();
+
+      try {
+        const response = await fetch("/checkout-validation", {
+          method: "GET",
+        });
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const message = await response.text();
+        if (message === "Please remove out-of-stock items from the cart.") {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: message,
+          });
+        } else if (message === "Please ad Products in cart") {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: message,
+          });
+        } else {
+          window.location.href = "/checkoutpage";
+        }
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    });
+</script>
+
+<%- include('../partials/mainfooter.ejs')%>

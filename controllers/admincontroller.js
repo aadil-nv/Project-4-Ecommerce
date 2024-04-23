@@ -1551,6 +1551,18 @@ const deleteOffer= async (req,res)=>{
     console.log(error.message)
   }
 }
+
+
+const adminLogout=async (req,res)=>{
+  try {
+    console.log("coming here")
+    req.session.admin=null;
+    res.redirect('/adminlogin')
+    
+  } catch (error) {
+    console.log(error.message)
+  }
+}
 // --------------------------------------------End Load UsersList -------------------------------------------
 
 // ------------------------------------------------End--------------------------------------------------------
@@ -1597,6 +1609,7 @@ module.exports = {
   downloadSalesReport,
   graphData,
   approveRetrunRequest,
-  deleteOffer
+  deleteOffer,
+  adminLogout
  
 };

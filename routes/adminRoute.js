@@ -89,6 +89,6 @@ admin_route.post('/admin/graphdata',adminAuth.isLogin,admincontroller.graphData)
 admin_route.post('/admin/approvereturnrequest',adminAuth.isLogin,admincontroller.approveRetrunRequest)
 admin_route.post('/admin/deleteoffer',adminAuth.isLogin,admincontroller.deleteOffer)
 
-
+admin_route.post("/admin/adminlogout",adminAuth.isLogin,admincontroller.adminLogout )
 
 module.exports = admin_route;

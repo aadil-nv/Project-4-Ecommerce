@@ -1737,6 +1737,8 @@ const headerCount= async (req,res)=>{
     console.log(error.message)
   }
 }
+
+
 //--------------------------------------------------------End load OrderPAge -------------------------------------------
 
 // -------------------Exporting Controllers-----------------------
@@ -1792,7 +1794,8 @@ module.exports = {
   searchCategoryName,
   removeCoupon,
   proceedToCheckout,
-  headerCount
+  headerCount,
+ 
 
 };
 
