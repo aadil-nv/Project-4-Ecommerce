@@ -75,7 +75,7 @@ user_route.post('/orderpage',userAuth.isLogin,userAuth.isUserBlock,usercontrolle
 
 user_route.get('/orders/:id',userAuth.isLogin,userAuth.isUserBlock,usercontroller.loadOrderPage)
 
-user_route.post('/ordersone/:id',userAuth.isLogin,userAuth.isUserBlock,usercontroller.orderCancel)
+user_route.post('/ordersone',userAuth.isLogin,userAuth.isUserBlock,usercontroller.orderCancel)
 
 user_route.get("/productspopular",userAuth.isLogin,userAuth.isUserBlock, usercontroller.sortByPopularity);
 user_route.get("/productslowtohigh",userAuth.isLogin,userAuth.isUserBlock, usercontroller.sortByPriceLowToHigh);

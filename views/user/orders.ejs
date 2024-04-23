@@ -678,12 +678,12 @@
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     try {
-                        const response = await fetch(`/ordersone/${productId}`, {
+                        const response = await fetch('/ordersone', {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
                             },
-                            body: JSON.stringify({ productId: productId ,orderId}),
+                            body: JSON.stringify({productId ,orderId}),
                         });
 
                         if (!response.ok) {

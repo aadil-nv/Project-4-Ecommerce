@@ -1091,7 +1091,7 @@ const placeOrder = async (req, res) => {
 
       razorpayInstance.orders.create(options,(err, order) => {
           if (err) {
-            console.log(err);
+            console.log("founded---------",err);
             res.json({ success: false });
           } else {
             res.json({
@@ -1247,13 +1247,59 @@ const loadOrderPage = async (req, res) => {
 
 const orderCancel = async (req, res) => {
   try {
+ 
     const { productId, orderId } = req.body;
 
     const userId = req.session.user;
+    
+   
+    const orderData= await order.findOne({_id:orderId}).populate("orderedItem.productId")
+    .populate("deliveryAddress")
+    .populate("userId")
+    
+    const paymentMethod=orderData.paymentMethod
+
+    let quantity = 0;
+
+    
+    for (const item of orderData.orderedItem) {
+      if (item.productId._id.toString() === productId) {
+        quantity = item.quantity;
+        break; 
+      }
+    }
+    let productAmount=0
+    for (const item of orderData.orderedItem) {
+      if (item.productId._id.toString() === productId) {
+        productAmount = item.totalProductAmount;
+        break; 
+      }
+    }
 
     await order.findOneAndUpdate(
       { _id: orderId, "orderedItem.productId": productId },
       { $set: { "orderedItem.$.productStatus": "Order Cancelled" } }
+    );
+
+    if(paymentMethod === "Wallet" || paymentMethod === "RazorPay"){
+      
+      await User.findByIdAndUpdate(userId, {
+        $inc: { wallet:productAmount }, 
+        $push: {
+            walletHistory: {
+                amount: productAmount,
+                description: `Refund of ORDERID:${orderId}`,
+                date: new Date(),
+                status: "credit"
+            }
+        }
+        }, { new: true });
+    }
+
+
+    await Products.findOneAndUpdate(
+      { _id: productId },
+      { $inc: { productquadity: +quantity } }
     );
 
     res.status(200).json({ message: "deletion successfull" });
@@ -1261,6 +1307,10 @@ const orderCancel = async (req, res) => {
     console.log(error.messsage);
   }
 };
+
+
+
+
 
 const sortByPopularity = async (req, res) => {
   try {
