@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://127.0.0.1:27017/furniture_ecommerce");
+mongoose.connect("mongodb+srv://adilev2000:zlUXzVPoyvBdHnue@cluster0.nlcjdgg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
 
 const { render } = require("ejs");
 const flash = require('express-flash')
