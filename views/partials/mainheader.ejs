@@ -92,7 +92,7 @@
         <div class="container" >
           <div class="row align-items-center"  >
             <div class="col-lg-3 col-md-6 col-6">
-              <div class="logo" style="width: 30px; height: 30px; " >
+              <div class="logo" style="width: 40px; height: 40px; " >
                 <a href="index.html"><img src="/userpublic/indexassets/assets/images/brand-logo/brand-logo-2.png"
                     alt="logo" id="logo1" /></a>
               </div>
@@ -124,9 +124,9 @@
                                 <li><a href="/login">CONTACT US</a></li>
                                 <%}%>
                                   <% if(locals.customer){ %>
-                                    <li><a href="/contactpage">PROFILE</a></li>
+                                    <li><a href="/userprofile">PROFILE</a></li>
                                     <% }else{ %>
-                                      <li><a href="/login">PROFILE</a></li>
+                                      <li><a href="/login">LOGIN</a></li>
                                       <%}%>
                   </ul>
                 </nav>
@@ -150,7 +150,7 @@
                                     <a title="Login Register" href="login-register.html"><i class="pe-7s-user"></i></a>
                                 </div> -->
 
-                <% if(locals.customer){ %>
+                <!-- <% if(locals.customer){ %>
                   <div class="header-action-style">
                     <a title="Login Register" href="/userprofile"><i class="material-icons"
                         id="userprofile">account_circle</i></a>
@@ -159,10 +159,11 @@
                     <div class="header-action-style">
                       <a title="Login Register" href="/login"><i class="pe-7s-user" id="userprofile2"></i></a>
                     </div>
-                    <%}%>
+                    <%}%> -->
                       <% if(locals.customer){ %>
                         <div class="header-action-style">
                           <a title="Wishlist" href="/user/wishlist"><i class="pe-7s-like" id="userwishlist1"></i></a>
+                          
                         </div>
                         <% }else{ %>
                           <div class="header-action-style">
@@ -172,13 +173,13 @@
                             <% if(locals.customer){ %>
                               <div class="header-action-style header-action-cart">
                                 <a class="cart-active" href="/viewcart"><i class="pe-7s-shopbag" id="usercart1"></i>
-                                  <span class="product-count bg-black">01</span>
+                                  <span class="product-count bg-black"><%= productcount  %></span>
                                 </a>
                               </div>
                               <% }else{ %>
                                 <div class="header-action-style header-action-cart">
                                   <a class="cart-active" href="/login"><i class="pe-7s-shopbag" id="usercart2"></i>
-                                    <span class="product-count bg-black">01</span>
+                                    <span class="product-count bg-black">0</span>
                                   </a>
                                 </div>
                                 <%}%>
@@ -241,22 +242,22 @@
   }
 
   #userwishlist1 {
-    color: red;
+    color: #000000;
    
   }
 
   #userwishlist2 {
-    color: red;
+    color:#000000;
    
   }
 
   #usercart1 {
-    color: red;
+    color: #000000;
    
   }
 
   #usercart2 {
-    color: red;
+    color: #000000;
    
   }
 
@@ -296,6 +297,13 @@
     cursor: pointer;
     z-index: 10000;
     /* Ensure the button is on top of the navigation */
+  }
+
+  @media (max-width:425px){
+    .logo{
+      width: 25px;
+      height: 25px;
+    }
   }
  
 </style>

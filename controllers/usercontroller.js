@@ -77,9 +77,17 @@ const loadRegister = async (req, res) => {
 
 const home = async (req, res) => {
   try {
+    const user=req.session.user
     const ProductData = await Products.find().populate("offerId");
+    const cartData = await Cart.find({ userId: user });
 
-    res.render("user/index", { ProductData });
+    // Calculate total count of products in all carts
+    let productcount = 0;
+    for (const cart of cartData) {
+      productcount += cart.products.length;
+    }
+
+    res.render("user/index", { ProductData, productcount});
   } catch (erorr) {
     console.log(erorr.message);
   }
@@ -298,7 +306,14 @@ const loadUserProfile = async (req, res) => {
       .find({ userId: req.session.user })
       .populate("orderedItem.productId").sort({_id:-1})
     const couponData = await Coupon.find().sort({_id:-1})
+    const user=req.session.user
+    const cartData = await Cart.find({ userId: user });
 
+    // Calculate total count of products in all carts
+    let productcount = 0;
+    for (const cart of cartData) {
+      productcount += cart.products.length;
+    }
     let added = req.query.msg;
 
     if (User) {
@@ -312,6 +327,7 @@ const loadUserProfile = async (req, res) => {
           added,
           orderData,
           couponData,
+          productcount
         });
       } else {
         return res.render("user/userprofile", {
@@ -320,6 +336,7 @@ const loadUserProfile = async (req, res) => {
           message,
           orderData,
           couponData,
+          productcount
         });
       }
     }
@@ -362,9 +379,17 @@ const resendOtp = async (req, res) => {
 // -------------------Back to userHome with UsererData--------------------------------
 const backToUserHome = async (req, res) => {
   try {
+    const user=req.session.user
     const ProductData = await Products.find().populate('offerId')
+    const cartData = await Cart.find({ userId: user });
 
-    res.render("user/index", { ProductData, User: req.session.user });
+    // Calculate total count of products in all carts
+    let productcount = 0;
+    for (const cart of cartData) {
+      productcount += cart.products.length;
+    }
+
+    res.render("user/index", { ProductData, User: req.session.user ,productcount});
   } catch (error) {
     console.log(error.message);
   }
@@ -377,6 +402,8 @@ const backToUserHome = async (req, res) => {
 const loadShopPage= async(req, res)=> {
   try {
     const productsPerPage = 12;
+    const user=req.session.user
+    const cartData = await Cart.find({ userId: user });
     let currentPage = parseInt(req.query.page) || 1;
 
     const totalProducts = await Products.countDocuments();
@@ -394,10 +421,15 @@ const loadShopPage= async(req, res)=> {
     const startIndex = (currentPage - 1) * productsPerPage;
     const endIndex = Math.min(startIndex + productsPerPage, totalProducts);
 
+    let productcount = 0;
+    for (const cart of cartData) {
+      productcount += cart.products.length;
+    }
+
     const productData = await Products.find().populate("offerId").skip(startIndex).limit(productsPerPage);
 
    
-    res.render("user/shop", { User, productData, categoryData, currentPage, totalPages });
+    res.render("user/shop", { User, productData, categoryData, currentPage, totalPages ,productcount});
 } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
@@ -412,7 +444,15 @@ const loadShopPage= async(req, res)=> {
 
 const loadAboutPage = async (req, res) => {
   try {
-    res.render("user/about", { User });
+    const user=req.session.user
+    const cartData = await Cart.find({ userId: user });
+
+    
+    let productcount = 0;
+    for (const cart of cartData) {
+      productcount += cart.products.length;
+    }
+    res.render("user/about", { User ,productcount});
   } catch (error) {
     console.log(error.message);
   }
@@ -423,7 +463,14 @@ const loadAboutPage = async (req, res) => {
 // ----------------------------------------------Loading ShopPage-------------------------------------------
 const loadContactPage = async (req, res) => {
   try {
-    res.render("user/contact", { User });
+    const user=req.session.user
+    const cartData = await Cart.find({ userId: user });
+
+    let productcount = 0;
+    for (const cart of cartData) {
+      productcount += cart.products.length;
+    }
+    res.render("user/contact", { User ,productcount});
   } catch (error) {
     console.log(error.message);
   }
@@ -436,10 +483,18 @@ const loadContactPage = async (req, res) => {
 const loadProductTab = async (req, res) => {
   try {
     const productId = req.params.id;
+    const user=req.session.user
+    const cartData = await Cart.find({ userId: user });
+
+    
+    let productcount = 0;
+    for (const cart of cartData) {
+      productcount += cart.products.length;
+    }
     const savedData = await Products.findById(productId).populate("offerId");
 
     if (savedData) {
-      return res.render("user/producttab", { savedData: savedData });
+      return res.render("user/producttab", { savedData: savedData ,productcount});
     }
     res.redirect("index");
   } catch (error) {
@@ -477,7 +532,7 @@ const loadViewCart = async (req, res) => {
     const cartDetiles = await Cart.find({ userId: user }).populate("products.productId").populate({path:'products.productId',populate:{path:"offerId",model:"offer"}})
     let total = 0;
 
-   
+   let productcount=0
 
     for (const cart of cartDetiles) {
       for (const item of cart.products) {
@@ -496,12 +551,13 @@ const loadViewCart = async (req, res) => {
 
         item.totalPrice = totalPrice;
         total += totalPrice;
+        productcount++
       }
     }
     
  
 
-    res.render("user/cart", { cartDetiles, total });
+    res.render("user/cart", { cartDetiles, total ,productcount});
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Internal Server Error");
@@ -581,7 +637,16 @@ const updateUserPassword = async (req, res) => {
 
 const loadAddressPage = async (req, res) => {
   try {
-    res.render("user/address");
+    const user=req.session.user
+    const cartData = await Cart.find({ userId: user });
+
+    
+    let productcount = 0;
+    for (const cart of cartData) {
+      productcount += cart.products.length;
+    }
+    
+    res.render("user/address",{productcount});
   } catch (error) {
     console.log(error.message);
   }
@@ -626,8 +691,17 @@ const loadEditUser = async (req, res) => {
     const addressId = req.params.id;
 
     const addressData = await Address.findOne({ _id: addressId });
+    const user=req.session.user
+    const cartData = await Cart.find({ userId: user });
 
-    res.render("user/editaddress", { addressData });
+    
+    let productcount = 0;
+    for (const cart of cartData) {
+      productcount += cart.products.length;
+    }
+    
+
+    res.render("user/editaddress", { addressData,productcount });
   } catch (error) {
     console.log(error.message);
   }
@@ -859,7 +933,16 @@ const loadtCheckoutPage = async (req, res) => {
       }
     }
 
-    res.render("user/checkout", { addressData, cartDetiles, total });
+    const user=req.session.user
+    const cartData = await Cart.find({ userId: user });
+
+    
+    let productcount = 0;
+    for (const cart of cartData) {
+      productcount += cart.products.length;
+    }
+
+    res.render("user/checkout", { addressData, cartDetiles, total,productcount });
   } catch (error) {
     console.error(error.message);
   }
@@ -1002,8 +1085,8 @@ const placeOrder = async (req, res) => {
       };
 
       const razorpayInstance = new Razorpay({
-        key_id: "rzp_test_nexg64Tm176iuH",
-        key_secret: "DQNPLFsGnpzS3Jw8pPszj7Xv",
+        key_id: process.env.RAZORPAY_ID_KEY ,
+        key_secret: process.env.RAZORPAY_SECRET_ID,
       });
 
       razorpayInstance.orders.create(options,(err, order) => {
@@ -1145,7 +1228,16 @@ const loadOrderPage = async (req, res) => {
       .populate("deliveryAddress")
       .populate("userId")
 
-    res.render("user/orders", { orderData });
+      const user=req.session.user
+    const cartData = await Cart.find({ userId: user });
+
+    
+    let productcount = 0;
+    for (const cart of cartData) {
+      productcount += cart.products.length;
+    }
+
+    res.render("user/orders", { orderData,productcount });
   } catch (error) {
     console.log(error.message);
   }
@@ -1293,8 +1385,17 @@ const loadWishliist = async (req, res) => {
     const wishlistData = await Wishlist.find({ userId }).populate(
       "products.productId"
     );
+    const user=req.session.user
+    const cartData = await Cart.find({ userId: user });
 
-    res.render("user/wishlist", { wishlistData });
+    
+    let productcount = 0;
+    for (const cart of cartData) {
+      productcount += cart.products.length;
+    }
+    
+
+    res.render("user/wishlist", { wishlistData ,productcount});
   } catch (error) {
     console.log(error.message);
   }

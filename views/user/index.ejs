@@ -35,6 +35,9 @@
         font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         font-weight: 700;
     }
+    #productprice{color: black;}
+    #productprice1{color: green}
+    #productprice2{color: red}
    
    
 </style>
@@ -52,7 +55,7 @@
                                             <h3 class="animated">Up To 40% Off</h3>
                                             <h1 class="animated">Summer <br>Collection</h1>
                                             <div class="slider-btn-2 btn-hover">
-                                                <a href="product-details.html" class="btn hover-border-radius theme-color animated">
+                                                <a href="/shoppage" class="btn hover-border-radius theme-color animated">
                                                     Shop Now
                                                 </a>
                                             </div>
@@ -73,7 +76,7 @@
                                             <h3 class="animated">Up To 40% Off</h3>
                                             <h1 class="animated">Summer <br>Collection</h1>
                                             <div class="slider-btn-2 btn-hover">
-                                                <a href="product-details.html" class="btn hover-border-radius theme-color animated">
+                                                <a href="/shoppage" class="btn hover-border-radius theme-color animated">
                                                     Shop Now
                                                 </a>
                                             </div>
@@ -100,65 +103,65 @@
                         <div class="swiper-slide">
                             <div class="single-category-wrap-2 text-center" data-aos="fade-up" data-aos-delay="200">
                                 <div class="category-img-2">
-                                    <a href="shop.html">
+                                    <a href="/shoppage">
                                         <img class="category-normal-img" src="/userpublic/indexassets/assets/images/category/category-6-black.png" alt="">
                                         <img class="category-hover-img" src="/userpublic/indexassets/assets/images/category/category-hover-6.png" alt="icon">
                                     </a>
                                 </div>
                                 <div class="category-content-2 category-content-2-black">
-                                    <h4><a href="shop.html">Wooden Sat</a></h4>
+                                    <h4><a href="/shoppage">Wooden Sat</a></h4>
                                 </div>
                             </div>
                         </div>
                         <div class="swiper-slide">
                             <div class="single-category-wrap-2 text-center" data-aos="fade-up" data-aos-delay="400">
                                 <div class="category-img-2">
-                                    <a href="shop.html">
+                                    <a href="/shoppage">
                                         <img class="category-normal-img" src="/userpublic/indexassets/assets/images/category/category-7-black.png" alt="">
                                         <img class="category-hover-img" src="/userpublic/indexassets/assets/images/category/category-hover-7.png" alt="icon">
                                     </a>
                                 </div>
                                 <div class="category-content-2 category-content-2-black">
-                                    <h4><a href="shop.html">Office Cabin</a></h4>
+                                    <h4><a href="/shoppage">Office Cabin</a></h4>
                                 </div>
                             </div>
                         </div>
                         <div class="swiper-slide">
                             <div class="single-category-wrap-2 text-center" data-aos="fade-up" data-aos-delay="600">
                                 <div class="category-img-2">
-                                    <a href="shop.html">
+                                    <a href="/shoppage">
                                         <img class="category-normal-img" src="/userpublic/indexassets/assets/images/category/category-8-black.png" alt="">
                                         <img class="category-hover-img" src="/userpublic/indexassets/assets/images/category/category-hover-8.png" alt="icon">
                                     </a>
                                 </div>
                                 <div class="category-content-2 category-content-2-black">
-                                    <h4><a href="shop.html">Bedroom Light</a></h4>
+                                    <h4><a href="/shoppage">Bedroom Light</a></h4>
                                 </div>
                             </div>
                         </div>
                         <div class="swiper-slide">
                             <div class="single-category-wrap-2 text-center" data-aos="fade-up" data-aos-delay="800">
                                 <div class="category-img-2">
-                                    <a href="shop.html">
+                                    <a href="/shoppage">
                                         <img class="category-normal-img" src="/userpublic/indexassets/assets/images/category/category-9-black.png" alt="">
                                         <img class="category-hover-img" src="/userpublic/indexassets/assets/images/category/category-hover-9.png" alt="icon">
                                     </a>
                                 </div>
                                 <div class="category-content-2 category-content-2-black">
-                                    <h4><a href="shop.html">Bathroom Kit</a></h4>
+                                    <h4><a href="/shoppage">Bathroom Kit</a></h4>
                                 </div>
                             </div>
                         </div>
                         <div class="swiper-slide">
                             <div class="single-category-wrap-2 text-center" data-aos="fade-up" data-aos-delay="1000">
                                 <div class="category-img-2">
-                                    <a href="shop.html">
+                                    <a href="/shoppage">
                                         <img class="category-normal-img" src="/userpublic/indexassets/assets/images/category/category-10-black.png" alt="">
                                         <img class="category-hover-img" src="/userpublic/indexassets/assets/images/category/category-hover-10.png" alt="icon">
                                     </a>
                                 </div>
                                 <div class="category-content-2 category-content-2-black">
-                                    <h4><a href="shop.html">Kitchen Kit</a></h4>
+                                    <h4><a href="/shoppage">Kitchen Kit</a></h4>
                                 </div>
                             </div>
                         </div>
@@ -203,7 +206,7 @@
                     <div id="pro-1" class="tab-pane active">
                         <div class="row">
                             <%  ProductData.forEach(data=>{%>
-                            <div class="col-lg-2 col-md-4 col-sm-6 col-6 ">
+                            <div class="col-lg-3 col-md-4 col-sm-6 col-6 ">
                                 <div class="product-wrap mb-35" data-aos="fade-up" data-aos-delay="200">
                                     <div class="product-img img-zoom mb-25">
                                    
@@ -239,11 +242,11 @@
                                         <h3><a href="/producttab?id=<%= data._id %>" id="productname7"><%= data.productname %></a></h3>
                                         <div class="product-price">
                                             <% if (!data.offerId) { %>
-                                            <span id="productname">₹<%= data.productprice %></span>
+                                            <span id="productprice">₹<%= data.productprice %></span>
                                             <% } else { %>
                                                 <% var discountedPrice = data.productprice - (data.productprice * data.offerId?.percentage / 100);%>    
-                                            <span id="productname">₹<%= discountedPrice.toFixed(0)%></span>
-                                            <span id="productname2"><del>₹<%= data.productprice %></del></span>
+                                            <span id="productprice1">₹<%= discountedPrice.toFixed(0)%></span>
+                                            <span id="productname2"><del id="productprice2">₹<%= data.productprice %></del></span>
                                             <% } %>    
                                         </div>
                                     </div>
@@ -261,7 +264,7 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-12">
                         <div class="banner-wrap mb-30" data-aos="fade-up" data-aos-delay="200">
-                            <a href="product-details.html"><img src="/userpublic/indexassets/assets/images/banner/banner-6.png" alt=""></a>
+                            <a href="/shoppage"><img src="/userpublic/indexassets/assets/images/banner/banner-6.png" alt=""></a>
                             <div class="banner-content-5">
                                 <span>Up To 40% Off</span>
                                 <h2>Dining Furniture</h2>
@@ -273,12 +276,12 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-12">
                         <div class="banner-wrap mb-30" data-aos="fade-up" data-aos-delay="400">
-                            <a href="product-details.html"><img src="/userpublic/indexassets/assets/images/banner/banner-7.png" alt=""></a>
+                            <a href="/shoppage"><img src="/userpublic/indexassets/assets/images/banner/banner-7.png" alt=""></a>
                             <div class="banner-content-5">
                                 <span>Up To 40% Off</span>
                                 <h2>Bed Furniture</h2>
                                 <div class="btn-style-3 btn-hover">
-                                    <a class="btn hover-border-radius" href="product-details.html">Shop Now</a>
+                                    <a class="btn hover-border-radius" href="/shoppage">Shop Now</a>
                                 </div>
                             </div>
                         </div>
@@ -436,7 +439,7 @@
                         <span data-aos="fade-up" data-aos-delay="200">Up To 40% Off</span>
                         <h1 data-aos="fade-up" data-aos-delay="400">New Furniture <br>Sofa Set</h1>
                         <div class="btn-style-3 btn-hover" data-aos="fade-up" data-aos-delay="600">
-                            <a class="btn hover-border-radius" href="product-details.html">Shop Now</a>
+                            <a class="btn hover-border-radius" href="/shoppage">Shop Now</a>
                         </div>
                     </div>
                 </div>

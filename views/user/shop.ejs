@@ -19,7 +19,7 @@
 
         #offer {
             color: #f5f5f5;
-            background-color: rgb(241, 145, 80);
+            background-color: green;
             width: 40px;
             border-radius: 25px;
             text-align: center;
@@ -37,6 +37,7 @@
         .product-price {
             padding-left: 6px;
             font-size: 10px;
+           
         }
 
         #stock1 {
@@ -95,6 +96,10 @@
             height: 160px;
             font-size: 9px;
         }
+        #productprice{color: black;}
+        #productprice1{color: green;}
+        #productprice2{color: red}
+        
     </style>
 
 
@@ -181,15 +186,15 @@
                                                         <div class="product-price">
                                                             <% if (!data.offerId) { %>
                                                                 <span class="new-price" id="productprice">
-                                                                    <%= data.productprice %>
+                                                                    ₹<%= data.productprice %>
                                                                 </span>
                                                             <% } else { %>
                                                                 <% var discountedPrice = data.productprice - (data.productprice * data.offerId?.percentage / 100); %>
                                                                 <span class="text-muted">
-                                                                    <del><%= data.productprice %></del>
+                                                                    <del id="productprice2"><%= data.productprice %>&nbsp;</del>
                                                                 </span>
-                                                                <span class="new-price" id="productprice">
-                                                                    Rs.<%= discountedPrice.toFixed(0) %>/-
+                                                                <span class="new-price" id="productprice1" >
+                                                                    ₹<%= discountedPrice.toFixed(0) %>/-
                                                                 </span>
                                                             <% } %>
                                                         </div>
@@ -455,7 +460,7 @@
                             <h3 id="productname"><a href="/producttab/${product._id}">${product.productname}</a></h3>
                             <div class="product-price">
 
-                                ${!product.offerId ? `<span class="new-price" id="productprice">${product.productprice}</span>` : `<span class="text-muted"><del>${product.productprice}</del></span><span class="new-price" id="productprice">Rs.${(product.productprice - (product.productprice * product.offerId.percentage / 100)).toFixed(0)}/-</span>`}
+                                ${!product.offerId ? `<span class="new-price" id="productprice">${product.productprice}</span>` : `<span class="text-muted"><del>${product.productprice}</del></span><span class="new-price" id="productprice">₹${(product.productprice - (product.productprice * product.offerId.percentage / 100)).toFixed(0)}/-</span>`}
                             </div>
                             <div class="product-price">
                                 ${product.productquadity > 100 ? `<span class="new-price"><p id="stock5">Stock Available</p></span>` : (product.productquadity < 100 && product.productquadity >= 50 ? `<span class="new-price"><p id="stock4">Limited Stock Only</p></span>` : (product.productquadity < 50 && product.productquadity >= 10 ? `<span class="new-price"><p id="stock3">Hurry few left</p></span>` : (product.productquadity < 10 && product.productquadity >= 1 ? `<span class="new-price"><p id="stock2">Only (${product.productquadity}) Available</p></span>` : `<span class="new-price"><p id="stock1">Out of Stock</p></span>`)))}
@@ -533,7 +538,7 @@
                             <h3 id="productname"><a href="/producttab/${product._id}">${product.productname}</a></h3>
                             <div class="product-price">
 
-                                ${!product.offerId ? `<span class="new-price" id="productprice">${product.productprice}</span>` : `<span class="text-muted"><del>${product.productprice}</del></span><span class="new-price" id="productprice">Rs.${(product.productprice - (product.productprice * product.offerId.percentage / 100)).toFixed(0)}/-</span>`}
+                                ${!product.offerId ? `<span class="new-price" id="productprice">₹${product.productprice}/-</span>` : `<span class="text-muted"><del id="productprice2">${product.productprice}&nbsp;&nbsp;</del></span><span class="new-price" id="productprice1">Rs.${(product.productprice - (product.productprice * product.offerId.percentage / 100)).toFixed(0)}/-</span>`}
                             </div>
                             <div class="product-price">
                                 ${product.productquadity > 100 ? `<span class="new-price"><p id="stock5">Stock Available</p></span>` : (product.productquadity < 100 && product.productquadity >= 50 ? `<span class="new-price"><p id="stock4">Limited Stock Only</p></span>` : (product.productquadity < 50 && product.productquadity >= 10 ? `<span class="new-price"><p id="stock3">Hurry few left</p></span>` : (product.productquadity < 10 && product.productquadity >= 1 ? `<span class="new-price"><p id="stock2">Only (${product.productquadity}) Available</p></span>` : `<span class="new-price"><p id="stock1">Out of Stock</p></span>`)))}

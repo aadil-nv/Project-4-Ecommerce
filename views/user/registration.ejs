@@ -1,5 +1,27 @@
 <%- include('../partials/mainheader.ejs')%>
+<style>
+    #name::placeholder {
+        color: #999;
+        font-style: italic;
+    }
+    #email::placeholder {
+        color: #999;
+        font-style: italic;
+    }
+    #password::placeholder {
+        color: #999;
+        font-style: italic;
+    }
+    #mno::placeholder {
+        color: #999;
+        font-style: italic;
+    }
+    #referdid::placeholder {
+        color: #999;
+        font-style: italic;
+    }
 
+</style>
       
         <div class="login-register-area" style="padding-top: 30px;">
             <div class="container">
@@ -38,11 +60,7 @@
                                                 <input type="password" id="password"  name="password" placeholder="5 Digit Password" required>
                                                 <label>Referal Id :</label>
                                                 <input type="text" id="referdid"  name="referdid" placeholder="Optional" >
-                                                <div class="login-toggle-btn">
-                                                    <input type="checkbox">
-                                                    <label>Remember me</label>
-                                                    <a href="#">Forgot Password?</a>
-                                                </div>
+                                                
                                                 <div class="button-box btn-hover" style="justify-content: center; align-items: center; display: flex;">
                                                     <button type="submit">Register</button>
                                                 </div>

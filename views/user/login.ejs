@@ -51,6 +51,15 @@ body {
   text-align: center;
   padding-top: 2rem;
 }
+#password::placeholder {
+        color: #999;
+        font-style: italic;
+    }
+#email::placeholder {
+        color: #999;
+        font-style: italic;
+    }
+
 </style>
         
         <div class="login-register-area ">
@@ -73,7 +82,7 @@ body {
                                               <p id="show1" class="text-danger" ></p>
                                                 <% if(typeof message!=='undefined' ){ %>
 
-                                                    <h6 id="errorMessage"  style="color: red;" style="justify-content: center; text-align: center;">
+                                                    <h6 id="errorMessage"  style="color: red; justify-content: center; text-align: center;">
                                                         <%= message %>
                                                     </h6>
                                                     <% } %>
@@ -81,7 +90,7 @@ body {
                                                     <label>Enter Your Email :</label>
                                                 <input type="text" id="email" name="email" placeholder="(e.g., example@example.com)">
                                                 <label>Enter Your Paasword :</label>
-                                                <input type="password" id="password" name="password" placeholder="(Password)"  >
+                                                <input type="password" id="password" name="password" placeholder="(Password)"  class="muted-placeholder">
                                                 
                                                 <div class="button-box btn-hover"  style="justify-content: center; align-items: center; display: flex;">
                                                     <button type="submit">Login</button>
