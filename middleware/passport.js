@@ -13,7 +13,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECERET,
-      callbackURL: "http://aadil.online/google/callback",
+      callbackURL: "https://aadil.online/google/callback",
       passReqToCallback: true,
     },
     async function (request, accessToken, refreshToken, profile, cb) {
