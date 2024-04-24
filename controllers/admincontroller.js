@@ -16,6 +16,7 @@ const Category = require("../models/categoryModel");
 const Brands = require("../models/brandsModel");
 const puppeteer= require("puppeteer")
 const fs = require('fs');
+const cropperjs=require('cropperjs')
 
 
 

@@ -110,7 +110,7 @@
                 <% let UID=1 %>
                 <%   orderData.forEach((item) => { %>
                     <%   item.orderedItem.forEach((data) => { %>
-                        <% if(data.returnRequest===true) {%>
+                        <% if(data.returnRequest===true||data.returnRequest==false) {%>
             <tbody>
               <tr>
                 <th scope="row"><%= UID++ %></th>

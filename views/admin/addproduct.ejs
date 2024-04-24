@@ -83,7 +83,6 @@
                             </div>
                         </div>
 
-
                         <div class="card ">
                             <div class="card-body">
                                 <div class="mb-3">
@@ -95,6 +94,8 @@
 
                             </div>
                         </div>
+
+                        
 
 
                     </div>
@@ -109,6 +110,79 @@
         </div>
     </section>
 
+
+   
+    <!-- <div class="d-flex justify-content-center" style="width: 800px;">
+        <div class="d-flex justify-content-evenly">
+            <div class="image-upload-container">
+                <div class="close-icon" onclick="deleteImage('image1', 'preview1');">&times;
+                </div>
+                <label for="image1" class="form-label">
+                    <img id="preview1" src="https://bit.ly/3ubuq5o" alt="">
+                </label>
+                <input type="file" class="form-control" id="image1" name="cropImages"
+                    style="display: none;">
+                <button type="button" onclick="document.getElementById('image1').click();">Upload
+                    Image</button>
+            </div>
+
+            <div class="image-upload-container">
+                <div class="close-icon" onclick="deleteImage('image2', 'preview2');">&times;
+                </div>
+                <label for="image2" class="form-label">
+                    <img id="preview2" src="https://bit.ly/3ubuq5o" alt="images">
+                </label>
+                <input type="file" class="form-control" id="image2" name="cropImages"
+                    style="display: none;">
+                <button type="button" onclick="document.getElementById('image2').click();">Upload
+                    Image</button>
+            </div>
+
+            <div class="image-upload-container">
+                <div class="close-icon" onclick="deleteImage('image3', 'preview3');">&times;
+                </div>
+                <label for="image3" class="form-label">
+                    <img id="preview3" src="https://bit.ly/3ubuq5o" alt="">
+                </label>
+                <input type="file" class="form-control" id="image3" name="cropImages"
+                    style="display: none;">
+                <button type="button" onclick="document.getElementById('image3').click();">Upload
+                    Image</button>
+            </div>
+            <div class="image-upload-container">
+                <div class="close-icon" onclick="deleteImage('image4', 'preview4');">&times;
+                </div>
+                <label for="image4" class="form-label">
+                    <img id="preview4" src="https://bit.ly/3ubuq5o" alt="">
+                </label>
+                <input type="file" class="form-control" id="image4" name="cropImages"
+                    style="display: none;">
+                <button type="button" onclick="document.getElementById('image4').click();">Upload
+                    Image</button>
+            </div>
+
+        </div>
+    </div> -->
+    <!-- card end// -->
+<!-- </div> -->
+<!-- <div class="modal fade" id="imageCropModal" tabindex="-1" aria-labelledby="imageCropModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="imageCropModalLabel">Crop Image</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <img id="imageToCrop" src="" alt="Crop this image" style="max-width: 100%;">
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="cropImageBtn">Crop</button>
+        </div>
+    </div>
+</div>
+</div> -->
 
 
     <script src="/adminpublic/adminlogin/js/vendors/jquery-3.6.0.min.js"></script>
@@ -153,13 +227,7 @@
             } else {
                 errorQuantity.innerHTML = "";
             }
-            // const errorCategory = document.getElementById("errorCategory");
-
-            // if (!productCategory.trim()) {
-            //     errorCategory.innerHTML = "Please choose a category";
-            // } else {
-            //     errorCategory.innerHTML = "";
-            // }
+            
 
             const errorPrice = document.getElementById("errorPrice");
             if (!productPrice.trim()) {
@@ -279,3 +347,82 @@
 
     </script>
     <script src="/adminpublic/adminlogin/js/main.js?v=1.1" type="text/javascript"></script>
+    <script>
+         let currentInputId, currentPreviewId, cropper;
+            let croppedImages = {};
+            let originalFileNames = {};
+
+
+            document.addEventListener("DOMContentLoaded", function () {
+
+                document.getElementById('image1').addEventListener('change', function () { prepareImageForCropping('image1', 'preview1'); });
+                document.getElementById('image2').addEventListener('change', function () { prepareImageForCropping('image2', 'preview2'); });
+                document.getElementById('image3').addEventListener('change', function () { prepareImageForCropping('image3', 'preview3'); });
+                document.getElementById('image4').addEventListener('change', function () { prepareImageForCropping('image4', 'preview4'); });
+
+
+                document.getElementById('cropImageBtn').addEventListener('click', function () {
+                    performCropping();
+                });
+
+
+                $('#imageCropModal').on('shown.bs.modal', function () {
+                    let image = document.getElementById('imageToCrop');
+                    cropper = new Cropper(image, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                        dragMode: "move",
+                        minContainerWidth: 450,
+                        minContainerHeight: 500,
+                        minCropBoxWidth: 400,
+                        minCropBoxHeight: 400,
+                        minCanvasHeight: 500,
+                        minCanvasWidth: 500,
+
+                    });
+                });
+
+
+                $('#imageCropModal').on('hidden.bs.modal', function () {
+                    if (cropper) {
+                        cropper.destroy();
+                        cropper = null;
+                    }
+                });
+            });
+
+            function prepareImageForCropping(inputId, previewId) {
+                currentInputId = inputId;
+                currentPreviewId = previewId;
+                const input = document.getElementById(inputId);
+                const file = input.files[0];
+                originalFileNames[inputId] = file.name;
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('imageToCrop').src = e.target.result;
+                    $('#imageCropModal').modal('show');
+                };
+                reader.readAsDataURL(file);
+            }
+
+
+            function performCropping() {
+                if (!cropper) {
+                    console.error("Cropper is not initialized.");
+                    return;
+                }
+                cropper.getCroppedCanvas().toBlob((blob) => {
+
+                    const preview = document.getElementById(currentPreviewId);
+                    preview.src = URL.createObjectURL(blob);
+
+                    croppedImages[currentInputId] = blob;
+
+
+                    $('#imageCropModal').modal('hide');
+                }, 'image/png')
+
+
+            }
+    </script>

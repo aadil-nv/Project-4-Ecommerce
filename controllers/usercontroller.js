@@ -1026,7 +1026,9 @@ const addCheckoutAddress = async (req, res) => {
 
 
 const placeOrder = async (req, res) => {
+
   try {
+    console.log("comigggggggggggggggggggggggggggggggggggg")
     const { activeAddressId, paymentmethod, totalDiscount, couponCode } = req.body;
 
     const generateRandomOrderId = (length) => {
@@ -1078,6 +1080,7 @@ const placeOrder = async (req, res) => {
     req.session.newOrders = newOrder;
 
     if (paymentmethod === "RazorPay") {
+      console.log("razoooooooooooooooooooooorrrrrrrrrrrr")
       const options = {
         amount: totalDiscount * 100,
         currency: "INR",
@@ -1088,22 +1091,23 @@ const placeOrder = async (req, res) => {
         key_id: process.env.RAZORPAY_ID_KEY ,
         key_secret: process.env.RAZORPAY_SECRET_ID,
       });
-
-      razorpayInstance.orders.create(options,(err, order) => {
-          if (err) {
-            console.log("founded---------",err);
-            res.json({ success: false });
-          } else {
-            res.json({
-              order: order,
-              success: true,  
-              order_id: order.id,
-              key_id: "rzp_test_nexg64Tm176iuH",
-              paymentMethod: paymentmethod,
-              couponCode: couponCode
-            });
-          }
-        });
+//todo------------------------------------------------------------------
+razorpayInstance.orders.create(options,(err, order) => {
+  if (err) {
+    console.log("founded---------",err);
+    res.json({ success: false });
+  } else {
+    res.json({
+      order: order,
+      success: true,  
+      order_id: order.id,
+      key_id: "rzp_test_nexg64Tm176iuH",
+      paymentMethod: paymentmethod,
+      couponCode: couponCode
+    });
+  }
+});
+//todo------------------------------------------------------------------
 
     } else if(paymentmethod === "Cash On Delivery") {
 
@@ -1330,8 +1334,17 @@ const sortByPopularity = async (req, res) => {
     const endIndex = Math.min(startIndex + productsPerPage, totalProducts)
     
     const productData = await Products.find().populate("offerId").sort({ _id: -1 }).skip(startIndex).limit(productsPerPage)
+
+    const user=req.session.user
+    const cartData = await Cart.find({ userId: user });
+
+    
+    let productcount = 0;
+    for (const cart of cartData) {
+      productcount += cart.products.length;
+    }
   
-    res.render("user/shop", { productData,categoryData ,currentPage, totalPages });
+    res.render("user/shop", { productData,categoryData ,currentPage, totalPages,productcount });
   } catch (error) {
     console.log(error.message);
   }
@@ -1354,7 +1367,16 @@ const sortByPriceLowToHigh = async (req, res) => {
     const endIndex = Math.min(startIndex + productsPerPage, totalProducts)
     
     const productData = await Products.find().populate("offerId").sort({ productprice: 1 }).skip(startIndex).limit(productsPerPage)
-    res.render("user/shop", { productData ,categoryData,currentPage, totalPages});
+
+    const user=req.session.user
+    const cartData = await Cart.find({ userId: user });
+
+    
+    let productcount = 0;
+    for (const cart of cartData) {
+      productcount += cart.products.length;
+    }
+    res.render("user/shop", { productData ,categoryData,currentPage, totalPages,productcount});
   } catch (error) {
     console.log(error.message);
   }
@@ -1377,7 +1399,15 @@ const sortByPriceHighToLow = async (req, res) => {
     const endIndex = Math.min(startIndex + productsPerPage, totalProducts)
     
     const productData = await Products.find().populate("offerId").sort({ productprice: -1 }).skip(startIndex).limit(productsPerPage)
-    res.render("user/shop", { productData, categoryData,currentPage, totalPages});
+    const user=req.session.user
+    const cartData = await Cart.find({ userId: user });
+
+    
+    let productcount = 0;
+    for (const cart of cartData) {
+      productcount += cart.products.length;
+    }
+    res.render("user/shop", { productData, categoryData,currentPage, totalPages,productcount});
   } catch (error) {
     console.log(error.message);
   }
@@ -1399,7 +1429,15 @@ const sortByAtoZ = async (req, res) => {
     const endIndex = Math.min(startIndex + productsPerPage, totalProducts)
     
     const productData = await Products.find().populate("offerId").sort({ productname: 1 }).skip(startIndex).limit(productsPerPage)
-    res.render("user/shop", { productData, categoryData,currentPage, totalPages});
+    const user=req.session.user
+    const cartData = await Cart.find({ userId: user });
+
+    
+    let productcount = 0;
+    for (const cart of cartData) {
+      productcount += cart.products.length;
+    }
+    res.render("user/shop", { productData, categoryData,currentPage, totalPages,productcount});
   } catch (error) {
     console.log(error.message);
   }
@@ -1421,7 +1459,15 @@ const sortByZtoA = async (req, res) => {
     const endIndex = Math.min(startIndex + productsPerPage, totalProducts)
     
     const productData = await Products.find().populate("offerId").sort({ productname: -1 }).skip(startIndex).limit(productsPerPage)
-    res.render("user/shop", { productData,categoryData,currentPage, totalPages });
+    const user=req.session.user
+    const cartData = await Cart.find({ userId: user });
+
+    
+    let productcount = 0;
+    for (const cart of cartData) {
+      productcount += cart.products.length;
+    }
+    res.render("user/shop", { productData,categoryData,currentPage, totalPages,productcount });
   } catch (error) {
     console.log(error.message);
   }
@@ -1509,6 +1555,7 @@ const removeWishlistProduct = async (req, res) => {
 
 const verifyOrder = async (req, res) => {
   try {
+    console.log("coming to verify order")
     const { razorpay_signature, order_id, paymentId, couponCode } = req.body;
     let key_secret = "DQNPLFsGnpzS3Jw8pPszj7Xv";
     const userId = req.session.user;
@@ -1551,14 +1598,19 @@ const verifyOrder = async (req, res) => {
       razorpay_signature,
       key_secret
     );
+    
+    //todo-----------------------------------------------------------------------------------------------------------------------
     if (!success) {
       await order.findByIdAndUpdate(
         { _id: cId },
         { paymentStatus: "Payment Failed" });
+        console.log("--------------payment failed ----------------")
+
       res.status(400).json({ success: false, message: "Payment verification failed" });
 
     } else {
-      
+        //todo-----------------------------------------------------------------------------------------------------------------------
+  
       await order.findByIdAndUpdate({ _id: cId },{ paymentStatus: "Payment Successfull" });
 
       for (const item of orderedItems) {

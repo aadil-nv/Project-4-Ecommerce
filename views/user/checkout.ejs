@@ -745,9 +745,9 @@
                 const paymentMethodRadios = document.querySelectorAll('input[name="payment_method"]');
                 for (const radio of paymentMethodRadios) {
                     if (radio.checked) {
-                        
+
                         paymentmethod = radio.value;
-                        
+
                     }
                 }
 
@@ -763,7 +763,7 @@
                 console.log("=======totalValue==========", totalDiscount);
                 const couponCode = document.getElementById("couponCodeInput").value;
 
-                    
+
 
                 fetch('/orderpage', {
                     method: "post",
@@ -773,7 +773,7 @@
 
 
                     .then(response => {
-                        
+
                         if (!response.ok) {
                             throw new Error('Network response was not ok');
                         }
@@ -801,7 +801,7 @@
                                 "order_id": data.order.id,
 
                                 "handler": function (response) {
-                                    console.log("++++++++++++++response+++++++++++++++", response)
+                                    console.log("ttttttttttttttttttttttt")
 
                                     fetch('/verifyOrder', {
                                         method: 'POST',
@@ -857,18 +857,19 @@
 
                             var razorpayObject = new Razorpay(options);
                             razorpayObject.open();
-                            console.log("=================options====================", options)
-                            
+
                             razorpayObject.on('payment.failed', function (response) {
-                                console.log("=================response====================", response)
+                               
                                 Swal.fire({
                                     title: 'Payment Failed',
                                     text: 'Sorry, the payment failed. Please try again or choose a different payment method.',
                                     icon: 'error',
                                     confirmButtonText: 'OK'
                                 });
-                                
+
+
                             });
+
 
                         } else if (data.paymentmethod === "Cash On Delivery") {
 
