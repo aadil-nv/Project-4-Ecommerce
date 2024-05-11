@@ -39,9 +39,6 @@ function generateReferralCode(length) {
 }
 
 
-
-
-
 // -----------------------------End generating referal Code-----------------------------------------
 
 // --------------OTP Generating-----------------
